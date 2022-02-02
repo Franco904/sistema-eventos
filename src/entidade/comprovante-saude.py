@@ -79,3 +79,7 @@ class ComprovanteSaude:
             self.__resultado_pcr = resultado_pcr
         else:
             raise TypeError
+
+    def isImunizado(self):
+        return self.__primeira_dose and self.__segunda_dose \
+               or self.resultado_pcr == ResultadoPcr.negativo
