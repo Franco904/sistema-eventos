@@ -1,9 +1,8 @@
 class Local:
-
     def __init__(self, id: int, nome: str):
         if isinstance(id, int) \
                 and isinstance(nome, int):
-            self.__id= id
+            self.__id = id
             self.__nome = nome
         else:
             raise TypeError

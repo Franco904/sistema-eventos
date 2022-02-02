@@ -59,7 +59,7 @@ class ComprovanteSaude:
             raise TypeError
 
     @data_horario_teste.setter
-    def data_horario_teste(self, data_horario_teste: dict):
+    def data_horario_teste(self, data_horario_teste: list):
         if isinstance(data_horario_teste[0], int) \
                 and isinstance(data_horario_teste[1], int) \
                 and isinstance(data_horario_teste[2], int) \
