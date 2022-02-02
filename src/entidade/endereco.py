@@ -1,9 +1,16 @@
+import re
+
+
 class Endereco:
-    def __init__(self, logradouro: str, num_endereco: int, cep: int):
+    def __init__(self, logradouro: str, num_endereco: int, cep: str):
+        if isinstance(cep, str):
+            cep = cep.replace('-', '')
+        else:
+            raise TypeError
         if isinstance(logradouro, str) \
                 and isinstance(num_endereco, int) \
-                and isinstance(cep, int) \
-                and len(cep.__str__()) == 8:
+                and len(cep) == 8 \
+                and not re.search(r'[\D]', cep):
             self.__logradouro = logradouro
             self.__num_endereco = num_endereco
             self.__cep = cep
@@ -37,8 +44,13 @@ class Endereco:
             raise TypeError
 
     @cep.setter
-    def cep(self, cep: int):
-        if isinstance(cep, int) and len(cep.__str__()) == 8:
+    def cep(self, cep: str):
+        if isinstance(cep, str):
+            cep = cep.replace('-', '')
+        else:
+            raise TypeError
+        if len(cep) == 8 \
+                and not re.search(r'[\D]', cep):
             self.__cep = cep
         else:
             raise TypeError
