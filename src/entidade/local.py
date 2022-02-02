@@ -5,6 +5,8 @@ class Local:
                 and isinstance(nome, int):
             self.__id= id
             self.__nome = nome
+        else:
+            raise TypeError
 
     @property
     def id(self):
