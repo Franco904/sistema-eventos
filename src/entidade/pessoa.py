@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class Pessoa(ABC):
     @abstractmethod
     def __init__(self, cpf: int, nome: str):
-        if isinstance(cpf, int) and isinstance(nome, str):
+        if isinstance(cpf, int) and len(cpf.__str__()) == 11 and isinstance(nome, str):
             self.__cpf = cpf
             self.__nome = nome
         else:
