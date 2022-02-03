@@ -1,10 +1,17 @@
+import re
 from abc import ABC, abstractmethod
 
 
 class Pessoa(ABC):
     @abstractmethod
-    def __init__(self, cpf: int, nome: str):
-        if isinstance(cpf, int) and len(cpf.__str__()) == 11 and isinstance(nome, str):
+    def __init__(self, cpf: str, nome: str):
+        if isinstance(cpf, str):
+            cpf = cpf.replace('.', '').replace('-', '')
+        else:
+            raise TypeError
+        if len(cpf) == 11 \
+                and not re.search(r'\D', cpf) \
+                and isinstance(nome, str):
             self.__cpf = cpf
             self.__nome = nome
         else:
@@ -19,8 +26,13 @@ class Pessoa(ABC):
         return self.__nome
 
     @cpf.setter
-    def cpf(self, cpf: int):
-        if isinstance(cpf, int) and len(cpf.__str__()) == 11:
+    def cpf(self, cpf: str):
+        if isinstance(cpf, str):
+            cpf = cpf.replace('.', '').replace('-', '')
+        else:
+            raise TypeError
+        if len(cpf) == 11 \
+                and not re.search(r'\D', cpf):
             self.__cpf = cpf
         else:
             raise TypeError
