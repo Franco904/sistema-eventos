@@ -10,7 +10,7 @@ class Pessoa(ABC):
         else:
             raise TypeError
         if len(cpf) == 11 \
-                and not re.search(r'[\D]', cpf) \
+                and not re.search(r'\D', cpf) \
                 and isinstance(nome, str):
             self.__cpf = cpf
             self.__nome = nome
@@ -32,7 +32,7 @@ class Pessoa(ABC):
         else:
             raise TypeError
         if len(cpf) == 11 \
-                and not re.search(r'[\D]', cpf):
+                and not re.search(r'\D', cpf):
             self.__cpf = cpf
         else:
             raise TypeError

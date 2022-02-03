@@ -10,7 +10,7 @@ class Endereco:
         if isinstance(logradouro, str) \
                 and isinstance(num_endereco, int) \
                 and len(cep) == 8 \
-                and not re.search(r'[\D]', cep):
+                and not re.search(r'\D', cep):
             self.__logradouro = logradouro
             self.__num_endereco = num_endereco
             self.__cep = cep
@@ -50,7 +50,7 @@ class Endereco:
         else:
             raise TypeError
         if len(cep) == 8 \
-                and not re.search(r'[\D]', cep):
+                and not re.search(r'\D', cep):
             self.__cep = cep
         else:
             raise TypeError
