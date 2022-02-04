@@ -4,7 +4,6 @@ class TelaLocal:
 
     def tela_opcoes(self):
         print('-------- LOCAIS ----------')
-        print('Escolha a opcao')
         print('1 - Adicionar local')
         print('2 - Excluir local')
         print('3 - Alterar local')
