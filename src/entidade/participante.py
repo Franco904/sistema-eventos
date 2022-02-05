@@ -8,24 +8,10 @@ from pessoa import Pessoa
 
 class Participante(Pessoa):
     def __init__(self, cpf: str, nome: str, data_nascimento: list, endereco: list):
-        super().__init__(cpf, nome)
-        if isinstance(data_nascimento[0], int) \
-                and isinstance(data_nascimento[1], int) \
-                and isinstance(data_nascimento[2], int):
-
-            if 0 <= (date.today().year - data_nascimento[0]) <= 150:
-                self.__endereco = Endereco(endereco[0], endereco[1], endereco[2])
-                self.__data_nascimento = date(data_nascimento[0], data_nascimento[1], data_nascimento[2])
-                self.__status_participante = StatusParticipante.a_confirmar
-                self.__comprovante_saude = None
-            else:
-                raise TypeError
-        else:
-            raise TypeError
-
-    @property
-    def data_nascimento(self):
-        return self.__data_nascimento
+        super().__init__(cpf, nome, data_nascimento)
+        self.__endereco = Endereco(endereco[0], endereco[1], endereco[2])
+        self.__status_participante = StatusParticipante.a_confirmar
+        self.__comprovante_saude = None
 
     @property
     def status_participante(self):
@@ -38,15 +24,6 @@ class Participante(Pessoa):
     @property
     def endereco(self):
         return self.__endereco
-
-    @data_nascimento.setter
-    def data_nascimento(self, data_nascimento: list):
-        if isinstance(data_nascimento[0], int) \
-                and isinstance(data_nascimento[1], int) \
-                and isinstance(data_nascimento[2], int):
-            self.__data_nascimento = date(data_nascimento[0], data_nascimento[1], data_nascimento[2])
-        else:
-            raise TypeError
 
     @status_participante.setter
     def status_participante(self, status_participante: StatusParticipante):
