@@ -9,6 +9,7 @@ class Endereco:
             raise TypeError
         if isinstance(logradouro, str) \
                 and isinstance(num_endereco, int) \
+                and num_endereco > 0 \
                 and len(cep) == 8 \
                 and not re.search(r'\D', cep):
             self.__logradouro = logradouro
