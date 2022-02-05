@@ -80,6 +80,10 @@ class ComprovanteSaude:
         else:
             raise TypeError
 
-    def isImunizado(self):
-        return self.__primeira_dose and self.__segunda_dose \
-               or self.resultado_pcr == ResultadoPcr.negativo
+    def imunizado(self):
+        return self.__primeira_dose and self.__segunda_dose
+
+    def pcr_autorizado(self, data_horario_evento: datetime):
+        diferenca = (data_horario_evento - self.__data_horario_teste).__str__()
+        return self.__resultado_pcr.negativo and diferenca[0] < '3'
+
