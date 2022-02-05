@@ -1,10 +1,11 @@
 import re
+from datetime import date
 from abc import ABC, abstractmethod
 
 
 class Pessoa(ABC):
     @abstractmethod
-    def __init__(self, cpf: str, nome: str):
+    def __init__(self, cpf: str, nome: str, data_nascimento: list):
         if isinstance(cpf, str):
             cpf = cpf.replace('.', '').replace('-', '')
         else:
@@ -16,6 +17,13 @@ class Pessoa(ABC):
             self.__nome = nome
         else:
             raise TypeError
+        if isinstance(data_nascimento[0], int) \
+                and isinstance(data_nascimento[1], int) \
+                and isinstance(data_nascimento[2], int):
+            if 0 <= (date.today().year - data_nascimento[0]) <= 150:
+                self.__data_nascimento = date(data_nascimento[0], data_nascimento[1], data_nascimento[2])
+            else:
+                raise TypeError
 
     @property
     def cpf(self):
@@ -24,6 +32,10 @@ class Pessoa(ABC):
     @property
     def nome(self):
         return self.__nome
+
+    @property
+    def data_nascimento(self):
+        return self.__data_nascimento
 
     @cpf.setter
     def cpf(self, cpf: str):
@@ -41,5 +53,14 @@ class Pessoa(ABC):
     def nome(self, nome: str):
         if isinstance(nome, str):
             self.__nome = nome
+        else:
+            raise TypeError
+
+    @data_nascimento.setter
+    def data_nascimento(self, data_nascimento: list):
+        if isinstance(data_nascimento[0], int) \
+                and isinstance(data_nascimento[1], int) \
+                and isinstance(data_nascimento[2], int):
+            self.__data_nascimento = date(data_nascimento[0], data_nascimento[1], data_nascimento[2])
         else:
             raise TypeError
