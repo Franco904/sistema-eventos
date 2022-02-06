@@ -60,9 +60,7 @@ class ControladorOrganizador:
 
             if organizador is not None:
                 self.__tela_organizador.mostrar_organizador({"cpf": organizador.cpf, "nome": organizador.nome,
-                                                             "ano_nascimento": organizador.data_nascimento[0],
-                                                             "mes_nascimento": organizador.data_nascimento[1],
-                                                             "dia_nascimento": organizador.data_nascimento[2]})
+                                                             "data_nascimento": organizador.data_nascimento})
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado')
         else:
@@ -80,9 +78,7 @@ class ControladorOrganizador:
         else:
             for organizador in self.__organizadores:
                 self.__tela_organizador.mostrar_organizador({"cpf": organizador.cpf, "nome": organizador.nome,
-                                                             "ano_nascimento": organizador.data_nascimento[0],
-                                                             "mes_nascimento": organizador.data_nascimento[1],
-                                                             "dia_nascimento": organizador.data_nascimento[2]})
+                                                             "data_nascimento": organizador.data_nascimento})
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -94,3 +90,4 @@ class ControladorOrganizador:
         continua = True
         while continua:
             lista_opcoes[self.__tela_organizador.tela_opcoes()]()
+

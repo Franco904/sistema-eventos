@@ -36,9 +36,7 @@ class TelaOrganizador:
     def mostrar_organizador(self, dados_organizador):
         print('\nCPF DO ORGANIZADOR: ', dados_organizador['cpf'])
         print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
-        print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}/{1}/{2}'.format(dados_organizador['dia_nascimento'],
-                                                                      dados_organizador['mes_nascimento'],
-                                                                      dados_organizador['ano_nascimento']))
+        print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}'.format(dados_organizador['data_nascimento']))
 
     def selecionar_organizador(self):
         cpf_organizador = input('CPF do organizador que deseja selecionar: ')
