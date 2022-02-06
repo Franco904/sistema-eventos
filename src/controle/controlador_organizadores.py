@@ -11,12 +11,16 @@ class ControladorOrganizador:
 
     def adiciona_organizador(self):
         dados_organizador = self.__tela_organizador.pegar_dados_organizador()
-        organizador = Organizador(dados_organizador["cpf"], dados_organizador["nome"],
-                                  [dados_organizador["ano_nascimento"],
-                                   dados_organizador["mes_nascimento"],
-                                   dados_organizador["dia_nascimento"]])
-        self.__organizadores.append(organizador)
-        self.__tela_organizador.mostrar_mensagem('Organizador adicionado na lista')
+        try:
+            organizador = Organizador(dados_organizador["cpf"], dados_organizador["nome"],
+                                      [dados_organizador["ano_nascimento"],
+                                       dados_organizador["mes_nascimento"],
+                                       dados_organizador["dia_nascimento"]])
+            self.__organizadores.append(organizador)
+            self.__tela_organizador.mostrar_mensagem('Organizador adicionado na lista.')
+
+        except TypeError:
+            self.__tela_organizador.mostrar_mensagem("Algum dado foi inserido incorretamente.")
 
     def exclui_organizador(self):
         self.lista_organizadores()
@@ -35,17 +39,19 @@ class ControladorOrganizador:
         if len(self.__organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador()
             organizador = self.pega_organizador_por_cpf(cpf_organizador)
-
-            if organizador is not None:
-                novos_dados_organizador = self.__tela_organizador.pegar_dados_organizador()
-                organizador.cpf = novos_dados_organizador["cpf"]
-                organizador.nome = novos_dados_organizador["nome"]
-                organizador.data_nascimento = [novos_dados_organizador["ano_nascimento"],
-                                               novos_dados_organizador["mes_nascimento"],
-                                               novos_dados_organizador["dia_nascimento"]]
-                self.__tela_organizador.mostrar_mensagem('Dados do organizador alterados com sucesso')
-            else:
-                self.__tela_organizador.mostrar_mensagem("ATENÇÃO: Organizador não cadastrado")
+            try:
+                if organizador is not None:
+                    novos_dados_organizador = self.__tela_organizador.pegar_dados_organizador()
+                    organizador.cpf = novos_dados_organizador["cpf"]
+                    organizador.nome = novos_dados_organizador["nome"]
+                    organizador.data_nascimento = [novos_dados_organizador["ano_nascimento"],
+                                                   novos_dados_organizador["mes_nascimento"],
+                                                   novos_dados_organizador["dia_nascimento"]]
+                    self.__tela_organizador.mostrar_mensagem('Dados do organizador alterados com sucesso')
+                else:
+                    self.__tela_organizador.mostrar_mensagem("ATENÇÃO: Organizador não cadastrado")
+            except TypeError:
+                self.__tela_organizador.mostrar_mensagem("Algum dado foi inserido incorretamente.")
 
     def mostra_organizador(self):
         if len(self.__organizadores) > 0:

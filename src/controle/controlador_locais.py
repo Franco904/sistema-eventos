@@ -10,9 +10,13 @@ class ControladorLocal:
 
     def adiciona_local(self):
         dados_local = self.__tela_local.pegar_dados_local()
-        local = Local(dados_local["id"], dados_local["nome"])
-        self.__locais.append(local)
-        self.__tela_local.mostrar_mensagem('Local adicionado na lista')
+        try:
+            local = Local(dados_local["id"], dados_local["nome"])
+            self.__locais.append(local)
+            self.__tela_local.mostrar_mensagem('Local adicionado na lista')
+
+        except TypeError:
+            self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
     def exclui_local(self):
         self.lista_locais()
@@ -31,14 +35,17 @@ class ControladorLocal:
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             local = self.pega_local_por_id(id_local)
+            try:
+                if local is not None:
+                    novos_dados_local = self.__tela_local.pegar_dados_local()
+                    local.id = novos_dados_local["id"]
+                    local.nome = novos_dados_local["nome"]
+                    self.__tela_local.mostrar_mensagem('Dados do local alterados com sucesso')
+                else:
+                    self.__tela_local.mostrar_mensagem("ATENÇÃO: Local não cadastrado")
 
-            if local is not None:
-                novos_dados_local = self.__tela_local.pegar_dados_local()
-                local.id = novos_dados_local["id"]
-                local.nome = novos_dados_local["nome"]
-                self.__tela_local.mostrar_mensagem('Dados do local alterados com sucesso')
-            else:
-                self.__tela_local.mostrar_mensagem("ATENÇÃO: Local não cadastrado")
+            except TypeError:
+                self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
     def mostra_local(self):
         if len(self.__locais) > 0:
