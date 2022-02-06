@@ -3,9 +3,14 @@ from src.entidade.local import Local
 
 
 class ControladorLocal:
+<<<<<<< Updated upstream
 
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
+=======
+    def __init__(self, controlador_eventos):
+        self.__controlador_eventos = controlador_eventos
+>>>>>>> Stashed changes
         self.__locais = []
         self.__tela_local = TelaLocal()
 
@@ -49,7 +54,7 @@ class ControladorLocal:
             self.__tela_local.consultar_local({"id": local.id, "nome": local.nome})
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_eventos.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {1: self.adiciona_local, 2: self.exclui_local, 3: self.altera_local, 4: self.pega_local_por_nome, 5: self.lista_locais, 0: self.retornar()}

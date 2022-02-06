@@ -7,8 +7,12 @@ from controlador_organizadores import ControladorOrganizador
 class ControladorSistema:
 
     def __init__(self):
+<<<<<<< Updated upstream
         self.__controlador_local = ControladorLocal(self)
         self.__controlador_eventos = ControladorEvento(self)
+=======
+        # self.__controlador_eventos = ControladorEvento(self)
+>>>>>>> Stashed changes
         self.__controlador_participantes = ControladorParticipante(self)
         self.__controlador_organizadores = ControladorOrganizador(self)
         self.__tela_sistema = TelaSistema()
