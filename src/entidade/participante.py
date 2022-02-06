@@ -1,9 +1,7 @@
-from datetime import date
-
-from comprovante_saude import ComprovanteSaude
-from endereco import Endereco
-from enums.status_participante import StatusParticipante
-from pessoa import Pessoa
+from src.entidade.comprovante_saude import ComprovanteSaude
+from src.entidade.endereco import Endereco
+from src.entidade.enums.status_participante import StatusParticipante
+from src.entidade.pessoa import Pessoa
 
 
 class Participante(Pessoa):
