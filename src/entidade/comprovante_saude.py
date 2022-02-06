@@ -86,4 +86,3 @@ class ComprovanteSaude:
     def pcr_autorizado(self, data_horario_evento: datetime):
         diferenca = (data_horario_evento - self.__data_horario_teste).__str__()
         return self.__resultado_pcr.negativo and diferenca[0] < '3'
-

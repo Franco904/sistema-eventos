@@ -1,6 +1,6 @@
 import re
-from datetime import date
 from abc import ABC, abstractmethod
+from datetime import date
 
 
 class Pessoa(ABC):

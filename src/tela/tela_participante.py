@@ -8,35 +8,40 @@ class TelaParticipante:
         pass
 
     def tela_opcoes(self):
-        print('-------- PARTICIPANTES ----------')
+        print('\n-------- PARTICIPANTES ----------')
         print('1 - Adicionar participante')
         print('2 - Excluir participante')
         print('3 - Alterar participante')
-        print('4 - Consultar participante')
+        print('4 - Mostrar participante')
         print('5 - Listar participantes')
-        print('6 - Salvar comprovante do participante')
+        print('6 - Salvar comprovante de saúde do participante')
         print('0 - Retornar')
 
-        opcao = int(input('Escolha uma opção: '))
-        return opcao
+        try:
+            opcao = int(input('Escolha uma opção: '))
+            while opcao not in [0, 1, 2, 3, 4, 5, 6]:
+                opcao = int(input('Escolha uma opção: '))
+            return opcao
+        except ValueError:
+            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
 
     def pegar_dados_participante(self):
-        print('-------- CADASTRAR PARTICIPANTE ----------')
+        print('\n-------- CADASTRAR PARTICIPANTE ----------')
         try:
             cpf = input('CPF: ')
             nome = input('Nome: ')
-            ano = int(input('Ano de nascimento: '))
-            mes = int(input('Mês de nascimento: '))
             dia = int(input('Dia de nascimento: '))
+            mes = int(input('Mês de nascimento: '))
+            ano = int(input('Ano de nascimento: '))
             logradouro = input('Logradouro (endereço): ')
-            num_endereco = input('Número (endereço): ')
+            num_endereco = int(input('Número (endereço): '))
             cep = input('CEP (endereço): ')
 
-            return {'cpf': cpf, 'nome': nome, 'ano': ano, 'mes': mes, 'dia': dia,
+            return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
                     'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
 
         except ValueError:
-            self.mostrar_mensagem('Algum dado foi informado incorretamente.')
+            self.mostrar_mensagem('Valores de data/número devem ser inteiros')
 
     def pegar_dados_comprovante(self):
         print('\n-------- CADASTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
@@ -83,9 +88,9 @@ class TelaParticipante:
                     'resultado_pcr': resultado_pcr}
 
         except ValueError:
-            self.mostrar_mensagem('Algum dado foi informado incorretamente.')
+            self.mostrar_mensagem('Valores de data devem ser inteiros')
 
-    def consultar_participante(self, dados_participante):
+    def mostrar_participante(self, dados_participante):
         print('\nCPF DO PARTICIPANTE: ', dados_participante['cpf'])
         print('NOME DO PARTICIPANTE: ', dados_participante['nome'])
         print('DATA DE NASCIMENTO DO PARTICIPANTE: ', dados_participante['data_nascimento'].strftime('%d/%m/%Y'))
@@ -107,10 +112,8 @@ class TelaParticipante:
             else dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y'))
             print('Teste PCR: ', dados_participante['comprovante_saude'].resultado_pcr.name)
 
-        print('\n')
-
     def selecionar_participante(self):
-        cpf = input('CPF do participante que deseja selecionar: ')
+        cpf = input('\nCPF do participante que deseja selecionar: ')
         return cpf
 
     def mostrar_mensagem(self, msg):

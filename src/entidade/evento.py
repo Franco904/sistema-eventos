@@ -25,7 +25,6 @@ class Evento:
                 and isinstance(data_horario_evento[4], int) \
                 and isinstance(capacidade, int) \
                 and isinstance(organizadores, list):
-
             self.__id = id
             self.__titulo = titulo
             self.__local = local
