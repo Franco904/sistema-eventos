@@ -17,24 +17,27 @@ class TelaParticipante:
         print('6 - Salvar comprovante de saúde do participante')
         print('0 - Retornar')
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao not in [0, 1, 2, 3, 4, 5, 6]:
+        try:
             opcao = int(input('Escolha uma opção: '))
-        return opcao
+            while opcao not in [0, 1, 2, 3, 4, 5, 6]:
+                opcao = int(input('Escolha uma opção: '))
+            return opcao
+        except ValueError:
+            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
 
     def pegar_dados_participante(self):
         print('\n-------- CADASTRAR PARTICIPANTE ----------')
         try:
             cpf = input('CPF: ')
             nome = input('Nome: ')
-            ano = int(input('Ano de nascimento: '))
-            mes = int(input('Mês de nascimento: '))
             dia = int(input('Dia de nascimento: '))
+            mes = int(input('Mês de nascimento: '))
+            ano = int(input('Ano de nascimento: '))
             logradouro = input('Logradouro (endereço): ')
             num_endereco = int(input('Número (endereço): '))
             cep = input('CEP (endereço): ')
 
-            return {'cpf': cpf, 'nome': nome, 'ano': ano, 'mes': mes, 'dia': dia,
+            return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
                     'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
 
         except ValueError:

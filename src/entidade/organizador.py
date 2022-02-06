@@ -1,4 +1,4 @@
-from pessoa import Pessoa
+from src.entidade.pessoa import Pessoa
 
 
 class Organizador(Pessoa):

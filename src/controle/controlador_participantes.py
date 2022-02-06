@@ -62,7 +62,7 @@ class ControladorParticipante:
                         novos_dados_participante['num_endereco'],
                         novos_dados_participante['cep']
                     ]
-                    self.__tela_participante.mostrar_mensagem('Dados do participante foram alterados com sucesso')
+                    self.__tela_participante.mostrar_mensagem('Dados do participante alterados com sucesso')
                 else:
                     self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado')
 

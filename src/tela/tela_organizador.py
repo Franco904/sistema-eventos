@@ -3,38 +3,45 @@ class TelaOrganizador:
         pass
 
     def tela_opcoes(self):
-        print('-------- LOCAIS ----------')
+        print('\n-------- ORGANIZADORES ----------')
         print('1 - Adicionar Organizador')
         print('2 - Excluir Organizador')
         print('3 - Alterar Organizador')
-        print('4 - Consultar Organizador')
+        print('4 - Mostrar Organizador')
         print('5 - Listar Organizador')
         print('0 - Retornar')
 
-        opcao = int(input('Escolha uma opção: '))
-        return opcao
+        try:
+            opcao = int(input('Escolha uma opção: '))
+            while opcao not in [0, 1, 2, 3, 4, 5]:
+                opcao = int(input('Escolha uma opção: '))
+            return opcao
+        except ValueError:
+            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
 
     def pegar_dados_organizador(self):
-        print('-------- CADASTRAR ORGANIZADOR ----------')
-        cpf = input('CPF: ')
-        nome = input('Nome: ')
-        dia_nascimento = input('Dia do Nascimento: ')
-        mes_nascimento = input('Mês do Nascimento: ')
-        ano_nascimento = input('Ano do Nascimento: ')
+        print('\n-------- CADASTRAR ORGANIZADOR ----------')
+        try:
+            cpf = input('CPF: ')
+            nome = input('Nome: ')
+            dia_nascimento = int(input('Dia do Nascimento: '))
+            mes_nascimento = int(input('Mês do Nascimento: '))
+            ano_nascimento = int(input('Ano do Nascimento: '))
 
-        return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
-                'ano_nascimento': ano_nascimento}
+            return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
+                    'ano_nascimento': ano_nascimento}
+        except ValueError:
+            self.mostrar_mensagem('Valores de data devem ser inteiros')
 
-    def consultar_organizador(self, dados_organizador):
-        print('CPF DO ORGANIZADOR: ', dados_organizador['cpf'])
+    def mostrar_organizador(self, dados_organizador):
+        print('\nCPF DO ORGANIZADOR: ', dados_organizador['cpf'])
         print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
         print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}/{1}/{2}'.format(dados_organizador['dia_nascimento'],
                                                                       dados_organizador['mes_nascimento'],
                                                                       dados_organizador['ano_nascimento']))
-        print('\n')
 
     def selecionar_organizador(self):
-        cpf_organizador = input('CPF do Organizador que deseja selecionar: ')
+        cpf_organizador = input('CPF do organizador que deseja selecionar: ')
         return cpf_organizador
 
     def mostrar_mensagem(self, msg):
