@@ -1,13 +1,12 @@
-from src.controle.controlador_locais import ControladorLocal
 from src.controle.controlador_organizadores import ControladorOrganizador
-from src.controle.controlador_participantes import ControladorParticipante
 # from src.controle.controlador_eventos import ControladorEvento
+from src.controle.controlador_participantes import ControladorParticipante
 from src.tela.tela_sistema import TelaSistema
 
 
 class ControladorSistema:
+
     def __init__(self):
-        self.__controlador_local = ControladorLocal(self)
         # self.__controlador_eventos = ControladorEvento(self)
         self.__controlador_participantes = ControladorParticipante(self)
         self.__controlador_organizadores = ControladorOrganizador(self)
@@ -20,7 +19,7 @@ class ControladorSistema:
     #     self.__controlador_eventos.abre_tela()
 
     def participante(self):
-        self.__controlador_local.abre_tela()
+        self.__controlador_participantes.abre_tela()
 
     def organizador(self):
         self.__controlador_organizadores.abre_tela()
