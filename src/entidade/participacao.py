@@ -5,7 +5,8 @@ from participante import Participante
 
 
 class Participacao():
-    def __init__(self, id: int, data_horario_entrada: datetime, data_horario_saida: datetime, participante: Participante, evento: Evento):
+    def __init__(self, id: int, data_horario_entrada: datetime, data_horario_saida: datetime,
+                 participante: Participante, evento: Evento):
         if isinstance(id, int):
             self.__id = id
         else:
