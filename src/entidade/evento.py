@@ -93,6 +93,28 @@ class Evento:
         else:
             raise TypeError
 
+    @data_horario_evento.setter
+    def data_horario_evento(self, data_horario_evento: list):
+        if isinstance(data_horario_evento[0], int) \
+                and isinstance(data_horario_evento[1], int) \
+                and isinstance(data_horario_evento[2], int) \
+                and isinstance(data_horario_evento[3], int) \
+                and isinstance(data_horario_evento[4], int):
+            self.__data_horario_evento = datetime(data_horario_evento[0],
+                                                   data_horario_evento[1],
+                                                   data_horario_evento[2],
+                                                   data_horario_evento[3],
+                                                   data_horario_evento[4])
+        else:
+            raise TypeError
+
+    @capacidade.setter
+    def capacidade(self, capacidade: int):
+        if isinstance(capacidade, int):
+            self.__capacidade = capacidade
+        else:
+            raise TypeError
+
     @organizadores.setter
     def organizadores(self, organizadores: list):
         if isinstance(organizadores, list):

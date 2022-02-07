@@ -24,41 +24,28 @@ class ControladorEvento:
         return self.__tela_evento
 
     def adicionar_evento(self):
-        # dados_evento = self.__tela_evento.pegar_dados_evento(
-        #     self.__controlador_sistema.controladores['controlador_locais'].locais,
-        #     self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
-        # )
+        dados_evento = self.__tela_evento.pegar_dados_evento(
+            self.__controlador_sistema.controladores['controlador_locais'].locais,
+            self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+        )
         try:
-            # organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
-            # organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
+            organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+            organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
 
-            # evento = Evento(dados_evento['id_evento'],
-            #                 dados_evento['titulo'],
-            #                 self.__controlador_sistema.controladores['controlador_locais'].locais[
-            #                     dados_evento['opcao_local'] - 1
-            #                 ],
-            #                 [
-            #                     dados_evento['ano'],
-            #                     dados_evento['mes'],
-            #                     dados_evento['dia'],
-            #                     dados_evento['hora'],
-            #                     dados_evento['minuto']
-            #                 ],
-            #                 dados_evento['capacidade'],
-            #                 organizadores_incluidos)
-            evento = Evento(1,
-                            'Festival',
-                            Local(1, 'Local 1'),
-                            [
-                                2022,
-                                3,
-                                1,
-                                14,
-                                00
+            evento = Evento(dados_evento['id_evento'],
+                            dados_evento['titulo'],
+                            self.__controlador_sistema.controladores['controlador_locais'].locais[
+                                dados_evento['opcao_local'] - 1
                             ],
-                            500,
-                            [Organizador('12833158904', 'Franco', [2003, 9, 4]),
-                             Organizador('12833158905', 'Fulano', [1950, 12, 2])])
+                            [
+                                dados_evento['ano'],
+                                dados_evento['mes'],
+                                dados_evento['dia'],
+                                dados_evento['hora'],
+                                dados_evento['minuto']
+                            ],
+                            dados_evento['capacidade'],
+                            organizadores_incluidos)
 
             self.__eventos.append(evento)
             self.__tela_evento.mostrar_mensagem('Evento adicionado na lista')
@@ -95,7 +82,7 @@ class ControladorEvento:
                     )
 
                     evento.id_evento = novos_dados_evento['id_evento']
-                    evento.titulo = novos_dados_evento['nome']
+                    evento.titulo = novos_dados_evento['titulo']
                     evento.local = self.__controlador_sistema.controladores['controlador_locais'].locais[
                         novos_dados_evento['opcao_local'] - 1
                         ]
