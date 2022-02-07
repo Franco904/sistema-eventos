@@ -19,7 +19,7 @@ class ControladorSistema:
         self.abre_tela()
 
     def inicializa_controladores(self):
-        # Cria as instâncias singleton dos controladores
+        # Cria instâncias globais dos controladores
         self.__controladores = {
             'controlador_eventos': ControladorEvento(self),
             'controlador_locais': ControladorLocal(self),

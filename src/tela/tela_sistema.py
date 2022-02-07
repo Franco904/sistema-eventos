@@ -6,7 +6,7 @@ class TelaSistema:
         print('\n-------- Sistema de Eventos ---------')
         print('1 - Abrir Opções')
         print('0 - Finalizar Sistema')
-        print('-' * 40)
+        print("-" * 40)
 
         try:
             opcao = int(input("Escolha a opção: "))

@@ -17,25 +17,49 @@ class ControladorParticipante:
         return self.__tela_participante
 
     def adiciona_participante(self):
-        dados_participante = self.__tela_participante.pegar_dados_participante()
-        try:
-            participante = Participante(dados_participante['cpf'],
-                                        dados_participante['nome'],
-                                        [
-                                            dados_participante['ano'],
-                                            dados_participante['mes'],
-                                            dados_participante['dia']
-                                        ],
-                                        [
-                                            dados_participante['logradouro'],
-                                            dados_participante['num_endereco'],
-                                            dados_participante['cep']
-                                        ])
-            self.__participantes.append(participante)
-            self.__tela_participante.mostrar_mensagem('Participante adicionado na lista')
+        # Lógica para conferir se o participante a ser adicionado vai extrapolar a capacidade do evento
+        listagem = self.__controlador_sistema.controladores['controlador_eventos'].lista_eventos()
 
-        except TypeError:
-            self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
+        if listagem:
+            id_evento = self.__controlador_sistema.controladores['controlador_eventos'] \
+                .tela_evento.selecionar_evento()
+            evento = self.__controlador_sistema.controladores['controlador_eventos'] \
+                .pega_evento_por_id(id_evento)
+
+            if evento is not None:
+                if len(evento.participantes) > 0:
+                    if len(evento.participantes) < evento.capacidade:
+                        cpf_participante = self.__tela_participante.pegar_cpf_participante()
+                        participante = self.pega_participante_por_cpf(cpf_participante)
+
+                        if participante is not None:
+                            self.__tela_participante.mostrar_mensagem('O participante já está incluído na lista de '
+                                                                      'participantes do evento')
+                    else:
+                        self.__tela_participante.mostrar_mensagem('O evento já extrapolou a sua capacidade máxima de '
+                                                                  'participantes')
+            else:
+                self.__tela_participante.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
+
+            dados_participante = self.__tela_participante.pegar_dados_participante()
+            try:
+                participante = Participante(dados_participante['cpf'],
+                                            dados_participante['nome'],
+                                            [
+                                                dados_participante['ano'],
+                                                dados_participante['mes'],
+                                                dados_participante['dia']
+                                            ],
+                                            [
+                                                dados_participante['logradouro'],
+                                                dados_participante['num_endereco'],
+                                                dados_participante['cep']
+                                            ])
+                self.__participantes.append(participante)
+                self.__tela_participante.mostrar_mensagem('Participante adicionado na lista')
+
+            except TypeError:
+                self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
     def exclui_participante(self):
         self.lista_participantes()

@@ -91,6 +91,10 @@ class TelaParticipante:
         except ValueError:
             self.mostrar_mensagem('Valores de data devem ser inteiros')
 
+    def pegar_cpf_participante(self):
+        cpf = input('\nCPF do participante que deseja incluir (verificação): ')
+        return cpf
+
     def mostrar_participante(self, dados_participante):
         print("-" * 40)
         print('CPF DO PARTICIPANTE: ', dados_participante['cpf'])
