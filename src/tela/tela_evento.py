@@ -21,8 +21,8 @@ class TelaEvento:
         print('12 - Listar organizadores do evento')
         print('13 - Listar participantes do evento')
         print('14 - Listar participações do evento')
-        print('15 - Listar participantes do evento autorizados')
-        print('16 - Listar participantes do evento não autorizados')
+        print('15 - Listar participantes com comprovante')
+        print('16 - Listar participantes sem comprovante')
         print('17 - Ranking de eventos por público')
         print('18 - Adicionar organizador ao evento')
         print('19 - Excluir organizador do evento')
@@ -178,6 +178,40 @@ class TelaEvento:
             print('HORARIO DE ENTRADA DO PARTICIPANTE: {0}'.format(participacao.data_horario_entrada))
             print('HORARIO DE SAÍDA DO PARTICIPANTE: {0}'.format(participacao.data_horario_saida))
             print("-" * 40)
+
+    def listar_participantes_sem_comprovante(self, participantes):
+        for participante in participantes:
+            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
+            print('NOME DO PARTICIPANTE: ', participante.nome)
+            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
+            print('ENDEREÇO DO PARTICIPANTE: ')
+            print('Logradouro: ', participante.endereco.logradouro)
+            print('Número de endereço: ', participante.endereco.num_endereco)
+            print('CEP: ', participante.endereco.cep)
+            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
+
+    def listar_participantes_com_comprovante(self, participantes):
+        for participante in participantes:
+            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
+            print('NOME DO PARTICIPANTE: ', participante.nome)
+            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
+            print('ENDEREÇO DO PARTICIPANTE: ')
+            print('Logradouro: ', participante.endereco.logradouro)
+            print('Número de endereço: ', participante.endereco.num_endereco)
+            print('CEP: ', participante.endereco.cep)
+            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
+            print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
+            if participante.comprovante_saude is None:
+                print('Não cadastrado')
+            else:
+                print('\nTomou primeira dose vacinal? ',
+                      'Sim' if participante.comprovante_saude.primeira_dose else 'Não')
+                print('Tomou segunda dose vacinal? ',
+                      'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
+                print('Data e horário do teste PCR: ', 'Não realizado'
+                if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
+                else participante.comprovante_saude.data_horario_teste)
+                print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
 
     def mostrar_eventos_rankeados(self, eventos):
         print("-" * 40)
