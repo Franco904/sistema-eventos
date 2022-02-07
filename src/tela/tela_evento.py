@@ -4,25 +4,19 @@ class TelaEvento:
 
     def tela_opcoes(self):
         print('\n-------- EVENTOS ----------')
-        print('1 - Tela de local de evento')
-        print('2 - Tela de organizador')
-        print('3 - Tela de participante')
-        print('4 - Tela de participacao')
-        print('---')
-        print('5 - Adicionar evento')
-        print('6 - Excluir evento')
-        print('7 - Alterar evento')
-        print('8 - Mostrar evento')
-        print('9 - Listar eventos')
-        print('10 - Listar eventos ocorridos')
-        print('11 - Listar eventos futuros')
-        print('12 - Ranking de eventos por público')
+        print('1 - Adicionar evento')
+        print('2 - Excluir evento')
+        print('3 - Alterar evento')
+        print('4 - Mostrar evento')
+        print('5 - Listar eventos')
+        print('6 - Listar eventos ocorridos')
+        print('7 - Listar eventos futuros')
+        print('8 - Ranking de eventos por público')
+        print("9 - Tela Local")
         print('0 - Retornar')
 
         try:
             opcao = int(input('Escolha uma opção: '))
-            while opcao < 1 or opcao > 12:
-                opcao = int(input('Escolha uma opção: '))
             return opcao
         except ValueError:
             self.mostrar_mensagem('Valores numéricos devem ser inteiros')
