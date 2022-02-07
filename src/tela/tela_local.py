@@ -32,7 +32,7 @@ class TelaLocal:
 
     def mostrar_local(self, dados_local):
         print("-" * 40)
-        print('\nID DO LOCAL: ', dados_local['id'])
+        print('ID DO LOCAL: ', dados_local['id'])
         print('NOME DO LOCAL: ', dados_local['nome'])
         print("-" * 40)
 

@@ -3,8 +3,8 @@ from src.tela.tela_participacao import TelaParticipacao
 
 
 class ControladorParticipacao:
-    def __init__(self, controlador_eventos):
-        self.__controlador_eventos = controlador_eventos
+    def __init__(self, controlador_sistema):
+        self.__controlador_sistema = controlador_sistema
         self.__participacoes = []
         self.__tela_participacao = TelaParticipacao()
 
@@ -125,7 +125,7 @@ class ControladorParticipacao:
                                                                "data_horario_saida": participacao.data_horario_saida})
 
     def retornar(self):
-        self.__controlador_eventos.abre_tela()
+        self.__controlador_sistema.controladores['controlador_eventos'].abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {1: self.adicionar_participacao, 2: self.adicionar_horario_saida, 3: self.excluir_participacao,

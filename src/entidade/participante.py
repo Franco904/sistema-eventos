@@ -38,3 +38,5 @@ class Participante(Pessoa):
     def comprovante_saude(self, comprovante_saude: list):
         self.__comprovante_saude = ComprovanteSaude(comprovante_saude[0], comprovante_saude[1],
                                                     comprovante_saude[2], comprovante_saude[3])
+
+

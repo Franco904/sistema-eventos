@@ -37,6 +37,8 @@ class Evento:
             self.__organizadores = organizadores
             self.__participantes = []
             self.__participacoes = []
+        else:
+            raise TypeError
 
     @property
     def id_evento(self):

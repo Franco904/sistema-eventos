@@ -93,7 +93,7 @@ class TelaParticipante:
 
     def mostrar_participante(self, dados_participante):
         print("-" * 40)
-        print('\nCPF DO PARTICIPANTE: ', dados_participante['cpf'])
+        print('CPF DO PARTICIPANTE: ', dados_participante['cpf'])
         print('NOME DO PARTICIPANTE: ', dados_participante['nome'])
         print('DATA DE NASCIMENTO DO PARTICIPANTE: ', dados_participante['data_nascimento'].strftime('%d/%m/%Y'))
         print('ENDEREÇO DO PARTICIPANTE: ')

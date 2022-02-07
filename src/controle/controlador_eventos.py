@@ -1,10 +1,8 @@
 from datetime import datetime
 
-from src.controle.controlador_locais import ControladorLocal
-from src.controle.controlador_organizadores import ControladorOrganizador
-from src.controle.controlador_participantes import ControladorParticipante
-from src.controle.controlador_participacoes import ControladorParticipacao
 from src.entidade.evento import Evento
+from src.entidade.local import Local
+from src.entidade.organizador import Organizador
 from src.tela.tela_evento import TelaEvento
 from src.tela.tela_participacao import TelaParticipacao
 
@@ -12,38 +10,45 @@ from src.tela.tela_participacao import TelaParticipacao
 class ControladorEvento:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__controlador_locais = ControladorLocal(self)
-        self.__controlador_organizadores = ControladorOrganizador(self)
-        self.__controlador_participantes = ControladorParticipante(self)
-        self.__controlador_participacoes = ControladorParticipacao(self)
         self.__eventos = []
         self.__tela_evento = TelaEvento()
         self.__tela_participacao = TelaParticipacao()
 
     def adiciona_evento(self):
-        print(self.__controlador_locais.locais, self.__controlador_organizadores.organizadores)
-        dados_evento = self.__tela_evento.pegar_dados_evento(
-            self.__controlador_locais.locais,
-            self.__controlador_organizadores.organizadores
-        )
+        # dados_evento = self.__tela_evento.pegar_dados_evento(
+        #     self.__controlador_sistema.controladores['controlador_locais'].locais,
+        #     self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+        # )
         try:
-            organizadores = self.__controlador_organizadores.organizadores
-            organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
+            # organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+            # organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
 
-            evento = Evento(dados_evento['id'],
-                            dados_evento['titulo'],
-                            self.__controlador_locais.locais[
-                                dados_evento['opcao_local'] - 1
-                                ],
+            # evento = Evento(dados_evento['id_evento'],
+            #                 dados_evento['titulo'],
+            #                 self.__controlador_sistema.controladores['controlador_locais'].locais[
+            #                     dados_evento['opcao_local'] - 1
+            #                 ],
+            #                 [
+            #                     dados_evento['ano'],
+            #                     dados_evento['mes'],
+            #                     dados_evento['dia'],
+            #                     dados_evento['hora'],
+            #                     dados_evento['minuto']
+            #                 ],
+            #                 dados_evento['capacidade'],
+            #                 organizadores_incluidos)
+            evento = Evento(1,
+                            'Festival',
+                            Local(1, 'Local 1'),
                             [
-                                dados_evento['ano'],
-                                dados_evento['mes'],
-                                dados_evento['dia'],
-                                dados_evento['hora'],
-                                dados_evento['minuto']
+                                2022,
+                                3,
+                                1,
+                                14,
+                                00
                             ],
-                            dados_evento['capacidade'],
-                            organizadores_incluidos)
+                            500,
+                            [Organizador('12833158904', 'Franco', [2003, 9, 4]), Organizador('12833158905', 'Augusto', [2003, 9, 4])])
 
             self.__eventos.append(evento)
             self.__tela_evento.mostrar_mensagem('Evento adicionado na lista')
@@ -71,17 +76,17 @@ class ControladorEvento:
             try:
                 if evento is not None:
                     novos_dados_evento = self.__tela_evento.pegar_dados_evento(
-                        self.__controlador_locais.locais,
-                        self.__controlador_organizadores.organizadores
+                        self.__controlador_sistema.controladores['controlador_locais'].locais,
+                        self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
                     )
-                    organizadores = self.__controlador_organizadores.organizadores
+                    organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
                     organizadores_incluidos = list(
                         map(lambda op: organizadores[op - 1], novos_dados_evento['opcoes_organizador'])
                     )
 
-                    evento.id_evento = novos_dados_evento['id']
+                    evento.id_evento = novos_dados_evento['id_evento']
                     evento.titulo = novos_dados_evento['nome']
-                    evento.local = self.__controlador_locais.locais[
+                    evento.local = self.__controlador_sistema.controladores['controlador_locais'].locais[
                         novos_dados_evento['opcao_local'] - 1
                         ]
                     evento.data_horario_evento = [
@@ -108,8 +113,8 @@ class ControladorEvento:
 
             if evento is not None:
                 self.__tela_evento.mostrar_detalhes_evento({
-                    'id': evento.cpf,
-                    'titulo': evento.nome,
+                    'id_evento': evento.id_evento,
+                    'titulo': evento.titulo,
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
                     'capacidade': evento.capacidade,
@@ -132,8 +137,8 @@ class ControladorEvento:
         if len(self.__eventos) > 0:
             for evento in self.__eventos:
                 self.__tela_evento.mostrar_detalhes_evento({
-                    'id': evento.id_evento,
-                    'titulo': evento.nome,
+                    'id_evento': evento.id_evento,
+                    'titulo': evento.titulo,
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
                     'capacidade': evento.capacidade,
@@ -149,8 +154,8 @@ class ControladorEvento:
             eventos_ocorridos = list(filter(lambda e: e.data_horario_evento < datetime.now(), self.__eventos))
             for evento in eventos_ocorridos:
                 self.__tela_evento.mostrar_detalhes_evento({
-                    'id': evento.cpf,
-                    'titulo': evento.nome,
+                    'id_evento': evento.id_evento,
+                    'titulo': evento.titulo,
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
                     'capacidade': evento.capacidade,
@@ -166,8 +171,8 @@ class ControladorEvento:
             eventos_futuros = list(filter(lambda e: e.data_horario_evento > datetime.now(), self.__eventos))
             for evento in eventos_futuros:
                 self.__tela_evento.mostrar_detalhes_evento({
-                    'id': evento.cpf,
-                    'titulo': evento.nome,
+                    'id_evento': evento.id_evento,
+                    'titulo': evento.titulo,
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
                     'capacidade': evento.capacidade,
@@ -185,7 +190,7 @@ class ControladorEvento:
     def ranking_eventos_por_publico(self):
         dados_evento = {}
         for evento in self.__eventos:
-            dados_evento[f'{evento.nome}'].append(f'{len(evento.participacoes)}')
+            dados_evento[f'{evento.titulo}'].append(f'{len(evento.participacoes)}')
 
         eventos_rankeados = dict(sorted(dados_evento.items(), key=lambda item: item[1]))
 
@@ -198,10 +203,12 @@ class ControladorEvento:
             evento = self.pega_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__controlador_organizadores.lista_organizadores()
-                cpf_organizador = self.__controlador_organizadores.tela_organizador.selecionar_organizador()
+                self.__controlador_sistema.controladores['controlador_organizadores'].lista_organizadores()
+                cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                    .tela_organizador.selecionar_organizador()
                 # validacao
-                organizador = self.__controlador_organizadores.pega_organizador_por_cpf(cpf_organizador)
+                organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                    .pega_organizador_por_cpf(cpf_organizador)
 
                 evento.adicionar_organizador(organizador)
                 # validacao
@@ -215,10 +222,12 @@ class ControladorEvento:
             evento = self.pega_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__controlador_participantes.lista_participantes()
-                cpf_participante = self.__controlador_participantes.tela_participante.selecionar_participante()
+                self.__controlador_sistema.controladores['controlador_participantes'].lista_participantes()
+                cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
+                    .tela_participante.selecionar_participante()
                 # validacao
-                participante = self.__controlador_participantes.pega_participante_por_cpf(cpf_participante)
+                participante = self.__controlador_sistema.controladores['controlador_participantes'] \
+                    .pega_participante_por_cpf(cpf_participante)
 
                 evento.adicionar_participante(participante)
                 # validacao
@@ -232,9 +241,10 @@ class ControladorEvento:
             evento = self.pega_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__controlador_participacoes.listar_participacoes()
+                self.__controlador_sistema.controladores['controlador_participacoes'].listar_participacoes()
                 dados_participacao = self.__tela_participacao.selecionar_participacao()
-                participacao = self.__controlador_participacoes.pegar_participacao(dados_participacao)
+                participacao = self.__controlador_sistema.controladores['controlador_participacoes'] \
+                    .pegar_participacao(dados_participacao)
                 evento.adicionar_participacao(participacao)
             else:
                 self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
@@ -246,10 +256,12 @@ class ControladorEvento:
             evento = self.pega_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__controlador_organizadores.lista_organizadores()
-                cpf_organizador = self.__controlador_organizadores.tela_organizador.selecionar_organizador()
+                self.__controlador_sistema.controladores['controlador_organizadores'].lista_organizadores()
+                cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                    .tela_organizador.selecionar_organizador()
                 # validacao
-                organizador = self.__controlador_organizadores.pega_organizador_por_cpf(cpf_organizador)
+                organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                    .pega_organizador_por_cpf(cpf_organizador)
 
                 evento.excluir_organizador(organizador)
                 # validacao
@@ -263,10 +275,12 @@ class ControladorEvento:
             evento = self.pega_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__controlador_participantes.lista_participantes()
-                cpf_participante = self.__controlador_participantes.tela_participante.selecionar_participante()
+                self.__controlador_sistema.controladores['controlador_participantes'].lista_participantes()
+                cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
+                    .tela_participante.selecionar_participante()
                 # validacao
-                participante = self.__controlador_participantes.pega_participante_por_cpf(cpf_participante)
+                participante = self.__controlador_sistema.controladores['controlador_participantes'] \
+                    .pega_participante_por_cpf(cpf_participante)
 
                 evento.excluir_participante(participante)
                 # validacao
@@ -371,8 +385,10 @@ class ControladorEvento:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.__controlador_locais.abre_tela, 2: self.__controlador_organizadores.abre_tela,
-                        3: self.__controlador_participantes.abre_tela, 4: self.__controlador_participacoes.abre_tela,
+        lista_opcoes = {1: self.__controlador_sistema.controladores['controlador_locais'].abre_tela,
+                        2: self.__controlador_sistema.controladores['controlador_organizadores'].abre_tela,
+                        3: self.__controlador_sistema.controladores['controlador_participantes'].abre_tela,
+                        4: self.__controlador_sistema.controladores['controlador_participacoes'].abre_tela,
                         5: self.adiciona_evento, 6: self.exclui_evento, 7: self.altera_evento,
                         8: self.mostra_evento, 9: self.lista_eventos, 10: self.lista_eventos_ocorridos,
                         11: self.lista_eventos_futuros, 12: self.ranking_eventos_por_publico, 0: self.retornar}
