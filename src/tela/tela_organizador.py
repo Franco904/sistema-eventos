@@ -10,6 +10,7 @@ class TelaOrganizador:
         print('4 - Mostrar Organizador')
         print('5 - Listar Organizador')
         print('0 - Retornar')
+        print("-" * 40)
 
         try:
             opcao = int(input('Escolha uma opção: '))
@@ -34,9 +35,11 @@ class TelaOrganizador:
             self.mostrar_mensagem('Valores de data devem ser inteiros')
 
     def mostrar_organizador(self, dados_organizador):
+        print("-" * 40)
         print('\nCPF DO ORGANIZADOR: ', dados_organizador['cpf'])
         print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
         print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}'.format(dados_organizador['data_nascimento']))
+        print("-" * 40)
 
     def selecionar_organizador(self):
         cpf_organizador = input('CPF do organizador que deseja selecionar: ')

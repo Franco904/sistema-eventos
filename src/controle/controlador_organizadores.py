@@ -3,8 +3,8 @@ from src.tela.tela_organizador import TelaOrganizador
 
 
 class ControladorOrganizador:
-    def __init__(self, controlador_sistema):
-        self.__controlador_sistema = controlador_sistema
+    def __init__(self, controlador_eventos):
+        self.__controlador_eventos = controlador_eventos
         self.__organizadores = []
         self.__tela_organizador = TelaOrganizador()
 
@@ -88,7 +88,7 @@ class ControladorOrganizador:
             self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_eventos.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {1: self.adiciona_organizador, 2: self.exclui_organizador, 3: self.altera_organizador,

@@ -21,6 +21,7 @@ class ControladorEvento:
         self.__tela_participacao = TelaParticipacao()
 
     def adiciona_evento(self):
+        print(self.__controlador_locais.locais, self.__controlador_organizadores.organizadores)
         dados_evento = self.__tela_evento.pegar_dados_evento(
             self.__controlador_locais.locais,
             self.__controlador_organizadores.organizadores
@@ -78,7 +79,7 @@ class ControladorEvento:
                         map(lambda op: organizadores[op - 1], novos_dados_evento['opcoes_organizador'])
                     )
 
-                    evento.id = novos_dados_evento['id']
+                    evento.id_evento = novos_dados_evento['id']
                     evento.titulo = novos_dados_evento['nome']
                     evento.local = self.__controlador_locais.locais[
                         novos_dados_evento['opcao_local'] - 1
@@ -123,7 +124,7 @@ class ControladorEvento:
 
     def pega_evento_por_id(self, id_evento):
         for evento in self.__eventos:
-            if evento.id == id_evento:
+            if evento.id_evento == id_evento:
                 return evento
         return None
 
@@ -131,7 +132,7 @@ class ControladorEvento:
         if len(self.__eventos) > 0:
             for evento in self.__eventos:
                 self.__tela_evento.mostrar_detalhes_evento({
-                    'id': evento.cpf,
+                    'id': evento.id_evento,
                     'titulo': evento.nome,
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
@@ -370,11 +371,11 @@ class ControladorEvento:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.__controlador_locais.abre_tela, 2: self.__controlador_participacoes.abre_tela,
-                        3: self.adiciona_evento, 24: self.exclui_evento, 5: self.altera_evento,
-                        6: self.mostra_evento, 7: self.lista_eventos, 8: self.lista_eventos_ocorridos,
-                        9: self.lista_eventos_futuros, 10: self.ranking_eventos_por_publico, 0: self.retornar}
-
+        lista_opcoes = {1: self.__controlador_locais.abre_tela, 2: self.__controlador_organizadores.abre_tela,
+                        3: self.__controlador_participantes.abre_tela, 4: self.__controlador_participacoes.abre_tela,
+                        5: self.adiciona_evento, 6: self.exclui_evento, 7: self.altera_evento,
+                        8: self.mostra_evento, 9: self.lista_eventos, 10: self.lista_eventos_ocorridos,
+                        11: self.lista_eventos_futuros, 12: self.ranking_eventos_por_publico, 0: self.retornar}
         continua = True
         while continua:
             lista_opcoes[self.__tela_evento.tela_opcoes()]()

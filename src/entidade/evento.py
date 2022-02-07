@@ -8,14 +8,14 @@ from src.entidade.participante import Participante
 
 class Evento:
     def __init__(self,
-                 id: int,
+                 id_evento: int,
                  titulo: str,
                  local: Local,
                  data_horario_evento: list,
                  capacidade: int,
                  organizadores: list
                  ):
-        if isinstance(id, int) \
+        if isinstance(id_evento, int) \
                 and isinstance(titulo, str) \
                 and isinstance(local, Local) and local is not None \
                 and isinstance(data_horario_evento[0], int) \
@@ -25,7 +25,7 @@ class Evento:
                 and isinstance(data_horario_evento[4], int) \
                 and isinstance(capacidade, int) \
                 and isinstance(organizadores, list):
-            self.__id = id
+            self.__id_evento = id_evento
             self.__titulo = titulo
             self.__local = local
             self.__data_horario_evento = datetime(data_horario_evento[0],
@@ -39,8 +39,8 @@ class Evento:
             self.__participacoes = []
 
     @property
-    def id(self):
-        return self.__id
+    def id_evento(self):
+        return self.__id_evento
 
     @property
     def titulo(self):
@@ -70,10 +70,10 @@ class Evento:
     def participacoes(self):
         return self.__participacoes
 
-    @id.setter
-    def id(self, id: int):
-        if isinstance(id, int):
-            self.__id = id
+    @id_evento.setter
+    def id_evento(self, id_evento: int):
+        if isinstance(id_evento, int):
+            self.__id_evento = id_evento
         else:
             raise TypeError
 

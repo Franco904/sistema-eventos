@@ -19,7 +19,7 @@ class Participacao:
                                                    data_horario_entrada[2],
                                                    data_horario_entrada[3],
                                                    data_horario_entrada[4])
-            self.__data_horario_saida = None
+            self.__data_horario_saida = datetime(2020, 10, 10, 10, 10)
             self.__cpf_participante = cpf_participante
         else:
             raise TypeError

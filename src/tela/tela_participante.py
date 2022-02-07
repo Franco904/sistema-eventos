@@ -16,6 +16,7 @@ class TelaParticipante:
         print('5 - Listar participantes')
         print('6 - Salvar comprovante de saúde do participante')
         print('0 - Retornar')
+        print("-" * 40)
 
         try:
             opcao = int(input('Escolha uma opção: '))
@@ -91,6 +92,7 @@ class TelaParticipante:
             self.mostrar_mensagem('Valores de data devem ser inteiros')
 
     def mostrar_participante(self, dados_participante):
+        print("-" * 40)
         print('\nCPF DO PARTICIPANTE: ', dados_participante['cpf'])
         print('NOME DO PARTICIPANTE: ', dados_participante['nome'])
         print('DATA DE NASCIMENTO DO PARTICIPANTE: ', dados_participante['data_nascimento'].strftime('%d/%m/%Y'))
@@ -111,6 +113,7 @@ class TelaParticipante:
             if dados_participante['comprovante_saude'].data_horario_teste == datetime(12, 12, 12, 12, 12)
             else dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y'))
             print('Teste PCR: ', dados_participante['comprovante_saude'].resultado_pcr.name)
+        print("-" * 40)
 
     def selecionar_participante(self):
         cpf = input('\nCPF do participante que deseja selecionar: ')

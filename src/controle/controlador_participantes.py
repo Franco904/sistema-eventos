@@ -3,8 +3,8 @@ from src.tela.tela_participante import TelaParticipante
 
 
 class ControladorParticipante:
-    def __init__(self, controlador_sistema):
-        self.__controlador_sistema = controlador_sistema
+    def __init__(self, controlador_eventos):
+        self.__controlador_eventos = controlador_eventos
         self.__participantes = []
         self.__tela_participante = TelaParticipante()
 
@@ -145,7 +145,7 @@ class ControladorParticipante:
             self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_eventos.abre_tela()
 
     def abre_tela(self):
         lista_opcoes = {1: self.adiciona_participante, 2: self.exclui_participante, 3: self.altera_participante,

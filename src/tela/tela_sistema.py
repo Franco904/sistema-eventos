@@ -4,10 +4,9 @@ class TelaSistema:
 
     def tela_opcoes(self):
         print("\n-------- Sistema de Eventos ---------")
-        print('1 - Tela de evento')
-        print('2 - Tela de participante')
-        print('3 - Tela de organizador')
+        print('1 - Abrir Opções')
         print('0 - Finalizar Sistema')
+        print("-" * 40)
 
         try:
             opcao = int(input("Escolha a opcao: "))

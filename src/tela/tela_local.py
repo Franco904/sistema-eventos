@@ -10,6 +10,7 @@ class TelaLocal:
         print('4 - Mostrar local')
         print('5 - Listar locais')
         print('0 - Retornar')
+        print("-" * 40)
 
         try:
             opcao = int(input('Escolha uma opção: '))
@@ -30,8 +31,10 @@ class TelaLocal:
             self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
 
     def mostrar_local(self, dados_local):
+        print("-" * 40)
         print('\nID DO LOCAL: ', dados_local['id'])
         print('NOME DO LOCAL: ', dados_local['nome'])
+        print("-" * 40)
 
     def selecionar_local(self):
         try:

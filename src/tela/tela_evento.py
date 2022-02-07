@@ -3,18 +3,21 @@ class TelaEvento:
         pass
 
     def tela_opcoes(self):
-        print('\n-------- EVENTOS ----------')
+        print('\n-------- OPÇÕES ----------')
         print("1 - Tela Local")
-        print("2 - Tela Participação")
-        print('3 - Adicionar evento')
-        print('4 - Excluir evento')
-        print('5 - Alterar evento')
-        print('6 - Mostrar evento')
-        print('7 - Listar eventos')
-        print('8 - Listar eventos ocorridos')
-        print('9 - Listar eventos futuros')
-        print('10 - Ranking de eventos por público')
+        print("2 - Tela Organizador")
+        print("3 - Tela Participante")
+        print("4 - Tela Participação")
+        print('5 - Adicionar evento')
+        print('6 - Excluir evento')
+        print('7 - Alterar evento')
+        print('8 - Mostrar evento')
+        print('9 - Listar eventos')
+        print('10 - Listar eventos ocorridos')
+        print('11 - Listar eventos futuros')
+        print('12 - Ranking de eventos por público')
         print('0 - Retornar')
+        print("-" * 40)
 
         try:
             opcao = int(input('Escolha uma opção: '))
@@ -54,9 +57,9 @@ class TelaEvento:
                 print('Selecione um dos organizadores cadastrados:')
 
                 for i, o in enumerate(organizadores):
-                    print(f'[ {i + 1} ] CPF: {o.id}, Nome: {o.nome}')
+                    print(f'[ {i + 1} ] CPF: {o.cpf}, Nome: {o.nome}')
                 try:
-                    continuar = False
+                    continuar = True
                     while continuar:
                         opcao_organizador = int(input('Escolha uma opção: '))
                         while opcao_organizador > len(organizadores) or opcao_organizador < 1:
@@ -83,11 +86,13 @@ class TelaEvento:
             self.mostrar_mensagem('Valores de data/número devem ser inteiros')
 
     def mostrar_detalhes_evento(self, dados_evento):
+        print("-" * 40)
         print('\nID DO EVENTO: ', dados_evento['id'])
         print('TÍTULO DO EVENTO: ', dados_evento['titulo'])
         print('LOCAL DO EVENTO: ', dados_evento['local'])
         print('DATA E HORÁRIO DO EVENTO: ', dados_evento['data_horario_evento'].strftime('%d/%m/%Y'))
         print('CAPACIDADE: ', dados_evento['capacidade'])
+        print("-" * 40)
 
     def mostrar_organizadores(self, organizadores):
         print('ORGANIZADORES:')
@@ -114,6 +119,7 @@ class TelaEvento:
         # Tirar os comentários após criar controlador de participações
 
     def mostrar_eventos_rankeados(self, eventos):
+        print("-" * 40)
         print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
         if len(eventos) == 0:
             print('Não há eventos cadastrados')
@@ -121,6 +127,7 @@ class TelaEvento:
             print('\nTítulo do evento : Público')
             for titulo, participacoes in eventos.items():
                 print(titulo, ' : ', participacoes)
+        print("-" * 40)
 
     def selecionar_evento(self):
         id_evento = input('\nId do evento que deseja selecionar: ')
