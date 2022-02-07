@@ -21,20 +21,17 @@ class ControladorParticipacao:
         dados_participacao = self.__tela_participacao.pegar_dados_participacao()
         try:
             participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                .pega_participante_por_cpf(dados_participacao["cpf_participante"])
+                .pegar_participante_por_cpf(dados_participacao["cpf_participante"])
 
             if participante.comprovante_saude is None:
                 participante.status_participante = StatusParticipante.a_confirmar
 
             elif participante.comprovante_saude.imunizado() \
-                    or participante.comprovante_saude.pcr_autorizado([
-                dados_participacao["ano_evento"],
-                dados_participacao["mes_evento"],
-                dados_participacao["dia_evento"],
-                dados_participacao["hora_entrada"],
-                dados_participacao["minuto_entrada"]
-            ]):
-
+                    or participante.comprovante_saude.pcr_autorizado([dados_participacao["ano_evento"],
+                                                                      dados_participacao["mes_evento"],
+                                                                      dados_participacao["dia_evento"],
+                                                                      dados_participacao["hora_entrada"],
+                                                                      dados_participacao["minuto_entrada"]]):
                 participacao = Participacao(dados_participacao["id"],
                                             dados_participacao["id_evento"],
                                             [
