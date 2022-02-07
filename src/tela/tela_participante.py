@@ -94,7 +94,7 @@ class TelaParticipante:
         print('\nCPF DO PARTICIPANTE: ', dados_participante['cpf'])
         print('NOME DO PARTICIPANTE: ', dados_participante['nome'])
         print('DATA DE NASCIMENTO DO PARTICIPANTE: ', dados_participante['data_nascimento'].strftime('%d/%m/%Y'))
-        print(f'ENDEREÇO DO PARTICIPANTE: ')
+        print('ENDEREÇO DO PARTICIPANTE: ')
         print('Logradouro: ', dados_participante['endereco'].logradouro)
         print('Número de endereço: ', dados_participante['endereco'].num_endereco)
         print('CEP: ', dados_participante['endereco'].cep)

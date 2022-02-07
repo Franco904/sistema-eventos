@@ -8,6 +8,14 @@ class ControladorParticipante:
         self.__participantes = []
         self.__tela_participante = TelaParticipante()
 
+    @property
+    def participantes(self):
+        return self.__participantes
+
+    @property
+    def tela_participante(self):
+        return self.__tela_participante
+
     def adiciona_participante(self):
         dados_participante = self.__tela_participante.pegar_dados_participante()
         try:
@@ -123,9 +131,7 @@ class ControladorParticipante:
         return None
 
     def lista_participantes(self):
-        if len(self.__participantes) == 0:
-            self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
-        else:
+        if len(self.__participantes) > 0:
             for participante in self.__participantes:
                 self.__tela_participante.mostrar_participante({
                     'cpf': participante.cpf,
@@ -135,6 +141,8 @@ class ControladorParticipante:
                     'status': participante.status_participante,
                     'comprovante_saude': participante.comprovante_saude
                 })
+        else:
+            self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from participante import Participante
+from src.entidade.participante import Participante
 
 
 class Participacao:

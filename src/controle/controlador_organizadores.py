@@ -3,11 +3,18 @@ from src.tela.tela_organizador import TelaOrganizador
 
 
 class ControladorOrganizador:
-
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__organizadores = []
         self.__tela_organizador = TelaOrganizador()
+
+    @property
+    def organizadores(self):
+        return self.__organizadores
+
+    @property
+    def tela_organizador(self):
+        return self.__tela_organizador
 
     def adiciona_organizador(self):
         dados_organizador = self.__tela_organizador.pegar_dados_organizador()
@@ -73,12 +80,12 @@ class ControladorOrganizador:
         return None
 
     def lista_organizadores(self):
-        if len(self.__organizadores) == 0:
-            self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar')
-        else:
+        if len(self.__organizadores) > 0:
             for organizador in self.__organizadores:
                 self.__tela_organizador.mostrar_organizador({"cpf": organizador.cpf, "nome": organizador.nome,
                                                              "data_nascimento": organizador.data_nascimento})
+        else:
+            self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar')
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -90,4 +97,3 @@ class ControladorOrganizador:
         continua = True
         while continua:
             lista_opcoes[self.__tela_organizador.tela_opcoes()]()
-

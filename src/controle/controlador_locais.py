@@ -8,6 +8,10 @@ class ControladorLocal:
         self.__locais = []
         self.__tela_local = TelaLocal()
 
+    @property
+    def locais(self):
+        return self.__locais
+
     def adiciona_local(self):
         dados_local = self.__tela_local.pegar_dados_local()
         try:
@@ -66,11 +70,11 @@ class ControladorLocal:
         return None
 
     def lista_locais(self):
-        if len(self.__locais) == 0:
-            self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar')
-        else:
+        if len(self.__locais) > 0:
             for local in self.__locais:
                 self.__tela_local.mostrar_local({"id": local.id, "nome": local.nome})
+        else:
+            self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar')
 
     def retornar(self):
         self.__controlador_eventos.abre_tela()
