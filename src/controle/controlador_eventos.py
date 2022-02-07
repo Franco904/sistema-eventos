@@ -229,7 +229,21 @@ class ControladorEvento:
                 else:
                     self.__tela_evento.mostrar_mensagem('Não há participações para listar')
 
-    def listar_participantes_autorizados(self):
+    def listar_participantes_com_comprovante(self):
+        self.listar_eventos()
+        if len(self.__eventos) > 0:
+            id_evento = self.__tela_evento.selecionar_evento()
+            evento = self.pegar_evento_por_id(id_evento)
+
+            if evento is not None:
+                participantes = evento.participantes
+                participantes_com_comprovante = list(filter(
+                    lambda p: p.status_participante == StatusParticipante.autorizado
+                                or p.status_participante == StatusParticipante.nao_autorizado, participantes))
+
+                self.__tela_evento.listar_participantes_com_comprovante(participantes_com_comprovante)
+
+    def listar_participantes_sem_comprovante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
@@ -238,37 +252,10 @@ class ControladorEvento:
             if evento is not None:
                 participantes = evento.participantes
 
-                for participante in participantes:
-                    if participante.status_participante == StatusParticipante.autorizado:
-                        print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-                        print('NOME DO PARTICIPANTE: ', participante.nome)
-                        print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-                        print('ENDEREÇO DO PARTICIPANTE: ')
-                        print('Logradouro: ', participante.endereco.logradouro)
-                        print('Número de endereço: ', participante.endereco.num_endereco)
-                        print('CEP: ', participante.endereco.cep)
-                        print('\n')
+                participantes_sem_comprovante = list(filter(
+                    lambda p: p.status_participante == StatusParticipante.a_confirmar, participantes))
 
-    def listar_participantes_nao_autorizados(self):
-        self.listar_eventos()
-        if len(self.__eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
-            evento = self.pegar_evento_por_id(id_evento)
-
-            if evento is not None:
-                participantes = evento.participantes
-
-                for participante in participantes:
-                    if participante.status_participante == StatusParticipante.nao_autorizado \
-                            or participante.status_participante == StatusParticipante.a_confirmar:
-                        print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-                        print('NOME DO PARTICIPANTE: ', participante.nome)
-                        print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-                        print('ENDEREÇO DO PARTICIPANTE: ')
-                        print('Logradouro: ', participante.endereco.logradouro)
-                        print('Número de endereço: ', participante.endereco.num_endereco)
-                        print('CEP: ', participante.endereco.cep)
-                        print('\n')
+                self.__tela_evento.listar_participantes_com_comprovante(participantes_sem_comprovante)
 
     def ranking_eventos_por_publico(self):
         dados_evento = {}
@@ -429,8 +416,8 @@ class ControladorEvento:
                         8: self.mostrar_evento,
                         9: self.listar_eventos, 10: self.listar_eventos_ocorridos, 11: self.listar_eventos_futuros,
                         12: self.listar_organizadores_evento, 13: self.listar_participantes_evento,
-                        14: self.listar_participacoes_evento, 15: self.listar_participantes_autorizados,
-                        16: self.listar_participantes_nao_autorizados, 17: self.ranking_eventos_por_publico,
+                        14: self.listar_participacoes_evento, 15: self.listar_participantes_com_comprovante,
+                        16: self.listar_participantes_sem_comprovante, 17: self.ranking_eventos_por_publico,
                         18: self.adicionar_organizador, 19: self.excluir_organizador,
                         20: self.adicionar_participante, 21: self.excluir_participante,
                         22: self.adicionar_participacao, 23: self.excluir_participacao,
