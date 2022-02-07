@@ -1,4 +1,3 @@
-import src.controle.controlador_participantes
 from src.entidade.participacao import Participacao
 from src.tela.tela_participacao import TelaParticipacao
 

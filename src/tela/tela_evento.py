@@ -4,15 +4,16 @@ class TelaEvento:
 
     def tela_opcoes(self):
         print('\n-------- EVENTOS ----------')
-        print('1 - Adicionar evento')
-        print('2 - Excluir evento')
-        print('3 - Alterar evento')
-        print('4 - Mostrar evento')
-        print('5 - Listar eventos')
-        print('6 - Listar eventos ocorridos')
-        print('7 - Listar eventos futuros')
-        print('8 - Ranking de eventos por público')
-        print("9 - Tela Local")
+        print("1 - Tela Local")
+        print("2 - Tela Participação")
+        print('3 - Adicionar evento')
+        print('4 - Excluir evento')
+        print('5 - Alterar evento')
+        print('6 - Mostrar evento')
+        print('7 - Listar eventos')
+        print('8 - Listar eventos ocorridos')
+        print('9 - Listar eventos futuros')
+        print('10 - Ranking de eventos por público')
         print('0 - Retornar')
 
         try:

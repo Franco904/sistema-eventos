@@ -370,8 +370,10 @@ class ControladorEvento:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.adiciona_evento, 2: self.exclui_evento, 3: self.altera_evento,
-                        4: self.mostra_evento, 5: self.lista_eventos, 9: self.__controlador_locais.abre_tela, 0: self.retornar}
+        lista_opcoes = {1: self.__controlador_locais.abre_tela, 2: self.__controlador_participacoes.abre_tela,
+                        3: self.adiciona_evento, 24: self.exclui_evento, 5: self.altera_evento,
+                        6: self.mostra_evento, 7: self.lista_eventos, 8: self.lista_eventos_ocorridos,
+                        9: self.lista_eventos_futuros, 10: self.ranking_eventos_por_publico, 0: self.retornar}
 
         continua = True
         while continua:
