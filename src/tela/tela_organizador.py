@@ -36,7 +36,7 @@ class TelaOrganizador:
 
     def mostrar_organizador(self, dados_organizador):
         print("-" * 40)
-        print('\nCPF DO ORGANIZADOR: ', dados_organizador['cpf'])
+        print('CPF DO ORGANIZADOR: ', dados_organizador['cpf'])
         print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
         print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}'.format(dados_organizador['data_nascimento']))
         print("-" * 40)

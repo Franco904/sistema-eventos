@@ -55,7 +55,7 @@ class TelaParticipacao:
 
     def mostrar_participacao(self, dados_participacao):
         print("-" * 40)
-        print('\nID DA PARTICIPAÇÃO: ', dados_participacao['id'])
+        print('ID DA PARTICIPAÇÃO: ', dados_participacao['id'])
         print('ID DO EVENTO: ', dados_participacao['id_evento'])
         print('CPF DO PARTICIPANTE: ', dados_participacao['id_evento'])
         print('HORARIO DE ENTRADA DO PARTICIPANTE: {0}'.format(dados_participacao['data_horario_entrada']))

@@ -37,6 +37,8 @@ class Evento:
             self.__organizadores = organizadores
             self.__participantes = []
             self.__participacoes = []
+        else:
+            raise TypeError
 
     @property
     def id_evento(self):
@@ -123,76 +125,63 @@ class Evento:
 
     def adicionar_organizador(self, organizador: Organizador):
         if isinstance(organizador, Organizador) and organizador is not None:
-            if organizador in self.__organizadores:
-                raise Exception
+            for o in self.__organizadores:
+                if o.cpf == organizador.cpf:
+                    raise TypeError
             self.__organizadores.append(organizador)
         else:
             raise TypeError
 
     def adicionar_participante(self, participante: Participante):
         if isinstance(participante, Participante) and participante is not None:
-            if participante in self.__participantes:
-                raise Exception
+            for p in self.__participantes:
+                if p.cpf == participante.cpf:
+                    raise TypeError
             self.__participantes.append(participante)
         else:
             raise TypeError
 
     def adicionar_participacao(self, participacao: Participacao):
         if isinstance(participacao, Participacao) and participacao is not None:
-            if participacao in self.__participacoes:
-                raise Exception
+            for p in self.__participacoes:
+                if p.id == participacao.id:
+                    raise TypeError
             self.__participacoes.append(participacao)
         else:
             raise TypeError
 
     def excluir_organizador(self, organizador: Organizador):
-        if isinstance(organizador, Organizador) \
-                and organizador not in self.__organizadores \
-                and organizador is not None:
+        existe = False
+        if isinstance(organizador, Organizador) and organizador is not None:
+            for o in self.__organizadores:
+                if o.cpf == organizador.cpf:
+                    existe = True
+            if not existe:
+                raise TypeError
             self.__organizadores.remove(organizador)
         else:
             raise TypeError
 
     def excluir_participante(self, participante: Participante):
+        existe = False
         if isinstance(participante, Participante) and participante is not None:
+            for p in self.__participantes:
+                if p.cpf == participante.cpf:
+                    existe = True
+            if not existe:
+                raise TypeError
             self.__participantes.remove(participante)
         else:
             raise TypeError
 
     def excluir_participacao(self, participacao: Participacao):
+        existe = False
         if isinstance(participacao, Participacao) and participacao is not None:
+            for p in self.__participacoes:
+                if p.id == participacao.id:
+                    existe = True
+            if not existe:
+                raise TypeError
             self.__participacoes.remove(participacao)
         else:
             raise TypeError
-
-    def listar_organizadores(self):
-        for organizador in self.__organizadores:
-            print('\nCPF DO ORGANIZADOR: ', organizador.cpf)
-            print('NOME DO ORGANIZADOR: ', organizador.nome)
-            print('DATA DE NASCIMENTO DO ORGANIZADOR: ', organizador.data_nascimento.strftime('%d/%m/%Y'))
-
-    def listar_participantes(self):
-        for participante in self.__participantes:
-            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-            print('NOME DO PARTICIPANTE: ', participante.nome)
-            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-            print('ENDEREÇO DO PARTICIPANTE: ')
-            print('Logradouro: ', participante.endereco.logradouro)
-            print('Número de endereço: ', participante.endereco.num_endereco)
-            print('CEP: ', participante.endereco.cep)
-            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
-            print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
-            if participante.comprovante_saude is None:
-                print('Não cadastrado')
-            else:
-                print('\nTomou primeira dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.primeira_dose else 'Não')
-                print('Tomou segunda dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
-                print('Data e horário do teste PCR: ', 'Não realizado'
-                if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
-                else participante.comprovante_saude.data_horario_teste)
-                print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
-
-    def listar_participacoes(self):
-        pass

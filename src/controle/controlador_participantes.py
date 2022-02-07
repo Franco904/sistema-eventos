@@ -3,8 +3,8 @@ from src.tela.tela_participante import TelaParticipante
 
 
 class ControladorParticipante:
-    def __init__(self, controlador_eventos):
-        self.__controlador_eventos = controlador_eventos
+    def __init__(self, controlador_sistema):
+        self.__controlador_sistema = controlador_sistema
         self.__participantes = []
         self.__tela_participante = TelaParticipante()
 
@@ -16,32 +16,56 @@ class ControladorParticipante:
     def tela_participante(self):
         return self.__tela_participante
 
-    def adiciona_participante(self):
-        dados_participante = self.__tela_participante.pegar_dados_participante()
-        try:
-            participante = Participante(dados_participante['cpf'],
-                                        dados_participante['nome'],
-                                        [
-                                            dados_participante['ano'],
-                                            dados_participante['mes'],
-                                            dados_participante['dia']
-                                        ],
-                                        [
-                                            dados_participante['logradouro'],
-                                            dados_participante['num_endereco'],
-                                            dados_participante['cep']
-                                        ])
-            self.__participantes.append(participante)
-            self.__tela_participante.mostrar_mensagem('Participante adicionado na lista')
+    def adicionar_participante(self):
+        # Lógica para conferir se o participante a ser adicionado vai extrapolar a capacidade do evento
+        listagem = self.__controlador_sistema.controladores['controlador_eventos'].listar_eventos()
 
-        except TypeError:
-            self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
+        if listagem:
+            id_evento = self.__controlador_sistema.controladores['controlador_eventos'] \
+                .tela_evento.selecionar_evento()
+            evento = self.__controlador_sistema.controladores['controlador_eventos'] \
+                .pegar_evento_por_id(id_evento)
 
-    def exclui_participante(self):
-        self.lista_participantes()
+            if evento is not None:
+                if len(evento.participantes) > 0:
+                    if len(evento.participantes) < evento.capacidade:
+                        cpf_participante = self.__tela_participante.pegar_cpf_participante()
+                        participante = self.pegar_participante_por_cpf(cpf_participante)
+
+                        if participante is not None:
+                            self.__tela_participante.mostrar_mensagem('O participante já está incluído na lista de '
+                                                                      'participantes do evento')
+                    else:
+                        self.__tela_participante.mostrar_mensagem('O evento já extrapolou a sua capacidade máxima de '
+                                                                  'participantes')
+            else:
+                self.__tela_participante.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
+
+            dados_participante = self.__tela_participante.pegar_dados_participante()
+            try:
+                participante = Participante(dados_participante['cpf'],
+                                            dados_participante['nome'],
+                                            [
+                                                dados_participante['ano'],
+                                                dados_participante['mes'],
+                                                dados_participante['dia']
+                                            ],
+                                            [
+                                                dados_participante['logradouro'],
+                                                dados_participante['num_endereco'],
+                                                dados_participante['cep']
+                                            ])
+                self.__participantes.append(participante)
+                self.__tela_participante.mostrar_mensagem('Participante adicionado na lista')
+
+            except TypeError:
+                self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
+
+    def excluir_participante(self):
+        self.listar_participantes()
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
-            participante = self.pega_participante_por_cpf(cpf_participante)
+            participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
                 self.__participantes.remove(participante)
@@ -49,11 +73,11 @@ class ControladorParticipante:
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado')
 
-    def altera_participante(self):
-        self.lista_participantes()
+    def alterar_participante(self):
+        self.listar_participantes()
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
-            participante = self.pega_participante_por_cpf(cpf_participante)
+            participante = self.pegar_participante_por_cpf(cpf_participante)
             try:
                 if participante is not None:
                     novos_dados_participante = self.__tela_participante.pegar_dados_participante()
@@ -77,11 +101,11 @@ class ControladorParticipante:
             except TypeError:
                 self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
-    def salva_comprovante_saude(self):
-        self.lista_participantes()
+    def salvar_comprovante_saude(self):
+        self.listar_participantes()
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
-            participante = self.pega_participante_por_cpf(cpf_participante)
+            participante = self.pegar_participante_por_cpf(cpf_participante)
             try:
                 if participante is not None:
                     novos_dados_comprovante = self.__tela_participante.pegar_dados_comprovante()
@@ -105,10 +129,10 @@ class ControladorParticipante:
             except TypeError:
                 self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
-    def mostra_participante(self):
+    def mostrar_participante(self):
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
-            participante = self.pega_participante_por_cpf(cpf_participante)
+            participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
                 self.__tela_participante.mostrar_participante({
@@ -124,13 +148,13 @@ class ControladorParticipante:
         else:
             self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
 
-    def pega_participante_por_cpf(self, cpf_participante):
+    def pegar_participante_por_cpf(self, cpf_participante):
         for participante in self.__participantes:
             if participante.cpf == cpf_participante:
                 return participante
         return None
 
-    def lista_participantes(self):
+    def listar_participantes(self):
         if len(self.__participantes) > 0:
             for participante in self.__participantes:
                 self.__tela_participante.mostrar_participante({
@@ -145,11 +169,11 @@ class ControladorParticipante:
             self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_eventos.abre_tela()
+        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
 
-    def abre_tela(self):
-        lista_opcoes = {1: self.adiciona_participante, 2: self.exclui_participante, 3: self.altera_participante,
-                        4: self.mostra_participante, 5: self.lista_participantes, 6: self.salva_comprovante_saude,
+    def abrir_tela(self):
+        lista_opcoes = {1: self.adicionar_participante, 2: self.excluir_participante, 3: self.alterar_participante,
+                        4: self.mostrar_participante, 5: self.listar_participantes, 6: self.salvar_comprovante_saude,
                         0: self.retornar}
 
         continua = True

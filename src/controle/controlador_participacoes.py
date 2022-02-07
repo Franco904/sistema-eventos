@@ -1,10 +1,11 @@
+from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
 from src.tela.tela_participacao import TelaParticipacao
 
 
 class ControladorParticipacao:
-    def __init__(self, controlador_eventos):
-        self.__controlador_eventos = controlador_eventos
+    def __init__(self, controlador_sistema):
+        self.__controlador_sistema = controlador_sistema
         self.__participacoes = []
         self.__tela_participacao = TelaParticipacao()
 
@@ -19,15 +20,38 @@ class ControladorParticipacao:
     def adicionar_participacao(self):
         dados_participacao = self.__tela_participacao.pegar_dados_participacao()
         try:
-            participacao = Participacao(dados_participacao["id"], dados_participacao["id_evento"],
-                                        [dados_participacao["ano_evento"],
-                                         dados_participacao["mes_evento"],
-                                         dados_participacao["dia_evento"],
-                                         dados_participacao["hora_entrada"],
-                                         dados_participacao["minuto_entrada"]],
-                                        dados_participacao["cpf_participante"])
-            self.__participacoes.append(participacao)
-            self.__tela_participacao.mostrar_mensagem('participacao adicionado na lista.')
+            participante = self.__controlador_sistema.controladores['controlador_participantes'] \
+                .pega_participante_por_cpf(dados_participacao["cpf_participante"])
+
+            if participante.comprovante_saude is None:
+                participante.status_participante = StatusParticipante.a_confirmar
+
+            elif participante.comprovante_saude.imunizado() \
+                    or participante.comprovante_saude.pcr_autorizado([
+                dados_participacao["ano_evento"],
+                dados_participacao["mes_evento"],
+                dados_participacao["dia_evento"],
+                dados_participacao["hora_entrada"],
+                dados_participacao["minuto_entrada"]
+            ]):
+
+                participacao = Participacao(dados_participacao["id"],
+                                            dados_participacao["id_evento"],
+                                            [
+                                                dados_participacao["ano_evento"],
+                                                dados_participacao["mes_evento"],
+                                                dados_participacao["dia_evento"],
+                                                dados_participacao["hora_entrada"],
+                                                dados_participacao["minuto_entrada"]
+                                            ],
+                                            dados_participacao["cpf_participante"])
+                participante.status_participante = StatusParticipante.autorizado
+                self.__participacoes.append(participacao)
+                self.__tela_participacao.mostrar_mensagem('Participação adicionado na lista.')
+            else:
+                self.__tela_participacao.mostrar_mensagem('O participante não possui um '
+                                                          'comprovante válido')
+                participante.status_participante = StatusParticipante.nao_autorizado
 
         except TypeError:
             self.__tela_participacao.mostrar_mensagem("Algum dado foi inserido incorretamente.")
@@ -40,11 +64,13 @@ class ControladorParticipacao:
             try:
                 if participacao is not None:
                     horario_saida_participacao = self.__tela_participacao.pegar_horario_saida_participacao()
-                    participacao.data_horario_saida = [horario_saida_participacao["ano_evento"],
-                                                       horario_saida_participacao["mes_evento"],
-                                                       horario_saida_participacao["dia_evento"],
-                                                       horario_saida_participacao["hora_saida"],
-                                                       horario_saida_participacao["minuto_saida"]]
+                    participacao.data_horario_saida = [
+                        horario_saida_participacao["ano_evento"],
+                        horario_saida_participacao["mes_evento"],
+                        horario_saida_participacao["dia_evento"],
+                        horario_saida_participacao["hora_saida"],
+                        horario_saida_participacao["minuto_saida"]
+                    ]
                     self.__tela_participacao.mostrar_mensagem('Dados de saída da participacao alterados com sucesso')
                 else:
                     self.__tela_participacao.mostrar_mensagem("ATENÇÃO: Dados de saída da participacao não cadastrados")
@@ -108,7 +134,7 @@ class ControladorParticipacao:
 
     def pegar_participacao(self, dados_participacao):
         for participacao in self.__participacoes:
-            if participacao.id_evento == dados_participacao["id_evento"]\
+            if participacao.id_evento == dados_participacao["id_evento"] \
                     and participacao.cpf_participante == dados_participacao["cpf_participante"]:
                 return participacao
         return None
@@ -125,9 +151,9 @@ class ControladorParticipacao:
                                                                "data_horario_saida": participacao.data_horario_saida})
 
     def retornar(self):
-        self.__controlador_eventos.abre_tela()
+        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
 
-    def abre_tela(self):
+    def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_participacao, 2: self.adicionar_horario_saida, 3: self.excluir_participacao,
                         4: self.alterar_participacao, 5: self.mostrar_participacao, 6: self.listar_participacoes,
                         0: self.retornar}
