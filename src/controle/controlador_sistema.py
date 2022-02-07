@@ -1,8 +1,8 @@
 from src.controle.controlador_eventos import ControladorEvento
 from src.controle.controlador_locais import ControladorLocal
 from src.controle.controlador_organizadores import ControladorOrganizador
-from src.controle.controlador_participantes import ControladorParticipante
 from src.controle.controlador_participacoes import ControladorParticipacao
+from src.controle.controlador_participantes import ControladorParticipante
 from src.tela.tela_sistema import TelaSistema
 
 
@@ -15,10 +15,10 @@ class ControladorSistema:
     def controladores(self):
         return self.__controladores
 
-    def inicializa_sistema(self):
-        self.abre_tela()
+    def inicializar_sistema(self):
+        self.abrir_tela()
 
-    def inicializa_controladores(self):
+    def inicializar_controladores(self):
         # Cria instâncias globais dos controladores
         self.__controladores = {
             'controlador_eventos': ControladorEvento(self),
@@ -29,16 +29,14 @@ class ControladorSistema:
         }
 
     def opcoes(self):
-        self.__controladores['controlador_eventos'].abre_tela()
+        self.__controladores['controlador_eventos'].abrir_tela()
 
-    def encerra_sistema(self):
+    def encerrar_sistema(self):
         exit(0)
 
-    def abre_tela(self):
-        self.inicializa_controladores()
-        lista_opcoes = {1: self.opcoes, 0: self.encerra_sistema}
+    def abrir_tela(self):
+        self.inicializar_controladores()
+        lista_opcoes = {1: self.opcoes, 0: self.encerrar_sistema}
 
         while True:
-            opcao_escolhida = self.__tela_sistema.tela_opcoes()
-            funcao_escolhida = lista_opcoes[opcao_escolhida]
-            funcao_escolhida()
+            lista_opcoes[self.__tela_sistema.tela_opcoes()]()

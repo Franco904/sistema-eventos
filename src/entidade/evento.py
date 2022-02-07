@@ -185,35 +185,3 @@ class Evento:
             self.__participacoes.remove(participacao)
         else:
             raise TypeError
-
-    def listar_organizadores(self):
-        for organizador in self.__organizadores:
-            print('\nCPF DO ORGANIZADOR: ', organizador.cpf)
-            print('NOME DO ORGANIZADOR: ', organizador.nome)
-            print('DATA DE NASCIMENTO DO ORGANIZADOR: ', organizador.data_nascimento.strftime('%d/%m/%Y'))
-
-    def listar_participantes(self):
-        for participante in self.__participantes:
-            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-            print('NOME DO PARTICIPANTE: ', participante.nome)
-            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-            print('ENDEREÇO DO PARTICIPANTE: ')
-            print('Logradouro: ', participante.endereco.logradouro)
-            print('Número de endereço: ', participante.endereco.num_endereco)
-            print('CEP: ', participante.endereco.cep)
-            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
-            print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
-            if participante.comprovante_saude is None:
-                print('Não cadastrado')
-            else:
-                print('\nTomou primeira dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.primeira_dose else 'Não')
-                print('Tomou segunda dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
-                print('Data e horário do teste PCR: ', 'Não realizado'
-                if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
-                else participante.comprovante_saude.data_horario_teste)
-                print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
-
-    def listar_participacoes(self):
-        pass

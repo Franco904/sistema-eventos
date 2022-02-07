@@ -12,7 +12,7 @@ class ControladorLocal:
     def locais(self):
         return self.__locais
 
-    def adiciona_local(self):
+    def adicionar_local(self):
         dados_local = self.__tela_local.pegar_dados_local()
         try:
             local = Local(dados_local["id"], dados_local["nome"])
@@ -22,11 +22,11 @@ class ControladorLocal:
         except TypeError:
             self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
-    def exclui_local(self):
-        self.lista_locais()
+    def excluir_local(self):
+        self.listar_locais()
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
-            local = self.pega_local_por_id(id_local)
+            local = self.pegar_local_por_id(id_local)
 
             if local is not None:
                 self.__locais.remove(local)
@@ -34,11 +34,11 @@ class ControladorLocal:
             else:
                 self.__tela_local.mostrar_mensagem("ATENÇÃO: Local não cadastrado")
 
-    def altera_local(self):
-        self.lista_locais()
+    def alterar_local(self):
+        self.listar_locais()
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
-            local = self.pega_local_por_id(id_local)
+            local = self.pegar_local_por_id(id_local)
             try:
                 if local is not None:
                     novos_dados_local = self.__tela_local.pegar_dados_local()
@@ -51,10 +51,10 @@ class ControladorLocal:
             except TypeError:
                 self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
-    def mostra_local(self):
+    def mostrar_local(self):
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
-            local = self.pega_local_por_id(id_local)
+            local = self.pegar_local_por_id(id_local)
 
             if local is not None:
                 self.__tela_local.mostrar_local({'id': local.id, 'nome': local.nome})
@@ -63,13 +63,13 @@ class ControladorLocal:
         else:
             self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar')
 
-    def pega_local_por_id(self, id_local):
+    def pegar_local_por_id(self, id_local):
         for local in self.__locais:
             if local.id == id_local:
                 return local
         return None
 
-    def lista_locais(self):
+    def listar_locais(self):
         if len(self.__locais) > 0:
             for local in self.__locais:
                 self.__tela_local.mostrar_local({"id": local.id, "nome": local.nome})
@@ -77,11 +77,11 @@ class ControladorLocal:
             self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abre_tela()
+        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
 
-    def abre_tela(self):
-        lista_opcoes = {1: self.adiciona_local, 2: self.exclui_local, 3: self.altera_local,
-                        4: self.mostra_local, 5: self.lista_locais, 0: self.retornar}
+    def abrir_tela(self):
+        lista_opcoes = {1: self.adicionar_local, 2: self.excluir_local, 3: self.alterar_local,
+                        4: self.mostrar_local, 5: self.listar_locais, 0: self.retornar}
 
         continua = True
         while continua:

@@ -28,12 +28,12 @@ class ControladorParticipacao:
 
             elif participante.comprovante_saude.imunizado() \
                     or participante.comprovante_saude.pcr_autorizado([
-                        dados_participacao["ano_evento"],
-                        dados_participacao["mes_evento"],
-                        dados_participacao["dia_evento"],
-                        dados_participacao["hora_entrada"],
-                        dados_participacao["minuto_entrada"]
-                    ]):
+                dados_participacao["ano_evento"],
+                dados_participacao["mes_evento"],
+                dados_participacao["dia_evento"],
+                dados_participacao["hora_entrada"],
+                dados_participacao["minuto_entrada"]
+            ]):
 
                 participacao = Participacao(dados_participacao["id"],
                                             dados_participacao["id_evento"],
@@ -151,9 +151,9 @@ class ControladorParticipacao:
                                                                "data_horario_saida": participacao.data_horario_saida})
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abre_tela()
+        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
 
-    def abre_tela(self):
+    def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_participacao, 2: self.adicionar_horario_saida, 3: self.excluir_participacao,
                         4: self.alterar_participacao, 5: self.mostrar_participacao, 6: self.listar_participacoes,
                         0: self.retornar}
