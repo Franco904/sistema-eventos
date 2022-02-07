@@ -3,8 +3,10 @@ from datetime import datetime
 from src.controle.controlador_locais import ControladorLocal
 from src.controle.controlador_organizadores import ControladorOrganizador
 from src.controle.controlador_participantes import ControladorParticipante
+from src.controle.controlador_participacoes import ControladorParticipacao
 from src.entidade.evento import Evento
 from src.tela.tela_evento import TelaEvento
+from src.tela.tela_participacao import TelaParticipacao
 
 
 class ControladorEvento:
@@ -13,9 +15,10 @@ class ControladorEvento:
         self.__controlador_locais = ControladorLocal(self)
         self.__controlador_organizadores = ControladorOrganizador(self)
         self.__controlador_participantes = ControladorParticipante(self)
-        # self.__controlador_participacoes = ControladorParticipacao(self)
+        self.__controlador_participacoes = ControladorParticipacao(self)
         self.__eventos = []
         self.__tela_evento = TelaEvento()
+        self.__tela_participacao = TelaParticipacao()
 
     def adiciona_evento(self):
         dados_evento = self.__tela_evento.pegar_dados_evento(
@@ -221,22 +224,19 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
 
-    # def adicionar_participacao(self):
-    #     self.lista_eventos()
-    #     if len(self.__eventos) > 0:
-    #         id_evento = self.__tela_evento.selecionar_evento()
-    #         evento = self.pega_evento_por_id(id_evento)
-    #
-    #         if evento is not None:
-    #             self.__controlador_participacoes.lista_participacoes()
-    #             id_participacao = self.__controlador_participacoes.selecionar_participacao()
-    #             # validacao
-    #             participacao = self.__controlador_participacoes.pega_participacao_por_id(id_participacao)
-    #
-    #             evento.adicionar_participacao(participacao)
-    #             # validacao
-    #     else:
-    #         self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
+    def adicionar_participacao(self):
+        self.lista_eventos()
+        if len(self.__eventos) > 0:
+            id_evento = self.__tela_evento.selecionar_evento()
+            evento = self.pega_evento_por_id(id_evento)
+
+            if evento is not None:
+                self.__controlador_participacoes.listar_participacoes()
+                dados_participacao = self.__tela_participacao.selecionar_participacao()
+                participacao = self.__controlador_participacoes.pegar_participacao(dados_participacao)
+                evento.adicionar_participacao(participacao)
+            else:
+                self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
 
     def excluir_organizador(self):
         self.lista_eventos()
@@ -371,7 +371,7 @@ class ControladorEvento:
 
     def abre_tela(self):
         lista_opcoes = {1: self.adiciona_evento, 2: self.exclui_evento, 3: self.altera_evento,
-                        4: self.mostra_evento, 5: self.lista_eventos, 0: self.retornar}
+                        4: self.mostra_evento, 5: self.lista_eventos, 9: self.__controlador_locais.abre_tela, 0: self.retornar}
 
         continua = True
         while continua:
