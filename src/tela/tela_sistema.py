@@ -9,7 +9,7 @@ class TelaSistema:
         print('3 - Opções de organizadores')
         print('4 - Opções de participantes')
         print('5 - Opções de participações')
-        print('0 - Finalizar Sistema')
+        print('0 - Finalizar sistema')
         print("-" * 40)
 
         opcao = int(input("Escolha a opção: "))

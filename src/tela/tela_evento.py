@@ -42,71 +42,63 @@ class TelaEvento:
 
     def pegar_dados_evento(self, locais: list, organizadores: list):
         print('\n-------- CADASTRAR EVENTO ----------')
-        try:
-            id_evento = int(input('Id do evento: '))
-            titulo = input('Título: ')
-            opcao_local = None
-            if len(locais) > 0:
-                print('Selecione um dos locais cadastrados:')
 
-                for i, l in enumerate(locais):
-                    print(f'[ {i + 1} ] Id: {l.id}, Nome: {l.nome}')
-                try:
+        id_evento = int(input('Id do evento: '))
+        titulo = input('Título: ')
+        opcao_local = None
+        if len(locais) > 0:
+            print('Selecione um dos locais cadastrados:')
+
+            for i, l in enumerate(locais):
+                print(f'[ {i + 1} ] Id: {l.id}, Nome: {l.nome}')
+
+                opcao_local = int(input('Escolha uma opção: '))
+                while opcao_local > len(locais) or opcao_local < 1:
                     opcao_local = int(input('Escolha uma opção: '))
-                    while opcao_local > len(locais) or opcao_local < 1:
-                        opcao_local = int(input('Escolha uma opção: '))
-                except ValueError:
-                    self.mostrar_mensagem('Valores numéricos devem ser inteiros')
-            else:
-                self.mostrar_mensagem('Não há locais cadastrados para listar')
-                self.mostrar_mensagem('Acesse a tela de locais para cadastrar um local')
-                return
+        else:
+            self.mostrar_mensagem('Não há locais cadastrados para listar')
+            self.mostrar_mensagem('Acesse a tela de locais para cadastrar um local')
+            return
 
-            ano = int(input('Ano de realização do evento: '))
-            mes = int(input('Mês de realização do evento: '))
-            dia = int(input('Dia de realização do evento: '))
-            hora = int(input('Hora de realização do evento: '))
-            minuto = int(input('Minuto de realização do evento: '))
-            capacidade = int(input('Capacidade do evento: '))
-            opcoes_organizador = []
-            if len(organizadores) > 0:
-                print('Selecione um dos organizadores cadastrados:')
+        ano = int(input('Ano de realização do evento: '))
+        mes = int(input('Mês de realização do evento: '))
+        dia = int(input('Dia de realização do evento: '))
+        hora = int(input('Hora de realização do evento: '))
+        minuto = int(input('Minuto de realização do evento: '))
+        capacidade = int(input('Capacidade do evento: '))
+        opcoes_organizador = []
+        if len(organizadores) > 0:
+            print('Selecione um dos organizadores cadastrados:')
 
-                for i, o in enumerate(organizadores):
-                    print(f'[ {i + 1} ] CPF: {o.cpf}, Nome: {o.nome}')
-                try:
-                    continuar = True
-                    while continuar:
-                        opcao_organizador = int(input('Escolha uma opção: '))
-                        while opcao_organizador > len(organizadores) or opcao_organizador < 1:
-                            opcao_organizador = int(input('Escolha uma opção: '))
+            for i, o in enumerate(organizadores):
+                print(f'[ {i + 1} ] CPF: {o.cpf}, Nome: {o.nome}')
 
-                        if opcao_organizador in opcoes_organizador:
-                            self.mostrar_mensagem('O organizador já foi incluído na lista')
-                        else:
-                            opcoes_organizador.append(opcao_organizador)
+            continuar = True
+            while continuar:
+                opcao_organizador = int(input('Escolha uma opção: '))
+                while opcao_organizador > len(organizadores) or opcao_organizador < 1:
+                    opcao_organizador = int(input('Escolha uma opção: '))
 
-                            if len(organizadores) > 1:
-                                cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
-                                while cont not in 'SN':
-                                    cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
-                                continuar = True if cont == 'S' else False
-                            else:
-                                continuar = False
+                if opcao_organizador in opcoes_organizador:
+                    self.mostrar_mensagem('O organizador já foi incluído na lista')
+                else:
+                    opcoes_organizador.append(opcao_organizador)
 
-                except ValueError:
-                    self.mostrar_mensagem('Valores numéricos devem ser inteiros')
-            else:
-                self.mostrar_mensagem('Não há organizadores cadastrados para listar')
-                self.mostrar_mensagem('Acesse a tela de organizadores para cadastrar um organizador')
-                return
+                    if len(organizadores) > 1 and len(opcoes_organizador) < len(organizadores):
+                        cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
+                        while cont not in 'SN':
+                            cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
+                        continuar = True if cont == 'S' else False
+                    else:
+                        continuar = False
+        else:
+            self.mostrar_mensagem('Não há organizadores cadastrados para listar')
+            self.mostrar_mensagem('Acesse a tela de organizadores para cadastrar um organizador')
+            return
 
-            return {'id_evento': id_evento, 'titulo': titulo, 'opcao_local': opcao_local, 'ano': ano,
-                    'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto, 'capacidade': capacidade,
-                    'opcoes_organizador': opcoes_organizador}
-
-        except ValueError:
-            self.mostrar_mensagem('Valores de data/número devem ser inteiros')
+        return {'id_evento': id_evento, 'titulo': titulo, 'opcao_local': opcao_local, 'ano': ano,
+                'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto, 'capacidade': capacidade,
+                'opcoes_organizador': opcoes_organizador}
 
     def mostrar_detalhes_evento(self, dados_evento):
         print("-" * 40)
@@ -228,11 +220,8 @@ class TelaEvento:
         print("-" * 40)
 
     def selecionar_evento(self):
-        try:
-            id_evento = int(input('\nId do evento que deseja selecionar: '))
-            return id_evento
-        except ValueError:
-            self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
+        id_evento = int(input('\nId do evento que deseja selecionar: '))
+        return id_evento
 
     def mostrar_mensagem(self, msg):
         print(msg)
