@@ -169,7 +169,7 @@ class ControladorParticipante:
             self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_participante, 2: self.excluir_participante, 3: self.alterar_participante,

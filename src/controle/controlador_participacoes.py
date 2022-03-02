@@ -148,7 +148,7 @@ class ControladorParticipacao:
                                                                "data_horario_saida": participacao.data_horario_saida})
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_participacao, 2: self.adicionar_horario_saida, 3: self.excluir_participacao,

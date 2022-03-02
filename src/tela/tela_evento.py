@@ -7,39 +7,38 @@ class TelaEvento:
 
     def tela_opcoes(self):
         print('\n-------- OPÇÕES ----------')
-        print("1 - Tela Local")
-        print("2 - Tela Organizador")
-        print("3 - Tela Participante")
-        print("4 - Tela Participação")
-        print('5 - Adicionar evento')
-        print('6 - Excluir evento')
-        print('7 - Alterar evento')
-        print('8 - Mostrar evento')
-        print('9 - Listar eventos')
-        print('10 - Listar eventos ocorridos')
-        print('11 - Listar eventos futuros')
-        print('12 - Listar organizadores do evento')
-        print('13 - Listar participantes do evento')
-        print('14 - Listar participações do evento')
-        print('15 - Listar participantes com comprovante')
-        print('16 - Listar participantes sem comprovante')
-        print('17 - Ranking de eventos por público')
-        print('18 - Adicionar organizador ao evento')
-        print('19 - Excluir organizador do evento')
-        print('20 - Adicionar participante ao evento')
-        print('21 - Excluir participante do evento')
-        print('22 - Adicionar participação ao evento')
-        print('23 - Excluir participação do evento')
+        # print("1 - Tela Local")
+        # print("2 - Tela Organizador")
+        # print("3 - Tela Participante")
+        # print("4 - Tela Participação")
+        print('1 - Adicionar evento')
+        print('2 - Excluir evento')
+        print('3 - Alterar evento')
+        print('4 - Mostrar evento')
+        print('5 - Listar eventos')
+        print('6 - Listar eventos ocorridos')
+        print('7 - Listar eventos futuros')
+
+        print('8 - Listar organizadores do evento')
+        print('9 - Listar participantes do evento')
+        print('10 - Listar participações do evento')
+        print('11 - Listar participantes com comprovante')
+        print('12 - Listar participantes sem comprovante')
+        print('13 - Ranking de eventos por público')
+
+        print('14 - Adicionar organizador ao evento')
+        print('15 - Excluir organizador do evento')
+        print('16 - Adicionar participante ao evento')
+        print('17 - Excluir participante do evento')
+        print('18 - Adicionar participação ao evento')
+        print('19 - Excluir participação do evento')
         print('0 - Retornar')
         print("-" * 40)
 
-        try:
+        opcao = int(input('Escolha uma opção: '))
+        while opcao < 0 or opcao > 19:
             opcao = int(input('Escolha uma opção: '))
-            while opcao < 0 or opcao > 23:
-                opcao = int(input('Escolha uma opção: '))
-            return opcao
-        except ValueError:
-            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
+        return opcao
 
     def pegar_dados_evento(self, locais: list, organizadores: list):
         print('\n-------- CADASTRAR EVENTO ----------')
@@ -60,6 +59,7 @@ class TelaEvento:
                     self.mostrar_mensagem('Valores numéricos devem ser inteiros')
             else:
                 self.mostrar_mensagem('Não há locais cadastrados para listar')
+                self.mostrar_mensagem('Acesse a tela de locais para cadastrar um local')
                 return
 
             ano = int(input('Ano de realização do evento: '))
@@ -98,6 +98,7 @@ class TelaEvento:
                     self.mostrar_mensagem('Valores numéricos devem ser inteiros')
             else:
                 self.mostrar_mensagem('Não há organizadores cadastrados para listar')
+                self.mostrar_mensagem('Acesse a tela de organizadores para cadastrar um organizador')
                 return
 
             return {'id_evento': id_evento, 'titulo': titulo, 'opcao_local': opcao_local, 'ano': ano,
@@ -179,6 +180,7 @@ class TelaEvento:
             print('HORARIO DE SAÍDA DO PARTICIPANTE: {0}'.format(participacao.data_horario_saida))
             print("-" * 40)
 
+    # Pode ser emendado no método listar_participantes_evento()
     def listar_participantes_sem_comprovante(self, participantes):
         for participante in participantes:
             print('\nCPF DO PARTICIPANTE: ', participante.cpf)
@@ -190,6 +192,7 @@ class TelaEvento:
             print('CEP: ', participante.endereco.cep)
             print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
 
+    # Pode ser emendado no método listar_participantes_evento()
     def listar_participantes_com_comprovante(self, participantes):
         for participante in participantes:
             print('\nCPF DO PARTICIPANTE: ', participante.cpf)

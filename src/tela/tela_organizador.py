@@ -12,13 +12,10 @@ class TelaOrganizador:
         print('0 - Retornar')
         print("-" * 40)
 
-        try:
+        opcao = int(input('Escolha uma opção: '))
+        while opcao not in [0, 1, 2, 3, 4, 5]:
             opcao = int(input('Escolha uma opção: '))
-            while opcao not in [0, 1, 2, 3, 4, 5]:
-                opcao = int(input('Escolha uma opção: '))
-            return opcao
-        except ValueError:
-            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
+        return opcao
 
     def pegar_dados_organizador(self):
         print('\n-------- CADASTRAR ORGANIZADOR ----------')

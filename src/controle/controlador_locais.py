@@ -77,7 +77,7 @@ class ControladorLocal:
             self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_local, 2: self.excluir_local, 3: self.alterar_local,

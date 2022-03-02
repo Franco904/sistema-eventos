@@ -2,10 +2,7 @@ from datetime import datetime
 
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.evento import Evento
-from src.entidade.local import Local
-from src.entidade.organizador import Organizador
 from src.tela.tela_evento import TelaEvento
-from src.tela.tela_participacao import TelaParticipacao
 
 
 class ControladorEvento:
@@ -13,7 +10,6 @@ class ControladorEvento:
         self.__controlador_sistema = controlador_sistema
         self.__eventos = []
         self.__tela_evento = TelaEvento()
-        self.__tela_participacao = TelaParticipacao()
 
     @property
     def eventos(self):
@@ -23,20 +19,27 @@ class ControladorEvento:
     def tela_evento(self):
         return self.__tela_evento
 
+    # OK
     def adicionar_evento(self):
-        dados_evento = self.__tela_evento.pegar_dados_evento(
-            self.__controlador_sistema.controladores['controlador_locais'].locais,
-            self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
-        )
+        locais = self.__controlador_sistema.controladores['controlador_locais'].locais
+        organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+
+        dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores)
+
+        if dados_evento is None:
+            return
+
+        # Faz a verificação da existência do evento na lista
+        for evento in self.__eventos:
+            if evento.id_evento == dados_evento['id_evento']:
+                self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista')
+                return
         try:
-            organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
             organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
 
             evento = Evento(dados_evento['id_evento'],
                             dados_evento['titulo'],
-                            self.__controlador_sistema.controladores['controlador_locais'].locais[
-                                dados_evento['opcao_local'] - 1
-                            ],
+                            locais[dados_evento['opcao_local'] - 1],
                             [
                                 dados_evento['ano'],
                                 dados_evento['mes'],
@@ -53,6 +56,7 @@ class ControladorEvento:
         except TypeError:
             self.__tela_evento.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
+    # OK
     def excluir_evento(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -65,6 +69,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # OK
     def alterar_evento(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -72,20 +77,28 @@ class ControladorEvento:
             evento = self.pegar_evento_por_id(id_evento)
             try:
                 if evento is not None:
-                    novos_dados_evento = self.__tela_evento.pegar_dados_evento(
-                        self.__controlador_sistema.controladores['controlador_locais'].locais,
-                        self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
-                    )
+                    locais = self.__controlador_sistema.controladores['controlador_locais'].locais
                     organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
+
+                    novos_dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores)
+
+                    if novos_dados_evento is None:
+                        return
+
+                    # Faz a verificação da existência do evento na lista e deixa alterar se for o id atual
+                    for e in self.__eventos:
+                        if e.id_evento == novos_dados_evento['id_evento']\
+                                and evento.id_evento != novos_dados_evento['id_evento']:
+                            self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista')
+                            return
+
                     organizadores_incluidos = list(
                         map(lambda op: organizadores[op - 1], novos_dados_evento['opcoes_organizador'])
                     )
 
                     evento.id_evento = novos_dados_evento['id_evento']
                     evento.titulo = novos_dados_evento['titulo']
-                    evento.local = self.__controlador_sistema.controladores['controlador_locais'].locais[
-                        novos_dados_evento['opcao_local'] - 1
-                        ]
+                    evento.local = locais[novos_dados_evento['opcao_local'] - 1]
                     evento.data_horario_evento = [
                         novos_dados_evento['ano'],
                         novos_dados_evento['mes'],
@@ -103,6 +116,7 @@ class ControladorEvento:
             except TypeError:
                 self.__tela_evento.mostrar_mensagem('Algum dado foi inserido incorretamente')
 
+    # OK
     def mostrar_evento(self):
         if len(self.__eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
@@ -124,12 +138,14 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
 
+    # OK
     def pegar_evento_por_id(self, id_evento):
         for evento in self.__eventos:
             if evento.id_evento == id_evento:
                 return evento
         return None
 
+    # OK
     def listar_eventos(self):
         if len(self.__eventos) > 0:
             for evento in self.__eventos:
@@ -148,6 +164,7 @@ class ControladorEvento:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
             return False
 
+    # OK
     def listar_eventos_ocorridos(self):
         if len(self.__eventos) > 0:
             eventos_ocorridos = list(filter(lambda e: e.data_horario_evento < datetime.now(), self.__eventos))
@@ -169,6 +186,7 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
 
+    # OK
     def listar_eventos_futuros(self):
         if len(self.__eventos) > 0:
             eventos_futuros = list(filter(lambda e: e.data_horario_evento > datetime.now(), self.__eventos))
@@ -190,6 +208,7 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar')
 
+    # ANALISAR
     def listar_organizadores_evento(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -203,6 +222,7 @@ class ControladorEvento:
                 else:
                     self.__tela_evento.mostrar_mensagem('Não há organizadores para listar')
 
+    # ANALISAR
     def listar_participantes_evento(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -216,6 +236,7 @@ class ControladorEvento:
                 else:
                     self.__tela_evento.mostrar_mensagem('Não há participantes para listar')
 
+    # ANALISAR
     def listar_participacoes_evento(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -229,6 +250,7 @@ class ControladorEvento:
                 else:
                     self.__tela_evento.mostrar_mensagem('Não há participações para listar')
 
+    # ANALISAR
     def listar_participantes_com_comprovante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -239,10 +261,11 @@ class ControladorEvento:
                 participantes = evento.participantes
                 participantes_com_comprovante = list(filter(
                     lambda p: p.status_participante == StatusParticipante.autorizado
-                                or p.status_participante == StatusParticipante.nao_autorizado, participantes))
+                    or p.status_participante == StatusParticipante.nao_autorizado, participantes))
 
                 self.__tela_evento.listar_participantes_com_comprovante(participantes_com_comprovante)
 
+    # ANALISAR
     def listar_participantes_sem_comprovante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -257,6 +280,7 @@ class ControladorEvento:
 
                 self.__tela_evento.listar_participantes_com_comprovante(participantes_sem_comprovante)
 
+    # ANALISAR
     def ranking_eventos_por_publico(self):
         dados_evento = {}
         for evento in self.__eventos:
@@ -266,6 +290,7 @@ class ControladorEvento:
 
         self.__tela_evento.mostrar_eventos_rankeados(eventos_rankeados)
 
+    # ANALISAR
     def adicionar_organizador(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -289,6 +314,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # ANALISAR
     def adicionar_participante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -312,6 +338,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # ANALISAR
     def adicionar_participacao(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -335,6 +362,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # ANALISAR
     def excluir_organizador(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -358,6 +386,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # ANALISAR
     def excluir_participante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -381,6 +410,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # ANALISAR
     def excluir_participacao(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -404,23 +434,31 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado')
 
+    # OK
     def retornar(self):
         self.__controlador_sistema.abrir_tela()
 
+    # OK
     def abrir_tela(self):
-        lista_opcoes = {1: self.__controlador_sistema.controladores['controlador_locais'].abrir_tela,
-                        2: self.__controlador_sistema.controladores['controlador_organizadores'].abrir_tela,
-                        3: self.__controlador_sistema.controladores['controlador_participantes'].abrir_tela,
-                        4: self.__controlador_sistema.controladores['controlador_participacoes'].abrir_tela,
-                        5: self.adicionar_evento, 6: self.excluir_evento, 7: self.alterar_evento,
-                        8: self.mostrar_evento,
-                        9: self.listar_eventos, 10: self.listar_eventos_ocorridos, 11: self.listar_eventos_futuros,
-                        12: self.listar_organizadores_evento, 13: self.listar_participantes_evento,
-                        14: self.listar_participacoes_evento, 15: self.listar_participantes_com_comprovante,
-                        16: self.listar_participantes_sem_comprovante, 17: self.ranking_eventos_por_publico,
-                        18: self.adicionar_organizador, 19: self.excluir_organizador,
-                        20: self.adicionar_participante, 21: self.excluir_participante,
-                        22: self.adicionar_participacao, 23: self.excluir_participacao,
+        lista_opcoes = {1: self.adicionar_evento,
+                        2: self.excluir_evento,
+                        3: self.alterar_evento,
+                        4: self.mostrar_evento,
+                        5: self.listar_eventos,
+                        6: self.listar_eventos_ocorridos,
+                        7: self.listar_eventos_futuros,
+                        8: self.listar_organizadores_evento,
+                        9: self.listar_participantes_evento,
+                        10: self.listar_participacoes_evento,
+                        11: self.listar_participantes_com_comprovante,
+                        12: self.listar_participantes_sem_comprovante,
+                        13: self.ranking_eventos_por_publico,
+                        14: self.adicionar_organizador,
+                        15: self.excluir_organizador,
+                        16: self.adicionar_participante,
+                        17: self.excluir_participante,
+                        18: self.adicionar_participacao,
+                        19: self.excluir_participacao,
                         0: self.retornar}
         continua = True
         while continua:

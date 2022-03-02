@@ -88,7 +88,7 @@ class ControladorOrganizador:
             self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar')
 
     def retornar(self):
-        self.__controlador_sistema.controladores['controlador_eventos'].abrir_tela()
+        self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
         lista_opcoes = {1: self.adicionar_organizador, 2: self.excluir_organizador, 3: self.alterar_organizador,
