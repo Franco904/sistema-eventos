@@ -50,8 +50,8 @@ class TelaEvento:
             while opcao_local > len(locais) or opcao_local < 1:
                 opcao_local = int(input('Escolha uma opção: '))
         else:
-            self.mostrar_mensagem('Não há locais cadastrados para listar')
-            self.mostrar_mensagem('Acesse a tela de locais para cadastrar um local')
+            print('Não há locais cadastrados para listar.')
+            print('Acesse a tela de locais para cadastrar um local.')
             return
 
         ano = int(input('Ano de realização do evento: '))
@@ -74,7 +74,7 @@ class TelaEvento:
                     opcao_organizador = int(input('Escolha uma opção: '))
 
                 if opcao_organizador in opcoes_organizador:
-                    self.mostrar_mensagem('O organizador já foi incluído na lista')
+                    print('O organizador já foi incluído na lista.')
                 else:
                     opcoes_organizador.append(opcao_organizador)
 
@@ -86,8 +86,8 @@ class TelaEvento:
                     else:
                         continuar = False
         else:
-            self.mostrar_mensagem('Não há organizadores cadastrados para listar')
-            self.mostrar_mensagem('Acesse a tela de organizadores para cadastrar um organizador')
+            print('Não há organizadores cadastrados para listar.')
+            print('Acesse a tela de organizadores para cadastrar um organizador.')
             return
 
         return {'id_evento': id_evento, 'titulo': titulo, 'opcao_local': opcao_local, 'ano': ano,
@@ -105,13 +105,14 @@ class TelaEvento:
 
     def mostrar_eventos_rankeados(self, eventos):
         print("-" * 40)
-        print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
-        if len(eventos) == 0:
-            print('Não há eventos cadastrados.')
-        else:
+        if len(eventos) > 0:
+            print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
             print('\nTítulo do evento : Público')
             for titulo, participacoes in eventos.items():
                 print(titulo, ' : ', participacoes)
+        else:
+            print('Os eventos para listar não possuem participações cadastradas.')
+            print('Acesse a tela de participações para cadastrar uma participação.')
         print("-" * 40)
 
     def mostrar_organizadores(self, organizadores):
@@ -123,7 +124,7 @@ class TelaEvento:
                 print(o.nome) if o.cpf == organizadores[-1].cpf else print(o.nome, ', ', end='')
 
     def mostrar_participantes(self, participantes):
-        print('PARTICIPANTES: ', end='')
+        print('PARTICIPANTES:')
         if len(participantes) == 0:
             print('Nenhum participante inserido')
         else:
@@ -131,7 +132,7 @@ class TelaEvento:
                 print(p.nome) if p.cpf == participantes[-1].cpf else print(p.nome, ', ', end='')
 
     def mostrar_participacoes(self, participacoes):
-        print('PARTICIPAÇÕES CONFIRMADAS: ', end='')
+        print('PARTICIPAÇÕES CONFIRMADAS:')
         if len(participacoes) == 0:
             print('Nenhuma participação inserida')
         else:
