@@ -171,7 +171,7 @@ class TelaEvento:
                 if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
                 else participante.comprovante_saude.data_horario_teste.strftime('%d/%m/%Y, %H:%M'))
                 print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
-        print('-' * 40)
+            print('-' * 40)
 
     def listar_participacoes_evento(self, participacoes):
         for participacao in participacoes:

@@ -96,7 +96,7 @@ class ControladorEvento:
 
                     # Faz a verificação da existência do evento na lista e deixa alterar se for o id atual
                     for e in self.__eventos:
-                        if e.id_evento == novos_dados_evento['id_evento']\
+                        if e.id_evento == novos_dados_evento['id_evento'] \
                                 and evento.id_evento != novos_dados_evento['id_evento']:
                             self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista.')
                             return
@@ -298,7 +298,7 @@ class ControladorEvento:
                 if len(participantes) > 0:
                     participantes_com_comprovante = list(filter(
                         lambda p: p.status_participante == StatusParticipante.autorizado
-                        or p.status_participante == StatusParticipante.nao_autorizado, participantes))
+                                  or p.status_participante == StatusParticipante.nao_autorizado, participantes))
 
                     self.__tela_evento.listar_participantes_evento(participantes_com_comprovante)
                 else:
