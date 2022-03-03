@@ -7,10 +7,6 @@ class TelaEvento:
 
     def tela_opcoes(self):
         print('\n-------- OPÇÕES ----------')
-        # print("1 - Tela Local")
-        # print("2 - Tela Organizador")
-        # print("3 - Tela Participante")
-        # print("4 - Tela Participação")
         print('1 - Adicionar evento')
         print('2 - Excluir evento')
         print('3 - Alterar evento')
@@ -18,13 +14,13 @@ class TelaEvento:
         print('5 - Listar eventos')
         print('6 - Listar eventos ocorridos')
         print('7 - Listar eventos futuros')
+        print('8 - Ranking de eventos por público')
 
-        print('8 - Listar organizadores do evento')
-        print('9 - Listar participantes do evento')
-        print('10 - Listar participações do evento')
-        print('11 - Listar participantes com comprovante')
-        print('12 - Listar participantes sem comprovante')
-        print('13 - Ranking de eventos por público')
+        print('9 - Listar organizadores do evento')
+        print('10 - Listar participantes do evento')
+        print('11 - Listar participações do evento')
+        print('12 - Listar participantes com comprovante')
+        print('13 - Listar participantes sem comprovante')
 
         print('14 - Adicionar organizador ao evento')
         print('15 - Excluir organizador do evento')
@@ -42,19 +38,17 @@ class TelaEvento:
 
     def pegar_dados_evento(self, locais: list, organizadores: list):
         print('\n-------- CADASTRAR EVENTO ----------')
-
         id_evento = int(input('Id do evento: '))
         titulo = input('Título: ')
-        opcao_local = None
         if len(locais) > 0:
             print('Selecione um dos locais cadastrados:')
 
             for i, l in enumerate(locais):
                 print(f'[ {i + 1} ] Id: {l.id}, Nome: {l.nome}')
 
+            opcao_local = int(input('Escolha uma opção: '))
+            while opcao_local > len(locais) or opcao_local < 1:
                 opcao_local = int(input('Escolha uma opção: '))
-                while opcao_local > len(locais) or opcao_local < 1:
-                    opcao_local = int(input('Escolha uma opção: '))
         else:
             self.mostrar_mensagem('Não há locais cadastrados para listar')
             self.mostrar_mensagem('Acesse a tela de locais para cadastrar um local')
@@ -105,19 +99,33 @@ class TelaEvento:
         print('ID DO EVENTO: ', dados_evento['id_evento'])
         print('TÍTULO DO EVENTO: ', dados_evento['titulo'])
         print('LOCAL DO EVENTO: ', dados_evento['local'].nome)
-        print('DATA E HORÁRIO DO EVENTO: ', dados_evento['data_horario_evento'].strftime('%d/%m/%Y'))
+        print('DATA E HORÁRIO DO EVENTO: ', dados_evento['data_horario_evento'].strftime('%d/%m/%Y, %H:%M'))
         print('CAPACIDADE: ', dados_evento['capacidade'])
+        print("-" * 40)
+
+    def mostrar_eventos_rankeados(self, eventos):
+        print("-" * 40)
+        print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
+        if len(eventos) == 0:
+            print('Não há eventos cadastrados.')
+        else:
+            print('\nTítulo do evento : Público')
+            for titulo, participacoes in eventos.items():
+                print(titulo, ' : ', participacoes)
         print("-" * 40)
 
     def mostrar_organizadores(self, organizadores):
         print('ORGANIZADORES:')
-        for o in organizadores:
-            print(o.nome) if o.cpf == organizadores[-1].cpf else print(o.nome, ', ', end='')
+        if len(organizadores) == 0:
+            print('Nenhum organizador inserido')
+        else:
+            for o in organizadores:
+                print(o.nome) if o.cpf == organizadores[-1].cpf else print(o.nome, ', ', end='')
 
     def mostrar_participantes(self, participantes):
         print('PARTICIPANTES: ', end='')
         if len(participantes) == 0:
-            print('Não há participantes cadastrados')
+            print('Nenhum participante inserido')
         else:
             for p in participantes:
                 print(p.nome) if p.cpf == participantes[-1].cpf else print(p.nome, ', ', end='')
@@ -125,23 +133,24 @@ class TelaEvento:
     def mostrar_participacoes(self, participacoes):
         print('PARTICIPAÇÕES CONFIRMADAS: ', end='')
         if len(participacoes) == 0:
-            print('Não há participações cadastradas')
-        # else:
-        #     for p in participacoes:
-        #         print(p.participante.nome) if p.id == participacoes[-1].id \
-        #             else print(p.participante.nome, ', ', end='')
-
-        # TODO: Tirar os comentários após criar controlador de participações
+            print('Nenhuma participação inserida')
+        else:
+            for p in participacoes:
+                print(p.participante.nome) if p.id == participacoes[-1].id \
+                    else print(p.participante.nome, ', ', end='')
 
     def listar_organizadores_evento(self, organizadores):
         for organizador in organizadores:
-            print('\nCPF DO ORGANIZADOR: ', organizador.cpf)
+            print('-' * 40)
+            print('CPF DO ORGANIZADOR: ', organizador.cpf)
             print('NOME DO ORGANIZADOR: ', organizador.nome)
             print('DATA DE NASCIMENTO DO ORGANIZADOR: ', organizador.data_nascimento.strftime('%d/%m/%Y'))
+            print('-' * 40)
 
     def listar_participantes_evento(self, participantes):
         for participante in participantes:
-            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
+            print('-' * 40)
+            print('CPF DO PARTICIPANTE: ', participante.cpf)
             print('NOME DO PARTICIPANTE: ', participante.nome)
             print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
             print('ENDEREÇO DO PARTICIPANTE: ')
@@ -159,65 +168,19 @@ class TelaEvento:
                       'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
                 print('Data e horário do teste PCR: ', 'Não realizado'
                 if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
-                else participante.comprovante_saude.data_horario_teste)
+                else participante.comprovante_saude.data_horario_teste.strftime('%d/%m/%Y, %H:%M'))
                 print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
+        print('-' * 40)
 
     def listar_participacoes_evento(self, participacoes):
         for participacao in participacoes:
-            print("-" * 40)
+            print('-' * 40)
             print('ID DA PARTICIPAÇÃO: ', participacao.id)
             print('ID DO EVENTO: ', participacao.id_evento)
             print('CPF DO PARTICIPANTE: ', participacao.cpf_participante)
             print('HORARIO DE ENTRADA DO PARTICIPANTE: {0}'.format(participacao.data_horario_entrada))
             print('HORARIO DE SAÍDA DO PARTICIPANTE: {0}'.format(participacao.data_horario_saida))
-            print("-" * 40)
-
-    # Pode ser emendado no método listar_participantes_evento()
-    def listar_participantes_sem_comprovante(self, participantes):
-        for participante in participantes:
-            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-            print('NOME DO PARTICIPANTE: ', participante.nome)
-            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-            print('ENDEREÇO DO PARTICIPANTE: ')
-            print('Logradouro: ', participante.endereco.logradouro)
-            print('Número de endereço: ', participante.endereco.num_endereco)
-            print('CEP: ', participante.endereco.cep)
-            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
-
-    # Pode ser emendado no método listar_participantes_evento()
-    def listar_participantes_com_comprovante(self, participantes):
-        for participante in participantes:
-            print('\nCPF DO PARTICIPANTE: ', participante.cpf)
-            print('NOME DO PARTICIPANTE: ', participante.nome)
-            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-            print('ENDEREÇO DO PARTICIPANTE: ')
-            print('Logradouro: ', participante.endereco.logradouro)
-            print('Número de endereço: ', participante.endereco.num_endereco)
-            print('CEP: ', participante.endereco.cep)
-            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
-            print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
-            if participante.comprovante_saude is None:
-                print('Não cadastrado')
-            else:
-                print('\nTomou primeira dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.primeira_dose else 'Não')
-                print('Tomou segunda dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
-                print('Data e horário do teste PCR: ', 'Não realizado'
-                if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
-                else participante.comprovante_saude.data_horario_teste)
-                print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
-
-    def mostrar_eventos_rankeados(self, eventos):
-        print("-" * 40)
-        print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
-        if len(eventos) == 0:
-            print('Não há eventos cadastrados')
-        else:
-            print('\nTítulo do evento : Público')
-            for titulo, participacoes in eventos.items():
-                print(titulo, ' : ', participacoes)
-        print("-" * 40)
+            print('-' * 40)
 
     def selecionar_evento(self):
         id_evento = int(input('\nId do evento que deseja selecionar: '))

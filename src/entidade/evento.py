@@ -101,10 +101,10 @@ class Evento:
                 and isinstance(data_horario_evento[3], int) \
                 and isinstance(data_horario_evento[4], int):
             self.__data_horario_evento = datetime(data_horario_evento[0],
-                                                   data_horario_evento[1],
-                                                   data_horario_evento[2],
-                                                   data_horario_evento[3],
-                                                   data_horario_evento[4])
+                                                  data_horario_evento[1],
+                                                  data_horario_evento[2],
+                                                  data_horario_evento[3],
+                                                  data_horario_evento[4])
         else:
             raise TypeError
 
@@ -173,13 +173,13 @@ class Evento:
             raise TypeError
 
     def excluir_organizador(self, organizador: Organizador):
-        existe = False
+        # existe = False
         if isinstance(organizador, Organizador) and organizador is not None:
-            for o in self.__organizadores:
-                if o.cpf == organizador.cpf:
-                    existe = True
-            if not existe:
-                raise TypeError
+            # for o in self.__organizadores:
+            #     if o.cpf == organizador.cpf:
+            #         existe = True
+            # if not existe:
+            #     raise TypeError
             self.__organizadores.remove(organizador)
         else:
             raise TypeError

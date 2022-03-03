@@ -67,4 +67,4 @@ class ControladorSistema:
             try:
                 lista_opcoes[self.__tela_sistema.tela_opcoes()]()
             except (KeyError, ValueError):
-                self.__tela_sistema.mostrar_mensagem('Valores numéricos devem ser inteiros')
+                self.__tela_sistema.mostrar_mensagem('Valores numéricos devem ser inteiros.')

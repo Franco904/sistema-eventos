@@ -13,9 +13,10 @@ class ControladorLocal:
         return self.__locais
 
     def adicionar_local(self):
-        dados_local = self.__tela_local.pegar_dados_local()
+        # dados_local = self.__tela_local.pegar_dados_local()
         try:
-            local = Local(dados_local["id"], dados_local["nome"])
+            # local = Local(dados_local["id"], dados_local["nome"])
+            local = Local(1, 'LHC')
             self.__locais.append(local)
             self.__tela_local.mostrar_mensagem('Local adicionado na lista')
 

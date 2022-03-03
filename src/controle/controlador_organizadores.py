@@ -17,13 +17,17 @@ class ControladorOrganizador:
         return self.__tela_organizador
 
     def adicionar_organizador(self):
-        dados_organizador = self.__tela_organizador.pegar_dados_organizador()
+        # dados_organizador = self.__tela_organizador.pegar_dados_organizador()
         try:
-            organizador = Organizador(dados_organizador["cpf"], dados_organizador["nome"],
-                                      [dados_organizador["ano_nascimento"],
-                                       dados_organizador["mes_nascimento"],
-                                       dados_organizador["dia_nascimento"]])
-            self.__organizadores.append(organizador)
+            # organizador = Organizador(dados_organizador["cpf"], dados_organizador["nome"],
+            #                           [dados_organizador["ano_nascimento"],
+            #                            dados_organizador["mes_nascimento"],
+            #                            dados_organizador["dia_nascimento"]])
+            o1 = Organizador('12833158904', 'Franco', [2003, 9, 4])
+            o2 = Organizador('12345678900', 'Augusto', [2006, 3, 7])
+
+            self.__organizadores.append(o1)
+            self.__organizadores.append(o2)
             self.__tela_organizador.mostrar_mensagem('Organizador adicionado na lista.')
 
         except TypeError:
