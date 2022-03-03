@@ -19,13 +19,10 @@ class TelaLocal:
 
     def pegar_dados_local(self):
         print('\n-------- CADASTRAR LOCAL ----------')
-        try:
-            id = int(input('Id: '))
-            nome = input('Nome: ')
+        id = int(input('Id: '))
+        nome = input('Nome: ')
 
-            return {'id': id, 'nome': nome}
-        except ValueError:
-            self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
+        return {'id': id, 'nome': nome}
 
     def mostrar_local(self, dados_local):
         print("-" * 40)
@@ -34,11 +31,8 @@ class TelaLocal:
         print("-" * 40)
 
     def selecionar_local(self):
-        try:
-            id_local = int(input('Id do local que deseja selecionar: '))
-            return id_local
-        except ValueError:
-            self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
+        id_local = int(input('Id do local que deseja selecionar: '))
+        return id_local
 
     def mostrar_mensagem(self, msg):
         print(msg)

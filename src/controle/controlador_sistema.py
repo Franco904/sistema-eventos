@@ -15,12 +15,10 @@ class ControladorSistema:
     def controladores(self):
         return self.__controladores
 
-    # OK
     def inicializar_sistema(self):
         self.inicializar_controladores()
         self.abrir_tela()
 
-    # OK
     def inicializar_controladores(self):
         # Cria instâncias globais dos controladores
         self.__controladores = {
@@ -31,30 +29,24 @@ class ControladorSistema:
             'controlador_participacoes': ControladorParticipacao(self)
         }
 
-    # OK
     def abrir_eventos(self):
         self.__controladores['controlador_eventos'].abrir_tela()
 
-    # OK
     def abrir_locais(self):
         self.__controladores['controlador_locais'].abrir_tela()
 
-    # OK
     def abrir_organizadores(self):
         self.__controladores['controlador_organizadores'].abrir_tela()
 
-    # OK
     def abrir_participantes(self):
         self.__controladores['controlador_participantes'].abrir_tela()
 
     def abrir_participacoes(self):
         self.__controladores['controlador_participacoes'].abrir_tela()
 
-    # OK
     def encerrar_sistema(self):
         exit(0)
 
-    # OK
     def abrir_tela(self):
         lista_opcoes = {1: self.abrir_eventos,
                         2: self.abrir_locais,
