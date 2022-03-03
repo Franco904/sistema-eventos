@@ -140,6 +140,7 @@ class TelaEvento:
                 print(p.participante.nome) if p.id == participacoes[-1].id \
                     else print(p.participante.nome, ', ', end='')
 
+    # Usar método da tela específica
     def listar_organizadores_evento(self, organizadores):
         for organizador in organizadores:
             print('-' * 40)
@@ -148,6 +149,7 @@ class TelaEvento:
             print('DATA DE NASCIMENTO DO ORGANIZADOR: ', organizador.data_nascimento.strftime('%d/%m/%Y'))
             print('-' * 40)
 
+    # Usar método da tela específica
     def listar_participantes_evento(self, participantes):
         for participante in participantes:
             print('-' * 40)
@@ -173,6 +175,7 @@ class TelaEvento:
                 print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
             print('-' * 40)
 
+    # Usar método da tela específica
     def listar_participacoes_evento(self, participacoes):
         for participacao in participacoes:
             print('-' * 40)

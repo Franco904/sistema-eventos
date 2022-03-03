@@ -55,7 +55,7 @@ class ControladorEvento:
                 'Evento 1',
                 locais[0],
                 [2022, 2, 2, 14, 40],
-                500,
+                1,
                 [organizadores[0]]
             )
 
@@ -168,8 +168,11 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_organizadores(evento.organizadores)
                 self.__tela_evento.mostrar_participantes(evento.participantes)
                 self.__tela_evento.mostrar_participacoes(evento.participacoes)
+
+            return True
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
+            return False
 
     # OK
     def listar_eventos_ocorridos(self):
@@ -341,6 +344,7 @@ class ControladorEvento:
                 organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
 
                 if len(organizadores) > 0:
+                    # Verifica se há organizadores a inserir na lista do evento
                     if len(evento.organizadores) == len(organizadores):
                         self.__tela_evento.mostrar_mensagem('Todos os organizadores cadastrados já foram inseridos na '
                                                             'lista.')
@@ -367,7 +371,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
-    # OK
+    # ANALISAR
     def adicionar_participante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -378,9 +382,16 @@ class ControladorEvento:
                 participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
 
                 if len(participantes) > 0:
+                    # Verifica se há participantes a inserir na lista do evento
                     if len(evento.participantes) == len(participantes):
                         self.__tela_evento.mostrar_mensagem('Todos os participantes cadastrados já foram inseridos na '
                                                             'lista.')
+                        return
+
+                    # Verifica se vai extrapolar o limite de participantes do evento
+                    elif len(evento.participantes) == evento.capacidade:
+                        self.__tela_evento.mostrar_mensagem('O evento já alcançou a sua capacidade máxima de '
+                                                            'participantes.')
                         return
 
                     self.__controlador_sistema.controladores['controlador_participantes'].listar_participantes()
@@ -404,7 +415,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
-    # OK
+    # ANALISAR
     def adicionar_participacao(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -415,6 +426,7 @@ class ControladorEvento:
                 participacoes = self.__controlador_sistema.controladores['controlador_participacoes'].participacoes
 
                 if len(participacoes) > 0:
+                    # Verifica se há participações a inserir na lista do evento
                     if len(evento.participacoes) == len(participacoes):
                         self.__tela_evento.mostrar_mensagem('Todos as participacões cadastradas já foram inseridas na '
                                                             'lista.')
@@ -473,7 +485,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
-    # OK
+    # ANALISAR
     def excluir_participante(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
@@ -505,7 +517,7 @@ class ControladorEvento:
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
-    # OK
+    # ANALISAR
     def excluir_participacao(self):
         self.listar_eventos()
         if len(self.__eventos) > 0:
