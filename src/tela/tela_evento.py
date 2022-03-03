@@ -18,9 +18,9 @@ class TelaEvento:
 
         print('9 - Listar organizadores do evento')
         print('10 - Listar participantes do evento')
-        print('11 - Listar participações do evento')
-        print('12 - Listar participantes com comprovante')
-        print('13 - Listar participantes sem comprovante')
+        print('11 - Listar participantes com comprovante')
+        print('12 - Listar participantes sem comprovante')
+        print('13 - Listar participações do evento')
 
         print('14 - Adicionar organizador ao evento')
         print('15 - Excluir organizador do evento')
@@ -139,52 +139,6 @@ class TelaEvento:
             for p in participacoes:
                 print(p.participante.nome) if p.id == participacoes[-1].id \
                     else print(p.participante.nome, ', ', end='')
-
-    # Usar método da tela específica
-    def listar_organizadores_evento(self, organizadores):
-        for organizador in organizadores:
-            print('-' * 40)
-            print('CPF DO ORGANIZADOR: ', organizador.cpf)
-            print('NOME DO ORGANIZADOR: ', organizador.nome)
-            print('DATA DE NASCIMENTO DO ORGANIZADOR: ', organizador.data_nascimento.strftime('%d/%m/%Y'))
-            print('-' * 40)
-
-    # Usar método da tela específica
-    def listar_participantes_evento(self, participantes):
-        for participante in participantes:
-            print('-' * 40)
-            print('CPF DO PARTICIPANTE: ', participante.cpf)
-            print('NOME DO PARTICIPANTE: ', participante.nome)
-            print('DATA DE NASCIMENTO DO PARTICIPANTE: ', participante.data_nascimento.strftime('%d/%m/%Y'))
-            print('ENDEREÇO DO PARTICIPANTE: ')
-            print('Logradouro: ', participante.endereco.logradouro)
-            print('Número de endereço: ', participante.endereco.num_endereco)
-            print('CEP: ', participante.endereco.cep)
-            print('STATUS DO PARTICIPANTE: ', participante.status_participante.name)
-            print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
-            if participante.comprovante_saude is None:
-                print('Não cadastrado')
-            else:
-                print('\nTomou primeira dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.primeira_dose else 'Não')
-                print('Tomou segunda dose vacinal? ',
-                      'Sim' if participante.comprovante_saude.segunda_dose else 'Não')
-                print('Data e horário do teste PCR: ', 'Não realizado'
-                if participante.comprovante_saude.data_horario_teste == datetime(12, 12, 12, 12, 12)
-                else participante.comprovante_saude.data_horario_teste.strftime('%d/%m/%Y, %H:%M'))
-                print('Teste PCR: ', participante.comprovante_saude.resultado_pcr.name)
-            print('-' * 40)
-
-    # Usar método da tela específica
-    def listar_participacoes_evento(self, participacoes):
-        for participacao in participacoes:
-            print('-' * 40)
-            print('ID DA PARTICIPAÇÃO: ', participacao.id)
-            print('ID DO EVENTO: ', participacao.id_evento)
-            print('CPF DO PARTICIPANTE: ', participacao.cpf_participante)
-            print('HORARIO DE ENTRADA DO PARTICIPANTE: {0}'.format(participacao.data_horario_entrada))
-            print('HORARIO DE SAÍDA DO PARTICIPANTE: {0}'.format(participacao.data_horario_saida))
-            print('-' * 40)
 
     def selecionar_evento(self):
         id_evento = int(input('\nId do evento que deseja selecionar: '))

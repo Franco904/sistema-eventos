@@ -92,8 +92,11 @@ class ControladorOrganizador:
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
-                self.__tela_organizador.mostrar_organizador({'cpf': organizador.cpf, 'nome': organizador.nome,
-                                                             'data_nascimento': organizador.data_nascimento})
+                self.__tela_organizador.mostrar_organizador({
+                    'cpf': organizador.cpf,
+                    'nome': organizador.nome,
+                    'data_nascimento': organizador.data_nascimento
+                })
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
         else:
@@ -108,8 +111,11 @@ class ControladorOrganizador:
     def listar_organizadores(self):
         if len(self.__organizadores) > 0:
             for organizador in self.__organizadores:
-                self.__tela_organizador.mostrar_organizador({'cpf': organizador.cpf, 'nome': organizador.nome,
-                                                             'data_nascimento': organizador.data_nascimento})
+                self.__tela_organizador.mostrar_organizador({
+                    'cpf': organizador.cpf,
+                    'nome': organizador.nome,
+                    'data_nascimento': organizador.data_nascimento
+                })
         else:
             self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar.')
 
