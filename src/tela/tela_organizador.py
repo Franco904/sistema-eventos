@@ -19,23 +19,20 @@ class TelaOrganizador:
 
     def pegar_dados_organizador(self):
         print('\n-------- CADASTRAR ORGANIZADOR ----------')
-        try:
-            cpf = input('CPF: ')
-            nome = input('Nome: ')
-            dia_nascimento = int(input('Dia do Nascimento: '))
-            mes_nascimento = int(input('Mês do Nascimento: '))
-            ano_nascimento = int(input('Ano do Nascimento: '))
+        cpf = input('CPF: ')
+        nome = input('Nome: ')
+        dia_nascimento = int(input('Dia de nascimento: '))
+        mes_nascimento = int(input('Mês de nascimento: '))
+        ano_nascimento = int(input('Ano de nascimento: '))
 
-            return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
-                    'ano_nascimento': ano_nascimento}
-        except ValueError:
-            self.mostrar_mensagem('Valores de data devem ser inteiros')
+        return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
+                'ano_nascimento': ano_nascimento}
 
     def mostrar_organizador(self, dados_organizador):
         print("-" * 40)
         print('CPF DO ORGANIZADOR: ', dados_organizador['cpf'])
         print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
-        print('DATA DE NASCIMENTO DO ORGANIZADOR: {0}'.format(dados_organizador['data_nascimento']))
+        print('DATA DE NASCIMENTO DO ORGANIZADOR: ', dados_organizador['data_nascimento'].strftime('%d/%m/%Y'))
         print("-" * 40)
 
     def selecionar_organizador(self):
