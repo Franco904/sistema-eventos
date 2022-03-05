@@ -18,7 +18,7 @@ class TelaParticipacao:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
-    def pegar_dados_participacao(self, eventos, participantes):
+    def pegar_dados_participacao(self, eventos: list, participantes: list):
         print('\n-------- CADASTRAR PARTICIPAÇÃO ----------')
         id = int(input('Id da participação: '))
 

@@ -36,9 +36,14 @@ class TelaEvento:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
-    def pegar_dados_evento(self, locais: list, organizadores: list):
-        print('\n-------- CADASTRAR EVENTO ----------')
-        id_evento = int(input('Id do evento: '))
+    def pegar_dados_evento(self, locais: list, organizadores: list, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR EVENTO ----------')
+            id_evento = int(input('Id do evento: '))
+        else:
+            print('\n-------- ALTERAR EVENTO ----------')
+            id_evento = None
+
         titulo = input('Título: ')
         if len(locais) > 0:
             print('Selecione um dos locais cadastrados:')

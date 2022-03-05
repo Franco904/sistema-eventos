@@ -23,9 +23,14 @@ class TelaParticipante:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
-    def pegar_dados_participante(self):
-        print('\n-------- CADASTRAR PARTICIPANTE ----------')
-        cpf = input('CPF: ')
+    def pegar_dados_participante(self, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR PARTICIPANTE ----------')
+            cpf = input('CPF: ')
+        else:
+            print('\n-------- ALTERAR PARTICIPANTE ----------')
+            cpf = None
+
         nome = input('Nome: ')
         dia = int(input('Dia de nascimento: '))
         mes = int(input('Mês de nascimento: '))
@@ -38,7 +43,7 @@ class TelaParticipante:
                 'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
 
     def pegar_dados_comprovante(self):
-        print('\n-------- CADASTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
+        print('\n-------- REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
         tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
         while tomou_primeira not in 'SN':
             tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]

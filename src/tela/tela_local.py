@@ -17,9 +17,14 @@ class TelaLocal:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
-    def pegar_dados_local(self):
-        print('\n-------- CADASTRAR LOCAL ----------')
-        id = int(input('Id: '))
+    def pegar_dados_local(self, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR LOCAL ----------')
+            id = int(input('Id: '))
+        else:
+            print('\n-------- ALTERAR LOCAL ----------')
+            id = None
+
         nome = input('Nome: ')
 
         return {'id': id, 'nome': nome}

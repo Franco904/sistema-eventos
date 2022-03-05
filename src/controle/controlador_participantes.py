@@ -17,35 +17,34 @@ class ControladorParticipante:
         return self.__tela_participante
 
     def adicionar_participante(self):
-        # dados_participante = self.__tela_participante.pegar_dados_participante()
-        #
-        # if dados_participante is None:
-        #     return
-        #
-        # # Faz a verificação da existência do participante na lista
-        # for participante in self.__participantes:
-        #     if participante.cpf == dados_participante['cpf']:
-        #         self.__tela_participante.mostrar_mensagem('O cpf inserido já pertence a um participante na lista.')
-        #         return
+        dados_participante = self.__tela_participante.pegar_dados_participante(False)
+
+        if dados_participante is None:
+            return
+
+        # Faz a verificação da existência do participante na lista
+        for participante in self.__participantes:
+            if participante.cpf == dados_participante['cpf']:
+                self.__tela_participante.mostrar_mensagem('O cpf inserido já pertence a um participante na lista.')
+                return
 
         try:
-            # participante = Participante(dados_participante['cpf'],
-            #                             dados_participante['nome'],
-            #                             [
-            #                                 dados_participante['ano'],
-            #                                 dados_participante['mes'],
-            #                                 dados_participante['dia']
-            #                             ],
-            #                             [
-            #                                 dados_participante['logradouro'],
-            #                                 dados_participante['num_endereco'],
-            #                                 dados_participante['cep']
-            #                             ])
-            p1 = Participante('13452134468', 'Claúdio', [1987, 3, 3], ['Avenida Brasil', 1230, '44677123'])
-            p2 = Participante('14567042155', 'Luisa', [1999, 4, 12], ['Rua dos Alves', 15, '88034530'])
+            participante = Participante(dados_participante['cpf'],
+                                        dados_participante['nome'],
+                                        [
+                                            dados_participante['ano'],
+                                            dados_participante['mes'],
+                                            dados_participante['dia']
+                                        ],
+                                        [
+                                            dados_participante['logradouro'],
+                                            dados_participante['num_endereco'],
+                                            dados_participante['cep']
+                                        ])
+            # p1 = Participante('13452134468', 'Claúdio', [1987, 3, 3], ['Avenida Brasil', 1230, '44677123'])
+            # p2 = Participante('14567042155', 'Luisa', [1999, 4, 12], ['Rua dos Alves', 15, '88034530'])
 
-            self.__participantes.append(p1)
-            self.__participantes.append(p2)
+            self.__participantes.append(participante)
             self.__tela_participante.mostrar_mensagem('Participante adicionado na lista.')
 
         except TypeError:
@@ -70,20 +69,11 @@ class ControladorParticipante:
             participante = self.pegar_participante_por_cpf(cpf_participante)
             try:
                 if participante is not None:
-                    novos_dados_participante = self.__tela_participante.pegar_dados_participante()
+                    novos_dados_participante = self.__tela_participante.pegar_dados_participante(True)
 
                     if novos_dados_participante is None:
                         return
 
-                    # Faz a verificação da existência do participante na lista e deixa alterar se for o cpf atual
-                    for p in self.__participantes:
-                        if p.cpf == novos_dados_participante['cpf'] \
-                                and participante.cpf != novos_dados_participante['cpf']:
-                            self.__tela_participante.mostrar_mensagem('O cpf inserido já pertence a um participante na '
-                                                                      'lista.')
-                            return
-
-                    participante.cpf = novos_dados_participante['cpf']
                     participante.nome = novos_dados_participante['nome']
                     participante.data_nascimento = [
                         novos_dados_participante['ano'],

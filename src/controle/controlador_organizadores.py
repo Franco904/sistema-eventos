@@ -17,27 +17,30 @@ class ControladorOrganizador:
         return self.__tela_organizador
 
     def adicionar_organizador(self):
-        # dados_organizador = self.__tela_organizador.pegar_dados_organizador()
-        #
-        # if dados_organizador is None:
-        #     return
-        #
-        # # Faz a verificação da existência do organizador na lista
-        # for local in self.__organizadores:
-        #     if local.cpf == dados_organizador['cpf']:
-        #         self.__tela_organizador.mostrar_mensagem('O cpf inserido já pertence a um organizador na lista.')
-        #         return
-        #
-        try:
-            #     organizador = Organizador(dados_organizador['cpf'], dados_organizador['nome'],
-            #                               [dados_organizador['ano_nascimento'],
-            #                                dados_organizador['mes_nascimento'],
-            #                                dados_organizador['dia_nascimento']])
-            o1 = Organizador('12833158904', 'Franco', [2003, 9, 4])
-            o2 = Organizador('12345678900', 'Augusto', [2006, 3, 7])
+        dados_organizador = self.__tela_organizador.pegar_dados_organizador(False)
 
-            self.__organizadores.append(o1)
-            self.__organizadores.append(o2)
+        if dados_organizador is None:
+            return
+
+        # Faz a verificação da existência do organizador na lista
+        for local in self.__organizadores:
+            if local.cpf == dados_organizador['cpf']:
+                self.__tela_organizador.mostrar_mensagem('O cpf inserido já pertence a um organizador na lista.')
+                return
+
+        try:
+            organizador = Organizador(
+                dados_organizador['cpf'],
+                dados_organizador['nome'],
+                [
+                    dados_organizador['ano_nascimento'],
+                    dados_organizador['mes_nascimento'],
+                    dados_organizador['dia_nascimento']
+                ])
+            # o1 = Organizador('12833158904', 'Franco', [2003, 9, 4])
+            # o2 = Organizador('12345678900', 'Augusto', [2006, 3, 7])
+
+            self.__organizadores.append(organizador)
             self.__tela_organizador.mostrar_mensagem('Organizador adicionado na lista.')
 
         except TypeError:
@@ -62,24 +65,16 @@ class ControladorOrganizador:
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
             try:
                 if organizador is not None:
-                    novos_dados_organizador = self.__tela_organizador.pegar_dados_organizador()
+                    novos_dados_organizador = self.__tela_organizador.pegar_dados_organizador(True)
 
                     if novos_dados_organizador is None:
                         return
 
-                    # Faz a verificação da existência do organizador na lista e deixa alterar se for o cpf atual
-                    for o in self.__organizadores:
-                        if o.cpf == novos_dados_organizador['cpf'] \
-                                and organizador.cpf != novos_dados_organizador['cpf']:
-                            self.__tela_organizador.mostrar_mensagem('O cpf inserido já pertence a um organizador na '
-                                                                     'lista.')
-                            return
-
-                    organizador.cpf = novos_dados_organizador['cpf']
                     organizador.nome = novos_dados_organizador['nome']
                     organizador.data_nascimento = [novos_dados_organizador['ano_nascimento'],
                                                    novos_dados_organizador['mes_nascimento'],
                                                    novos_dados_organizador['dia_nascimento']]
+
                     self.__tela_organizador.mostrar_mensagem('Dados do organizador alterados com sucesso.')
                 else:
                     self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')

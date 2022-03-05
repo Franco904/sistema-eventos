@@ -4,11 +4,11 @@ class TelaOrganizador:
 
     def tela_opcoes(self):
         print('\n-------- ORGANIZADORES ----------')
-        print('1 - Adicionar Organizador')
-        print('2 - Excluir Organizador')
-        print('3 - Alterar Organizador')
-        print('4 - Mostrar Organizador')
-        print('5 - Listar Organizador')
+        print('1 - Adicionar organizador')
+        print('2 - Excluir organizador')
+        print('3 - Alterar organizador')
+        print('4 - Mostrar organizador')
+        print('5 - Listar organizador')
         print('0 - Retornar')
         print("-" * 40)
 
@@ -17,9 +17,14 @@ class TelaOrganizador:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
-    def pegar_dados_organizador(self):
-        print('\n-------- CADASTRAR ORGANIZADOR ----------')
-        cpf = input('CPF: ')
+    def pegar_dados_organizador(self, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR ORGANIZADOR ----------')
+            cpf = input('CPF: ')
+        else:
+            print('\n-------- ALTERAR ORGANIZADOR ----------')
+            cpf = None
+
         nome = input('Nome: ')
         dia_nascimento = int(input('Dia de nascimento: '))
         mes_nascimento = int(input('Mês de nascimento: '))

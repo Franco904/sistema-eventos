@@ -13,20 +13,20 @@ class ControladorLocal:
         return self.__locais
 
     def adicionar_local(self):
-        # dados_local = self.__tela_local.pegar_dados_local()
-        #
-        # if dados_local is None:
-        #     return
-        #
-        # # Faz a verificação da existência do local na lista
-        # for local in self.__locais:
-        #     if local.id == dados_local['id']:
-        #         self.__tela_local.mostrar_mensagem('O id inserido já pertence a um local na lista.')
-        #         return
+        dados_local = self.__tela_local.pegar_dados_local(False)
+
+        if dados_local is None:
+            return
+
+        # Faz a verificação da existência do local na lista
+        for local in self.__locais:
+            if local.id == dados_local['id']:
+                self.__tela_local.mostrar_mensagem('O id inserido já pertence a um local na lista.')
+                return
 
         try:
-            # local = Local(dados_local['id'], dados_local['nome'])
-            local = Local(1, 'LHC')
+            local = Local(dados_local['id'], dados_local['nome'])
+            # local = Local(1, 'LHC')
 
             self.__locais.append(local)
             self.__tela_local.mostrar_mensagem('Local adicionado na lista.')
@@ -53,20 +53,14 @@ class ControladorLocal:
             local = self.pegar_local_por_id(id_local)
             try:
                 if local is not None:
-                    novos_dados_local = self.__tela_local.pegar_dados_local()
+                    novos_dados_local = self.__tela_local.pegar_dados_local(True)
 
                     if novos_dados_local is None:
                         return
 
-                    # Faz a verificação da existência do local na lista e deixa alterar se for o id atual
-                    for l in self.__locais:
-                        if l.id == novos_dados_local['id'] and local.id != novos_dados_local['id']:
-                            self.__tela_local.mostrar_mensagem('O id inserido já pertence a um local na lista.')
-                            return
-
-                    local.id = novos_dados_local['id']
                     local.nome = novos_dados_local['nome']
-                    self.__tela_local.mostrar_mensagem('Dados do local alterados com sucesso.')
+
+                    self.__tela_local.mostrar_mensagem('Local alterado com sucesso.')
                 else:
                     self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 

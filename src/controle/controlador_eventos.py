@@ -23,40 +23,40 @@ class ControladorEvento:
         locais = self.__controlador_sistema.controladores['controlador_locais'].locais
         organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
 
-        # dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores)
-        #
-        # if dados_evento is None:
-        #     return
-        #
-        # # Faz a verificação da existência do evento na lista
-        # for evento in self.__eventos:
-        #     if evento.id_evento == dados_evento['id_evento']:
-        #         self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista.')
-        #         return
-        try:
-            # organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
-            #
-            # evento = Evento(dados_evento['id_evento'],
-            #                 dados_evento['titulo'],
-            #                 locais[dados_evento['opcao_local'] - 1],
-            #                 [
-            #                     dados_evento['ano'],
-            #                     dados_evento['mes'],
-            #                     dados_evento['dia'],
-            #                     dados_evento['hora'],
-            #                     dados_evento['minuto']
-            #                 ],
-            #                 dados_evento['capacidade'],
-            #                 organizadores_incluidos)
+        dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores, False)
 
-            evento = Evento(
-                1,
-                'Evento 1',
-                locais[0],
-                [2022, 2, 2, 14, 40],
-                1,
-                [organizadores[0]]
-            )
+        if dados_evento is None:
+            return
+
+        # Faz a verificação da existência do evento na lista
+        for evento in self.__eventos:
+            if evento.id_evento == dados_evento['id_evento']:
+                self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista.')
+                return
+        try:
+            organizadores_incluidos = list(map(lambda op: organizadores[op - 1], dados_evento['opcoes_organizador']))
+
+            evento = Evento(dados_evento['id_evento'],
+                            dados_evento['titulo'],
+                            locais[dados_evento['opcao_local'] - 1],
+                            [
+                                dados_evento['ano'],
+                                dados_evento['mes'],
+                                dados_evento['dia'],
+                                dados_evento['hora'],
+                                dados_evento['minuto']
+                            ],
+                            dados_evento['capacidade'],
+                            organizadores_incluidos)
+
+            # evento = Evento(
+            #     1,
+            #     'Evento 1',
+            #     locais[0],
+            #     [2022, 2, 2, 14, 40],
+            #     1,
+            #     [organizadores[0]]
+            # )
 
             self.__eventos.append(evento)
             self.__tela_evento.mostrar_mensagem('Evento adicionado na lista.')
@@ -86,23 +86,15 @@ class ControladorEvento:
                     locais = self.__controlador_sistema.controladores['controlador_locais'].locais
                     organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
 
-                    novos_dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores)
+                    novos_dados_evento = self.__tela_evento.pegar_dados_evento(locais, organizadores, True)
 
                     if novos_dados_evento is None:
                         return
-
-                    # Faz a verificação da existência do evento na lista e deixa alterar se for o id atual
-                    for e in self.__eventos:
-                        if e.id_evento == novos_dados_evento['id_evento'] \
-                                and evento.id_evento != novos_dados_evento['id_evento']:
-                            self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista.')
-                            return
 
                     organizadores_incluidos = list(
                         map(lambda op: organizadores[op - 1], novos_dados_evento['opcoes_organizador'])
                     )
 
-                    evento.id_evento = novos_dados_evento['id_evento']
                     evento.titulo = novos_dados_evento['titulo']
                     evento.local = locais[novos_dados_evento['opcao_local'] - 1]
                     evento.data_horario_evento = [
