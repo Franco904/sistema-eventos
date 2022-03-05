@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class ResultadoPcr(Enum):
-    positivo = 0
-    negativo = 1
-    nao_realizado = 2
+    positivo = 'Positivo'
+    negativo = 'Negativo'
+    nao_realizado = 'Não realizado'

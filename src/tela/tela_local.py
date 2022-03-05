@@ -12,23 +12,22 @@ class TelaLocal:
         print('0 - Retornar')
         print("-" * 40)
 
-        try:
+        opcao = int(input('Escolha uma opção: '))
+        while opcao not in [0, 1, 2, 3, 4, 5]:
             opcao = int(input('Escolha uma opção: '))
-            while opcao not in [0, 1, 2, 3, 4, 5]:
-                opcao = int(input('Escolha uma opção: '))
-            return opcao
-        except ValueError:
-            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
+        return opcao
 
-    def pegar_dados_local(self):
-        print('\n-------- CADASTRAR LOCAL ----------')
-        try:
+    def pegar_dados_local(self, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR LOCAL ----------')
             id = int(input('Id: '))
-            nome = input('Nome: ')
+        else:
+            print('\n-------- ALTERAR LOCAL ----------')
+            id = None
 
-            return {'id': id, 'nome': nome}
-        except ValueError:
-            self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
+        nome = input('Nome: ')
+
+        return {'id': id, 'nome': nome}
 
     def mostrar_local(self, dados_local):
         print("-" * 40)
@@ -37,11 +36,8 @@ class TelaLocal:
         print("-" * 40)
 
     def selecionar_local(self):
-        try:
-            id_local = int(input('Id do local que deseja selecionar: '))
-            return id_local
-        except ValueError:
-            self.mostrar_mensagem('Valores de numéricos devem ser inteiros')
+        id_local = int(input('Id do local que deseja selecionar: '))
+        return id_local
 
     def mostrar_mensagem(self, msg):
         print(msg)

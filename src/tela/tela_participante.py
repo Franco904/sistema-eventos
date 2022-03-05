@@ -18,34 +18,32 @@ class TelaParticipante:
         print('0 - Retornar')
         print("-" * 40)
 
-        try:
+        opcao = int(input('Escolha uma opção: '))
+        while opcao not in [0, 1, 2, 3, 4, 5, 6]:
             opcao = int(input('Escolha uma opção: '))
-            while opcao not in [0, 1, 2, 3, 4, 5, 6]:
-                opcao = int(input('Escolha uma opção: '))
-            return opcao
-        except ValueError:
-            self.mostrar_mensagem('Valores numéricos devem ser inteiros')
+        return opcao
 
-    def pegar_dados_participante(self):
-        print('\n-------- CADASTRAR PARTICIPANTE ----------')
-        try:
+    def pegar_dados_participante(self, editando: bool):
+        if not editando:
+            print('\n-------- CADASTRAR PARTICIPANTE ----------')
             cpf = input('CPF: ')
-            nome = input('Nome: ')
-            dia = int(input('Dia de nascimento: '))
-            mes = int(input('Mês de nascimento: '))
-            ano = int(input('Ano de nascimento: '))
-            logradouro = input('Logradouro (endereço): ')
-            num_endereco = int(input('Número (endereço): '))
-            cep = input('CEP (endereço): ')
+        else:
+            print('\n-------- ALTERAR PARTICIPANTE ----------')
+            cpf = None
 
-            return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
-                    'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
+        nome = input('Nome: ')
+        dia = int(input('Dia de nascimento: '))
+        mes = int(input('Mês de nascimento: '))
+        ano = int(input('Ano de nascimento: '))
+        logradouro = input('Logradouro (endereço): ')
+        num_endereco = int(input('Número (endereço): '))
+        cep = input('CEP (endereço): ')
 
-        except ValueError:
-            self.mostrar_mensagem('Valores de data/número devem ser inteiros')
+        return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
+                'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
 
     def pegar_dados_comprovante(self):
-        print('\n-------- CADASTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
+        print('\n-------- REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
         tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
         while tomou_primeira not in 'SN':
             tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
@@ -61,39 +59,31 @@ class TelaParticipante:
         while pcr not in 'SN':
             pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
 
-        try:
-            if pcr == 'S':
-                ano = int(input('Ano de realização do teste: '))
-                mes = int(input('Mês de realização do teste: '))
-                dia = int(input('Dia de realização do teste: '))
-                hora = int(input('Hora de realização do teste: '))
-                minuto = int(input('Minuto de realização do teste: '))
+        if pcr == 'S':
+            ano = int(input('Ano de realização do teste: '))
+            mes = int(input('Mês de realização do teste: '))
+            dia = int(input('Dia de realização do teste: '))
+            hora = int(input('Hora de realização do teste: '))
+            minuto = int(input('Minuto de realização do teste: '))
 
-                print('Resultado do teste:')
-                print('[ 1 ] Positivo')
-                print('[ 2 ] Negativo')
+            print('Resultado do teste:')
+            print('[ 1 ] Positivo')
+            print('[ 2 ] Negativo')
+            opcao_teste = int(input('Opção: '))
+            while opcao_teste not in [1, 2]:
                 opcao_teste = int(input('Opção: '))
-                while opcao_teste not in [1, 2]:
-                    opcao_teste = int(input('Opção: '))
 
-                if opcao_teste == 1:
-                    resultado_pcr = ResultadoPcr.positivo
-                elif opcao_teste == 2:
-                    resultado_pcr = ResultadoPcr.negativo
-            else:
-                ano = mes = dia = hora = minuto = 12
-                resultado_pcr = ResultadoPcr.nao_realizado
+            if opcao_teste == 1:
+                resultado_pcr = ResultadoPcr.positivo
+            elif opcao_teste == 2:
+                resultado_pcr = ResultadoPcr.negativo
+        else:
+            ano = mes = dia = hora = minuto = 12
+            resultado_pcr = ResultadoPcr.nao_realizado
 
-            return {'primeira_dose': primeira_dose, 'segunda_dose': segunda_dose,
-                    'ano': ano, 'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto,
-                    'resultado_pcr': resultado_pcr}
-
-        except ValueError:
-            self.mostrar_mensagem('Valores de data devem ser inteiros')
-
-    def pegar_cpf_participante(self):
-        cpf = input('\nCPF do participante que deseja incluir (verificação): ')
-        return cpf
+        return {'primeira_dose': primeira_dose, 'segunda_dose': segunda_dose,
+                'ano': ano, 'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto,
+                'resultado_pcr': resultado_pcr}
 
     def mostrar_participante(self, dados_participante):
         print("-" * 40)
@@ -104,7 +94,7 @@ class TelaParticipante:
         print('Logradouro: ', dados_participante['endereco'].logradouro)
         print('Número de endereço: ', dados_participante['endereco'].num_endereco)
         print('CEP: ', dados_participante['endereco'].cep)
-        print('STATUS DO PARTICIPANTE: ', dados_participante['status'].name)
+        print('STATUS DO PARTICIPANTE: ', dados_participante['status'].value)
         print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
         if dados_participante['comprovante_saude'] is None:
             print('Não cadastrado')
@@ -115,8 +105,8 @@ class TelaParticipante:
                   'Sim' if dados_participante['comprovante_saude'].segunda_dose else 'Não')
             print('Data e horário do teste PCR: ', 'Não realizado'
             if dados_participante['comprovante_saude'].data_horario_teste == datetime(12, 12, 12, 12, 12)
-            else dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y'))
-            print('Teste PCR: ', dados_participante['comprovante_saude'].resultado_pcr.name)
+            else dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y, %H:%M'))
+            print('Teste PCR: ', dados_participante['comprovante_saude'].resultado_pcr.value)
         print("-" * 40)
 
     def selecionar_participante(self):

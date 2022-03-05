@@ -16,6 +16,7 @@ class ControladorSistema:
         return self.__controladores
 
     def inicializar_sistema(self):
+        self.inicializar_controladores()
         self.abrir_tela()
 
     def inicializar_controladores(self):
@@ -28,15 +29,34 @@ class ControladorSistema:
             'controlador_participacoes': ControladorParticipacao(self)
         }
 
-    def opcoes(self):
+    def abrir_eventos(self):
         self.__controladores['controlador_eventos'].abrir_tela()
+
+    def abrir_locais(self):
+        self.__controladores['controlador_locais'].abrir_tela()
+
+    def abrir_organizadores(self):
+        self.__controladores['controlador_organizadores'].abrir_tela()
+
+    def abrir_participantes(self):
+        self.__controladores['controlador_participantes'].abrir_tela()
+
+    def abrir_participacoes(self):
+        self.__controladores['controlador_participacoes'].abrir_tela()
 
     def encerrar_sistema(self):
         exit(0)
 
     def abrir_tela(self):
-        self.inicializar_controladores()
-        lista_opcoes = {1: self.opcoes, 0: self.encerrar_sistema}
+        lista_opcoes = {1: self.abrir_eventos,
+                        2: self.abrir_locais,
+                        3: self.abrir_organizadores,
+                        4: self.abrir_participantes,
+                        5: self.abrir_participacoes,
+                        0: self.encerrar_sistema}
 
         while True:
-            lista_opcoes[self.__tela_sistema.tela_opcoes()]()
+            try:
+                lista_opcoes[self.__tela_sistema.tela_opcoes()]()
+            except (KeyError, ValueError):
+                self.__tela_sistema.mostrar_mensagem('Valores numéricos devem ser inteiros.')

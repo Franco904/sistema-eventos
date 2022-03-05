@@ -95,7 +95,7 @@ class ComprovanteSaude:
                                            data_horario_list[3],
                                            data_horario_list[4])
 
-            diferenca = (data_horario_evento - self.__data_horario_teste).__str__()
-            return self.__resultado_pcr.negativo and diferenca[0] < '3'
+            diferenca = data_horario_evento - self.__data_horario_teste
+            return self.__resultado_pcr == ResultadoPcr.negativo and diferenca.total_seconds() <= 259200
         else:
             raise TypeError
