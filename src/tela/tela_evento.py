@@ -112,7 +112,6 @@ class TelaEvento:
                 print(titulo, ' : ', participacoes)
         else:
             print('Os eventos para listar não possuem participações cadastradas.')
-            print('Acesse a tela de participações para cadastrar uma participação.')
         print("-" * 40)
 
     def mostrar_organizadores(self, organizadores):
@@ -120,25 +119,28 @@ class TelaEvento:
         if len(organizadores) == 0:
             print('Nenhum organizador inserido')
         else:
-            for o in organizadores:
-                print(o.nome) if o.cpf == organizadores[-1].cpf else print(o.nome, ', ', end='')
+            for organizador in organizadores:
+                print(organizador.nome) if organizador.cpf == organizadores[-1].cpf \
+                    else print(organizador.nome, ', ', end='')
 
     def mostrar_participantes(self, participantes):
         print('PARTICIPANTES:')
         if len(participantes) == 0:
             print('Nenhum participante inserido')
         else:
-            for p in participantes:
-                print(p.nome) if p.cpf == participantes[-1].cpf else print(p.nome, ', ', end='')
+            for participante in participantes:
+                print(participante.nome) if participante.cpf == participantes[-1].cpf \
+                    else print(participante.nome, ', ', end='')
 
-    def mostrar_participacoes(self, participacoes):
+    def mostrar_participacoes(self, participacoes, controlador_participantes):
         print('PARTICIPAÇÕES CONFIRMADAS:')
         if len(participacoes) == 0:
             print('Nenhuma participação inserida')
         else:
-            for p in participacoes:
-                print(p.participante.nome) if p.id == participacoes[-1].id \
-                    else print(p.participante.nome, ', ', end='')
+            for participacao in participacoes:
+                participante = controlador_participantes.pegar_participante_por_cpf(participacao.cpf_participante)
+                print(participante.nome) if participacao.id == participacoes[-1].id \
+                    else print(participante.nome, ', ', end='')
 
     def selecionar_evento(self):
         id_evento = int(input('\nId do evento que deseja selecionar: '))

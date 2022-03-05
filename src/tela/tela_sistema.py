@@ -10,9 +10,9 @@ class TelaSistema:
         print('4 - Opções de participantes')
         print('5 - Opções de participações')
         print('0 - Finalizar sistema')
-        print("-" * 40)
+        print('-' * 40)
 
-        opcao = int(input("Escolha a opção: "))
+        opcao = int(input('Escolha uma opção: '))
         while opcao not in [0, 1, 2, 3, 4, 5]:
             opcao = int(input('Escolha uma opção: '))
         return opcao

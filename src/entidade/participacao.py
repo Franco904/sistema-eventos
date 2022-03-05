@@ -13,13 +13,13 @@ class Participacao:
                 and isinstance(data_horario_entrada[4], int) \
                 and isinstance(cpf_participante, str):
             self.__id = id
-            self.__id_evento = id
+            self.__id_evento = id_evento
             self.__data_horario_entrada = datetime(data_horario_entrada[0],
                                                    data_horario_entrada[1],
                                                    data_horario_entrada[2],
                                                    data_horario_entrada[3],
                                                    data_horario_entrada[4])
-            self.__data_horario_saida = datetime(2020, 10, 10, 10, 10)
+            self.__data_horario_saida = None
             self.__cpf_participante = cpf_participante
         else:
             raise TypeError
@@ -80,11 +80,11 @@ class Participacao:
                 and isinstance(data_horario_saida[2], int) \
                 and isinstance(data_horario_saida[3], int) \
                 and isinstance(data_horario_saida[4], int):
-            self.__data_horario_entrada = datetime(data_horario_saida[0],
-                                                   data_horario_saida[1],
-                                                   data_horario_saida[2],
-                                                   data_horario_saida[3],
-                                                   data_horario_saida[4])
+            self.__data_horario_saida = datetime(data_horario_saida[0],
+                                                 data_horario_saida[1],
+                                                 data_horario_saida[2],
+                                                 data_horario_saida[3],
+                                                 data_horario_saida[4])
         else:
             raise TypeError
 
