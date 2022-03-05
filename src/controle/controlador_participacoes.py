@@ -77,6 +77,7 @@ class ControladorParticipacao:
 
             except TypeError:
                 self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
         else:
             self.__tela_participacao.mostrar_mensagem('O participante não possui um '
                                                       'comprovante válido.')
@@ -106,6 +107,7 @@ class ControladorParticipacao:
                                                               'sucesso.')
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
@@ -119,6 +121,7 @@ class ControladorParticipacao:
             if participacao is not None:
                 self.__participacoes.remove(participacao)
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
+
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
@@ -151,6 +154,7 @@ class ControladorParticipacao:
 
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 

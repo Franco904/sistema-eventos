@@ -41,8 +41,6 @@ class ControladorParticipante:
                                             dados_participante['num_endereco'],
                                             dados_participante['cep']
                                         ])
-            # p1 = Participante('13452134468', 'Claúdio', [1987, 3, 3], ['Avenida Brasil', 1230, '44677123'])
-            # p2 = Participante('14567042155', 'Luisa', [1999, 4, 12], ['Rua dos Alves', 15, '88034530'])
 
             self.__participantes.append(participante)
             self.__tela_participante.mostrar_mensagem('Participante adicionado na lista.')
@@ -59,21 +57,35 @@ class ControladorParticipante:
             if participante is not None:
                 self.__participantes.remove(participante)
                 self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
+
+                controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
+
+                # Exclui as participações que estão associadas ao participante recém excluído
+                participacoes_excluir = list(
+                    filter(lambda pcao: pcao.cpf_participante == participante.cpf,
+                           controlador_participacoes.participacoes)
+                )
+
+                for participacao in participacoes_excluir:
+                    controlador_participacoes.participacoes.remove(participacao)
+
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def alterar_participante(self):
         self.listar_participantes()
+
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
-            try:
-                if participante is not None:
-                    novos_dados_participante = self.__tela_participante.pegar_dados_participante(True)
 
-                    if novos_dados_participante is None:
-                        return
+            if participante is not None:
+                novos_dados_participante = self.__tela_participante.pegar_dados_participante(True)
 
+                if novos_dados_participante is None:
+                    return
+
+                try:
                     participante.nome = novos_dados_participante['nome']
                     participante.data_nascimento = [
                         novos_dados_participante['ano'],
@@ -86,21 +98,24 @@ class ControladorParticipante:
                         novos_dados_participante['cep']
                     ]
                     self.__tela_participante.mostrar_mensagem('Dados do participante alterados com sucesso.')
-                else:
-                    self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
-            except TypeError:
-                self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+                except TypeError:
+                    self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
+            else:
+                self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def salvar_comprovante_saude(self):
         self.listar_participantes()
+
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
-            try:
-                if participante is not None:
-                    novos_dados_comprovante = self.__tela_participante.pegar_dados_comprovante()
 
+            if participante is not None:
+                novos_dados_comprovante = self.__tela_participante.pegar_dados_comprovante()
+
+                try:
                     participante.comprovante_saude = [
                         novos_dados_comprovante['primeira_dose'],
                         novos_dados_comprovante['segunda_dose'],
@@ -113,12 +128,14 @@ class ControladorParticipante:
                         ],
                         novos_dados_comprovante['resultado_pcr']
                     ]
-                    self.__tela_participante.mostrar_mensagem('Comprovante de saúde do participante salvo com sucesso.')
-                else:
-                    self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
-            except TypeError:
-                self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+                    self.__tela_participante.mostrar_mensagem('Comprovante de saúde do participante salvo com sucesso.')
+
+                except TypeError:
+                    self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
+            else:
+                self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def mostrar_participante(self):
         if len(self.__participantes) > 0:

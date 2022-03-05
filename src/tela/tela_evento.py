@@ -1,6 +1,3 @@
-from datetime import datetime
-
-
 class TelaEvento:
     def __init__(self):
         pass

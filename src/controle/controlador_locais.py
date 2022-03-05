@@ -26,7 +26,6 @@ class ControladorLocal:
 
         try:
             local = Local(dados_local['id'], dados_local['nome'])
-            # local = Local(1, 'LHC')
 
             self.__locais.append(local)
             self.__tela_local.mostrar_mensagem('Local adicionado na lista.')
@@ -36,6 +35,7 @@ class ControladorLocal:
 
     def excluir_local(self):
         self.listar_locais()
+
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             local = self.pegar_local_por_id(id_local)
@@ -43,29 +43,32 @@ class ControladorLocal:
             if local is not None:
                 self.__locais.remove(local)
                 self.__tela_local.mostrar_mensagem('Local removido da lista.')
+
             else:
                 self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 
     def alterar_local(self):
         self.listar_locais()
+
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             local = self.pegar_local_por_id(id_local)
-            try:
-                if local is not None:
-                    novos_dados_local = self.__tela_local.pegar_dados_local(True)
 
-                    if novos_dados_local is None:
-                        return
+            if local is not None:
+                novos_dados_local = self.__tela_local.pegar_dados_local(True)
 
+                if novos_dados_local is None:
+                    return
+
+                try:
                     local.nome = novos_dados_local['nome']
-
                     self.__tela_local.mostrar_mensagem('Local alterado com sucesso.')
-                else:
-                    self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 
-            except TypeError:
-                self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+                except TypeError:
+                    self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente.')
+
+            else:
+                self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 
     def mostrar_local(self):
         if len(self.__locais) > 0:
