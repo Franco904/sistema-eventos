@@ -43,40 +43,46 @@ class TelaParticipante:
                 'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
 
     def pegar_dados_comprovante(self):
+        segunda_dose = False
         print('\n-------- REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
         tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
         while tomou_primeira not in 'SN':
             tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
         primeira_dose = True if tomou_primeira == 'S' else False
 
-        tomou_segunda = input('Tomou segunda dose vacinal? [S/N]: ').upper().strip()[0]
-        while tomou_segunda not in 'SN':
+        if primeira_dose:
             tomou_segunda = input('Tomou segunda dose vacinal? [S/N]: ').upper().strip()[0]
-        segunda_dose = True if tomou_segunda == 'S' else False
+            while tomou_segunda not in 'SN':
+                tomou_segunda = input('Tomou segunda dose vacinal? [S/N]: ').upper().strip()[0]
+            segunda_dose = True if tomou_segunda == 'S' else False
 
-        resultado_pcr = ResultadoPcr.nao_realizado
-        pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
-        while pcr not in 'SN':
+        if not segunda_dose:
+            resultado_pcr = ResultadoPcr.nao_realizado
             pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
+            while pcr not in 'SN':
+                pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
 
-        if pcr == 'S':
-            ano = int(input('Ano de realização do teste: '))
-            mes = int(input('Mês de realização do teste: '))
-            dia = int(input('Dia de realização do teste: '))
-            hora = int(input('Hora de realização do teste: '))
-            minuto = int(input('Minuto de realização do teste: '))
+            if pcr == 'S':
+                ano = int(input('Ano de realização do teste: '))
+                mes = int(input('Mês de realização do teste: '))
+                dia = int(input('Dia de realização do teste: '))
+                hora = int(input('Hora de realização do teste: '))
+                minuto = int(input('Minuto de realização do teste: '))
 
-            print('Resultado do teste:')
-            print('[ 1 ] Positivo')
-            print('[ 2 ] Negativo')
-            opcao_teste = int(input('Opção: '))
-            while opcao_teste not in [1, 2]:
+                print('Resultado do teste:')
+                print('[ 1 ] Positivo')
+                print('[ 2 ] Negativo')
                 opcao_teste = int(input('Opção: '))
+                while opcao_teste not in [1, 2]:
+                    opcao_teste = int(input('Opção: '))
 
-            if opcao_teste == 1:
-                resultado_pcr = ResultadoPcr.positivo
-            elif opcao_teste == 2:
-                resultado_pcr = ResultadoPcr.negativo
+                if opcao_teste == 1:
+                    resultado_pcr = ResultadoPcr.positivo
+                elif opcao_teste == 2:
+                    resultado_pcr = ResultadoPcr.negativo
+            else:
+                ano = mes = dia = hora = minuto = 12
+                resultado_pcr = ResultadoPcr.nao_realizado
         else:
             ano = mes = dia = hora = minuto = 12
             resultado_pcr = ResultadoPcr.nao_realizado

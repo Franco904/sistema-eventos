@@ -43,6 +43,16 @@ class ControladorParticipacao:
                     'Uma participação desse participante no evento informado já foi cadastrada na lista.')
                 return
 
+        if dados_participacao['hora_entrada'] <= evento.data_horario_evento.hour:
+            if dados_participacao['hora_entrada'] == evento.data_horario_evento.hour:
+                if dados_participacao['minuto_entrada'] < evento.data_horario_evento.minute:
+                    self.__tela_participacao.mostrar_mensagem('A participação não pode ser adicionada na lista pois o '
+                                                              'horário de entrada informado é anterior ao horário do evento.')
+                    return
+            else:
+                self.__tela_participacao.mostrar_mensagem('A participação não pode ser adicionada na lista pois o '
+                                                          'horário de entrada informado é anterior ao horário do evento.')
+                return
         # Verifica se o participante está autorizado a entrar no evento
         if participante.comprovante_saude is None:
             participante.status_participante = StatusParticipante.a_confirmar
@@ -97,7 +107,7 @@ class ControladorParticipacao:
 
                 try:
                     horario_saida_participacao = self.__tela_participacao.pegar_horario_saida()
-                    if datetime(evento.data_horario_evento.year, evento.data_horario_evento.month, evento.data_horario_evento.day, horario_saida_participacao['hora_saida'], horario_saida_participacao['minuto_saida']) > participacao.data_horario_entrada:
+                    if datetime(evento.data_horario_evento.year, evento.data_horario_evento.month, horario_saida_participacao['dia_saida'], horario_saida_participacao['hora_saida'], horario_saida_participacao['minuto_saida']) > participacao.data_horario_entrada:
                         participacao.data_horario_saida = [
                             evento.data_horario_evento.year,
                             evento.data_horario_evento.month,

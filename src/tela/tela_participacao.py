@@ -65,10 +65,11 @@ class TelaParticipacao:
 
     def pegar_horario_saida(self):
         print('\n-------- REGISTRAR HORÁRIO DE SAÍDA DA PARTICIPAÇÃO ----------')
+        dia = int(input('Dia de saída: '))
         hora = int(input('Hora de saída: '))
         minuto = int(input('Minuto de saída: '))
 
-        return {'hora_saida': hora, 'minuto_saida': minuto}
+        return {'dia_saida': dia, 'hora_saida': hora, 'minuto_saida': minuto}
 
     def mostrar_participacao(self, dados_participacao):
         print("-" * 40)
