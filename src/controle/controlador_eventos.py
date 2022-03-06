@@ -214,7 +214,6 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
-    # ANALISAR
     def ranking_eventos_por_publico(self):
         dados_evento = {}
 
@@ -487,7 +486,19 @@ class ControladorEvento:
                                                             'lista.')
                         return
 
-                    self.__controlador_sistema.controladores['controlador_participacoes'].listar_participacoes()
+                    participacoes_evento = list(filter(lambda p: p.id_evento == id_evento, participacoes))
+
+                    tela_participacao = self.__controlador_sistema.controladores['controlador_participacoes'] \
+                        .tela_participacao
+
+                    for participacao in participacoes_evento:
+                        tela_participacao.mostrar_participacao({
+                            'id': participacao.id,
+                            'id_evento': participacao.id_evento,
+                            'data_horario_entrada': participacao.data_horario_entrada,
+                            'data_horario_saida': participacao.data_horario_saida,
+                            'cpf_participante': participacao.cpf_participante
+                        })
 
                     id_participacao = self.__controlador_sistema.controladores['controlador_participacoes'] \
                         .tela_participacao.selecionar_participacao()
@@ -607,10 +618,12 @@ class ControladorEvento:
                 participacoes = evento.participacoes
 
                 if len(participacoes) > 0:
+                    participacoes_evento = list(filter(lambda p: p.id_evento == id_evento, participacoes))
+
                     tela_participacao = self.__controlador_sistema.controladores['controlador_participacoes'] \
                         .tela_participacao
 
-                    for participacao in participacoes:
+                    for participacao in participacoes_evento:
                         tela_participacao.mostrar_participacao({
                             'id': participacao.id,
                             'id_evento': participacao.id_evento,
