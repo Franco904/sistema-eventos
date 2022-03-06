@@ -1,6 +1,7 @@
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
 from src.tela.tela_participacao import TelaParticipacao
+from datetime import datetime
 
 
 class ControladorParticipacao:
@@ -96,15 +97,18 @@ class ControladorParticipacao:
 
                 try:
                     horario_saida_participacao = self.__tela_participacao.pegar_horario_saida()
-                    participacao.data_horario_saida = [
-                        evento.data_horario_evento.year,
-                        evento.data_horario_evento.month,
-                        evento.data_horario_evento.day,
-                        horario_saida_participacao['hora_saida'],
-                        horario_saida_participacao['minuto_saida']
-                    ]
-                    self.__tela_participacao.mostrar_mensagem('Horário de saída da participação registrado com '
-                                                              'sucesso.')
+                    if datetime(evento.data_horario_evento.year, evento.data_horario_evento.month, evento.data_horario_evento.day, horario_saida_participacao['hora_saida'], horario_saida_participacao['minuto_saida']) > participacao.data_horario_entrada:
+                        participacao.data_horario_saida = [
+                            evento.data_horario_evento.year,
+                            evento.data_horario_evento.month,
+                            evento.data_horario_evento.day,
+                            horario_saida_participacao['hora_saida'],
+                            horario_saida_participacao['minuto_saida']
+                        ]
+                        self.__tela_participacao.mostrar_mensagem('Horário de saída da participação registrado com '
+                                                                  'sucesso.')
+                    else:
+                        self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Horário de saída informado é anterior ao horário de entrada')
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
