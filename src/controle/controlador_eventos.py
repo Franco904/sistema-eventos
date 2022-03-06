@@ -221,9 +221,9 @@ class ControladorEvento:
         if len(self.__eventos) > 0:
             for evento in self.__eventos:
                 if len(evento.participacoes) > 0:
-                    dados_evento[f'{evento.titulo}'].append(f'{len(evento.participacoes)}')
+                    dados_evento[f'{evento.titulo}'] = (len(evento.participacoes))
 
-            eventos_rankeados = dict(sorted(dados_evento.items(), key=lambda item: item[1]))
+            eventos_rankeados = dict(sorted(dados_evento.items(), key=lambda item: item[1], reverse=True))
 
             self.__tela_evento.mostrar_eventos_rankeados(eventos_rankeados)
 
