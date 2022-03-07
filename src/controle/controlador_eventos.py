@@ -660,22 +660,32 @@ class ControladorEvento:
                         2: self.excluir_evento,
                         3: self.alterar_evento,
                         4: self.mostrar_evento,
-                        5: self.listar_eventos,
-                        6: self.listar_eventos_ocorridos,
-                        7: self.listar_eventos_futuros,
-                        8: self.ranking_eventos_por_publico,
-                        9: self.listar_organizadores_evento,
-                        10: self.listar_participantes_evento,
-                        11: self.listar_participantes_com_comprovante,
-                        12: self.listar_participantes_sem_comprovante,
-                        13: self.listar_participacoes_evento,
-                        14: self.adicionar_organizador,
-                        15: self.excluir_organizador,
-                        16: self.adicionar_participante,
-                        17: self.excluir_participante,
-                        18: self.adicionar_participacao,
-                        19: self.excluir_participacao,
+                        5: self.adicionar_organizador,
+                        6: self.excluir_organizador,
+                        7: self.adicionar_participante,
+                        8: self.excluir_participante,
+                        9: self.adicionar_participacao,
+                        10: self.excluir_participacao,
+                        11: self.abrir_tela_listagens,
                         0: self.retornar}
         continua = True
         while continua:
             lista_opcoes[self.__tela_evento.tela_opcoes()]()
+
+    def abrir_tela_listagens(self):
+        lista_opcoes = {1: self.listar_eventos,
+                        2: self.listar_eventos_ocorridos,
+                        3: self.listar_eventos_futuros,
+                        4: self.ranking_eventos_por_publico,
+                        5: self.listar_organizadores_evento,
+                        6: self.listar_participantes_evento,
+                        7: self.listar_participantes_com_comprovante,
+                        8: self.listar_participantes_sem_comprovante,
+                        9: self.listar_participacoes_evento,
+                        0: self.retornar_para_eventos}
+        continua = True
+        while continua:
+            lista_opcoes[self.__tela_evento.selecionar_listagem()]()
+
+    def retornar_para_eventos(self):
+        self.abrir_tela()

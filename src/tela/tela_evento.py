@@ -8,28 +8,18 @@ class TelaEvento:
         print('2 - Excluir evento')
         print('3 - Alterar evento')
         print('4 - Mostrar evento')
-        print('5 - Listar eventos')
-        print('6 - Listar eventos ocorridos')
-        print('7 - Listar eventos futuros')
-        print('8 - Ranking de eventos por público')
-
-        print('9 - Listar organizadores do evento')
-        print('10 - Listar participantes do evento')
-        print('11 - Listar participantes com comprovante')
-        print('12 - Listar participantes sem comprovante')
-        print('13 - Listar participações do evento')
-
-        print('14 - Adicionar organizador ao evento')
-        print('15 - Excluir organizador do evento')
-        print('16 - Adicionar participante ao evento')
-        print('17 - Excluir participante do evento')
-        print('18 - Adicionar participação ao evento')
-        print('19 - Excluir participação do evento')
+        print('5 - Adicionar organizador ao evento')
+        print('6 - Excluir organizador do evento')
+        print('7 - Adicionar participante ao evento')
+        print('8 - Excluir participante do evento')
+        print('9 - Adicionar participação ao evento')
+        print('10 - Excluir participação do evento')
+        print('11 - Tela de Listagens')
         print('0 - Retornar')
         print("-" * 40)
 
         opcao = int(input('Escolha uma opção: '))
-        while opcao < 0 or opcao > 19:
+        while opcao < 0 or opcao > 11:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 
@@ -150,3 +140,22 @@ class TelaEvento:
 
     def mostrar_mensagem(self, msg):
         print(msg)
+
+    def selecionar_listagem(self):
+        print('\n-------- OPÇÕES ----------')
+        print('1 - Listar eventos')
+        print('2 - Listar eventos ocorridos')
+        print('3 - Listar eventos futuros')
+        print('4 - Ranking de eventos por público')
+        print('5 - Listar organizadores do evento')
+        print('6 - Listar participantes do evento')
+        print('7 - Listar participantes com comprovante')
+        print('8 - Listar participantes sem comprovante')
+        print('9 - Listar participações do evento')
+        print('0 - Retornar')
+        print("-" * 40)
+
+        opcao = int(input('Escolha uma opção: '))
+        while opcao < 0 or opcao > 9:
+            opcao = int(input('Escolha uma opção: '))
+        return opcao
