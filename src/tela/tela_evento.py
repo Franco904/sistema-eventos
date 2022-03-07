@@ -12,14 +12,12 @@ class TelaEvento:
         print('6 - Excluir organizador do evento')
         print('7 - Adicionar participante ao evento')
         print('8 - Excluir participante do evento')
-        print('9 - Adicionar participação ao evento')
-        print('10 - Excluir participação do evento')
-        print('11 - Tela de Listagens')
+        print('9 - Tela de Listagens')
         print('0 - Retornar')
         print("-" * 40)
 
         opcao = int(input('Escolha uma opção: '))
-        while opcao < 0 or opcao > 11:
+        while opcao < 0 or opcao > 9:
             opcao = int(input('Escolha uma opção: '))
         return opcao
 

@@ -84,7 +84,9 @@ class ControladorParticipacao:
                 )
                 participante.status_participante = StatusParticipante.autorizado
                 self.__participacoes.append(participacao)
-                self.__tela_participacao.mostrar_mensagem('Participação adicionada na lista.')
+                evento.adicionar_participacao(participacao)
+                evento.adicionar_participante(participante)
+                self.__tela_participacao.mostrar_mensagem('Participação e Participante adicionados com sucesso.')
 
             except TypeError:
                 self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
@@ -133,6 +135,9 @@ class ControladorParticipacao:
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
+                evento = self.__controlador_sistema.controladores['controlador_eventos'].pegar_evento_por_id(
+                    participacao.id_evento)
+                evento.excluir_participacao(participacao)
                 self.__participacoes.remove(participacao)
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
 

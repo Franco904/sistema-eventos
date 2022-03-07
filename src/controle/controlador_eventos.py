@@ -664,9 +664,7 @@ class ControladorEvento:
                         6: self.excluir_organizador,
                         7: self.adicionar_participante,
                         8: self.excluir_participante,
-                        9: self.adicionar_participacao,
-                        10: self.excluir_participacao,
-                        11: self.abrir_tela_listagens,
+                        9: self.abrir_tela_listagens,
                         0: self.retornar}
         continua = True
         while continua:
