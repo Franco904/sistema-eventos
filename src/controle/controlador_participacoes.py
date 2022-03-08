@@ -1,7 +1,8 @@
+from datetime import datetime
+
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
 from src.tela.tela_participacao import TelaParticipacao
-from datetime import datetime
 
 
 class ControladorParticipacao:
@@ -87,10 +88,9 @@ class ControladorParticipacao:
                 participante.status_participante = StatusParticipante.autorizado
 
                 self.__participacoes.append(participacao)
-                self.__tela_participacao.mostrar_mensagem('Participação adicionada com sucesso.')
 
-                evento.participacoes.append(participacao)
-                evento.participantes.append(participante)
+                evento.adicionar_participacao(participacao)
+                evento.adicionar_participante(participante)
                 self.__tela_participacao.mostrar_mensagem('Participação e participante adicionados no evento com '
                                                           'sucesso.')
 
@@ -156,7 +156,7 @@ class ControladorParticipacao:
                     participacao.id_evento)
 
                 if evento is not None:
-                    evento.participacoes.remove(participacao)
+                    evento.excluir_participacao(participacao)
                 else:
                     self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
             else:
