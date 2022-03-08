@@ -47,11 +47,13 @@ class ControladorParticipacao:
             if dados_participacao['hora_entrada'] == evento.data_horario_evento.hour:
                 if dados_participacao['minuto_entrada'] < evento.data_horario_evento.minute:
                     self.__tela_participacao.mostrar_mensagem('A participação não pode ser adicionada na lista pois o '
-                                                              'horário de entrada informado é anterior ao horário do evento.')
+                                                              'horário de entrada informado é anterior ao horário do '
+                                                              'evento.')
                     return
             else:
                 self.__tela_participacao.mostrar_mensagem('A participação não pode ser adicionada na lista pois o '
-                                                          'horário de entrada informado é anterior ao horário do evento.')
+                                                          'horário de entrada informado é anterior ao horário do '
+                                                          'evento.')
                 return
         # Verifica se o participante está autorizado a entrar no evento
         if participante.comprovante_saude is None:
@@ -83,10 +85,14 @@ class ControladorParticipacao:
                     participante.cpf
                 )
                 participante.status_participante = StatusParticipante.autorizado
+
                 self.__participacoes.append(participacao)
-                evento.adicionar_participacao(participacao)
-                evento.adicionar_participante(participante)
-                self.__tela_participacao.mostrar_mensagem('Participação e Participante adicionados com sucesso.')
+                self.__tela_participacao.mostrar_mensagem('Participação adicionada com sucesso.')
+
+                evento.participacoes.append(participacao)
+                evento.participantes.append(participante)
+                self.__tela_participacao.mostrar_mensagem('Participação e participante adicionados no evento com '
+                                                          'sucesso.')
 
             except TypeError:
                 self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
@@ -109,7 +115,14 @@ class ControladorParticipacao:
 
                 try:
                     horario_saida_participacao = self.__tela_participacao.pegar_horario_saida()
-                    if datetime(evento.data_horario_evento.year, evento.data_horario_evento.month, horario_saida_participacao['dia_saida'], horario_saida_participacao['hora_saida'], horario_saida_participacao['minuto_saida']) > participacao.data_horario_entrada:
+                    if datetime(
+                            evento.data_horario_evento.year,
+                            evento.data_horario_evento.month,
+                            horario_saida_participacao['dia_saida'],
+                            horario_saida_participacao['hora_saida'],
+                            horario_saida_participacao['minuto_saida']
+                    ) > participacao.data_horario_entrada:
+
                         participacao.data_horario_saida = [
                             evento.data_horario_evento.year,
                             evento.data_horario_evento.month,
@@ -120,7 +133,8 @@ class ControladorParticipacao:
                         self.__tela_participacao.mostrar_mensagem('Horário de saída da participação registrado com '
                                                                   'sucesso.')
                     else:
-                        self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Horário de saída informado é anterior ao horário de entrada')
+                        self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Horário de saída informado é anterior ao '
+                                                                  'horário de entrada')
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
@@ -135,12 +149,16 @@ class ControladorParticipacao:
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
-                evento = self.__controlador_sistema.controladores['controlador_eventos'].pegar_evento_por_id(
-                    participacao.id_evento)
-                evento.excluir_participacao(participacao)
                 self.__participacoes.remove(participacao)
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
 
+                evento = self.__controlador_sistema.controladores['controlador_eventos'].pegar_evento_por_id(
+                    participacao.id_evento)
+
+                if evento is not None:
+                    evento.participacoes.remove(participacao)
+                else:
+                    self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
