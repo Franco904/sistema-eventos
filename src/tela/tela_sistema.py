@@ -1,21 +1,51 @@
+import PySimpleGUI as sg
+
+
 class TelaSistema:
     def __init__(self):
-        pass
+        self.__window = None
 
     def tela_opcoes(self):
-        print('\n-------- Sistema de Eventos ---------')
-        print('1 - Opções de eventos')
-        print('2 - Opções de locais')
-        print('3 - Opções de organizadores')
-        print('4 - Opções de participantes')
-        print('5 - Opções de participações')
-        print('0 - Finalizar sistema')
-        print('-' * 40)
+        opcao = -1
+        while opcao == -1:
+            self.inicializar_opcoes()
+            button, values = self.__window.read()
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao not in [0, 1, 2, 3, 4, 5]:
-            opcao = int(input('Escolha uma opção: '))
+            if values['0'] or button is None:
+                opcao = 0
+                break
+
+            # Podemos generalizar em uma classe mãe de tela se sobrar tempo
+            for i, key in enumerate(values, 1):
+                if values[key]:
+                    opcao = i
+
+            self.fechar_tela()
+
+        self.fechar_tela()
         return opcao
 
-    def mostrar_mensagem(self, msg):
-        print(msg)
+    def inicializar_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Sistema de Eventos', size=(16, 1), font=('Arial', 16), justification='center')],
+            [sg.Text('Escolha uma opção abaixo:')],
+
+            [sg.Radio('Opções de eventos', 'RB', key='1')],
+            [sg.Radio('Opções de locais', 'RB', key='2')],
+            [sg.Radio('Opções de organizadores', 'RB', key='3')],
+            [sg.Radio('Opções de participantes', 'RB', key='4')],
+            [sg.Radio('Opções de participações', 'RB', key='5')],
+            [sg.Radio('Finalizar sistema', 'RB', key='0')],
+
+            [sg.Button('Confirmar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def fechar_tela(self):
+        self.__window.close()
+
+    def mostrar_mensagem(self, msg: str):
+        sg.Popup(msg)

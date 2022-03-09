@@ -73,6 +73,9 @@ class ControladorLocal:
     def mostrar_local(self):
         if len(self.__locais) > 0:
             id_local = self.__tela_local.selecionar_local()
+            if id_local is None:
+                return
+
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
@@ -99,8 +102,12 @@ class ControladorLocal:
         self.__controlador_sistema.abrir_tela()
 
     def abrir_tela(self):
-        lista_opcoes = {1: self.adicionar_local, 2: self.excluir_local, 3: self.alterar_local,
-                        4: self.mostrar_local, 5: self.listar_locais, 0: self.retornar}
+        lista_opcoes = {1: self.adicionar_local,
+                        2: self.excluir_local,
+                        3: self.alterar_local,
+                        4: self.mostrar_local,
+                        5: self.listar_locais,
+                        0: self.retornar}
 
         continua = True
         while continua:
