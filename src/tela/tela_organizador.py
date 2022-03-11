@@ -98,9 +98,9 @@ class TelaOrganizador:
 
         layout = [
             [sg.Text('Dados do Organizador', font=('Arial', 14))],
-            [sg.Text('CPF: '), sg.Text(dados_local['cpf'])],
-            [sg.Text('Nome: '), sg.Text(dados_local['nome'])],
-            [sg.Text('Data de nascimento: '), sg.Text(dados_local['data_nascimento'])],
+            [sg.Text('CPF:'), sg.Text(dados_local['cpf'])],
+            [sg.Text('Nome:'), sg.Text(dados_local['nome'])],
+            [sg.Text('Data de nascimento:'), sg.Text(dados_local['data_nascimento'].strftime('%d/%m/%Y'))],
 
             [sg.Cancel('OK')]
         ]

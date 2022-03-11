@@ -1,3 +1,4 @@
+import PySimpleGUI as sg
 from datetime import datetime
 
 from src.entidade.enums.resultado_pcr import ResultadoPcr
@@ -5,114 +6,241 @@ from src.entidade.enums.resultado_pcr import ResultadoPcr
 
 class TelaParticipante:
     def __init__(self):
-        pass
+        self.__window = None
 
     def tela_opcoes(self):
-        print('\n-------- PARTICIPANTES ----------')
-        print('1 - Adicionar participante')
-        print('2 - Excluir participante')
-        print('3 - Alterar participante')
-        print('4 - Mostrar participante')
-        print('5 - Listar participantes')
-        print('6 - Salvar comprovante de saúde do participante')
-        print('0 - Retornar')
-        print("-" * 40)
+        opcao = -1
+        while opcao == -1:
+            self.inicializar_opcoes()
+            button, values = self.__window.read()
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao not in [0, 1, 2, 3, 4, 5, 6]:
-            opcao = int(input('Escolha uma opção: '))
+            if values['0'] or button is None:
+                opcao = 0
+                break
+
+            for i, key in enumerate(values, 1):
+                if values[key]:
+                    opcao = i
+
+            self.fechar_tela()
+
+        self.fechar_tela()
         return opcao
 
+    def inicializar_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Participantes', font=('Arial', 16), justification='center')],
+            [sg.Text('Escolha uma opção abaixo:')],
+
+            [sg.Radio('Adicionar Participante', 'RB', key='1')],
+            [sg.Radio('Excluir Participante', 'RB', key='2')],
+            [sg.Radio('Alterar Participante', 'RB', key='3')],
+            [sg.Radio('Mostrar Participante', 'RB', key='4')],
+            [sg.Radio('Listar Participantes', 'RB', key='5')],
+            [sg.Radio('Salvar comprovante de saúde do participante', 'RB', key='6')],
+            [sg.Radio('Retornar', 'RB', key='0')],
+
+            [sg.Button('Confirmar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
     def pegar_dados_participante(self, editando: bool):
+        self.inicializar_pegar_dados(editando)
+        button, values = self.__window.read()
+
+        if button == 'Confirmar':
+            self.__window.close()
+
+            if editando:
+                values['cpf'] = -1
+
+            cpf = values['cpf']
+            nome = values['nome']
+            dia = int(values['dia_nascimento'])
+            mes = int(values['mes_nascimento'])
+            ano = int(values['ano_nascimento'])
+            logradouro = values['logradouro']
+            num_endereco = int(values['num_endereco'])
+            cep = values['cep']
+
+            return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
+                    'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
+
+        self.__window.close()
+        return None
+
+    def inicializar_pegar_dados(self, editando: bool):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
         if not editando:
-            print('\n-------- CADASTRAR PARTICIPANTE ----------')
-            cpf = input('CPF: ')
+            column = [
+                [sg.Text('Cadastrar Participante', font=('Arial', 14))],
+                [sg.Text('CPF:'), sg.InputText(size=(11, 1), key='cpf')]
+            ]
         else:
-            print('\n-------- ALTERAR PARTICIPANTE ----------')
-            cpf = None
+            column = [[sg.Text('Alterar Participante', font=('Arial', 14))]]
 
-        nome = input('Nome: ')
-        dia = int(input('Dia de nascimento: '))
-        mes = int(input('Mês de nascimento: '))
-        ano = int(input('Ano de nascimento: '))
-        logradouro = input('Logradouro (endereço): ')
-        num_endereco = int(input('Número (endereço): '))
-        cep = input('CEP (endereço): ')
-
-        return {'cpf': cpf, 'nome': nome, 'dia': dia, 'mes': mes, 'ano': ano,
-                'logradouro': logradouro, 'num_endereco': num_endereco, 'cep': cep}
+        layout = [
+            [sg.Column(column, pad=0)],
+            [sg.Text('Nome:'), sg.InputText(size=(24, 1), key='nome')],
+            [sg.Text('Dia de nascimento:'), sg.InputText(size=(2, 1), key='dia_nascimento')],
+            [sg.Text('Mês de nascimento:'), sg.InputText(size=(2, 1), key='mes_nascimento')],
+            [sg.Text('Ano de nascimento:'), sg.InputText(size=(4, 4), key='ano_nascimento')],
+            [sg.Text('Logradouro (endereço):'), sg.InputText(size=(24, 1), key='logradouro')],
+            [sg.Text('Número (endereço):'), sg.InputText(size=(4, 1), key='num_endereco')],
+            [sg.Text('CEP (endereço):'), sg.InputText(size=(8, 8), key='cep')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def pegar_dados_comprovante(self):
-        segunda_dose = False
-        print('\n-------- REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE ----------')
-        tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
-        while tomou_primeira not in 'SN':
-            tomou_primeira = input('Tomou primeira dose vacinal? [S/N]: ').upper().strip()[0]
-        primeira_dose = True if tomou_primeira == 'S' else False
+        ano = mes = dia = hora = minuto = 12
+        self.inicializar_pegar_dados_comprovante()
+        button, values = self.__window.read()
 
-        if primeira_dose:
-            tomou_segunda = input('Tomou segunda dose vacinal? [S/N]: ').upper().strip()[0]
-            while tomou_segunda not in 'SN':
-                tomou_segunda = input('Tomou segunda dose vacinal? [S/N]: ').upper().strip()[0]
-            segunda_dose = True if tomou_segunda == 'S' else False
+        if button == 'Confirmar':
+            self.__window.close()
 
-        resultado_pcr = ResultadoPcr.nao_realizado
-        pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
-        while pcr not in 'SN':
-            pcr = input('Realizou teste PCR? [S/N]: ').upper().strip()[0]
+            primeira_dose = values['primeira_dose']
+            segunda_dose = values['segunda_dose']
+            teste_pcr = values['teste_pcr']
 
-        if pcr == 'S':
-            ano = int(input('Ano de realização do teste: '))
-            mes = int(input('Mês de realização do teste: '))
-            dia = int(input('Dia de realização do teste: '))
-            hora = int(input('Hora de realização do teste: '))
-            minuto = int(input('Minuto de realização do teste: '))
+            resultado_pcr = ResultadoPcr.nao_realizado
 
-            print('Resultado do teste:')
-            print('[ 1 ] Positivo')
-            print('[ 2 ] Negativo')
-            opcao_teste = int(input('Opção: '))
-            while opcao_teste not in [1, 2]:
-                opcao_teste = int(input('Opção: '))
+            if teste_pcr:
+                self.inicializar_pegar_dados_pcr()
+                button, values = self.__window.read()
 
-            if opcao_teste == 1:
-                resultado_pcr = ResultadoPcr.positivo
-            elif opcao_teste == 2:
-                resultado_pcr = ResultadoPcr.negativo
-        else:
-            ano = mes = dia = hora = minuto = 12
+                if button == 'Confirmar':
+                    self.__window.close()
 
-        return {'primeira_dose': primeira_dose, 'segunda_dose': segunda_dose,
-                'ano': ano, 'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto,
-                'resultado_pcr': resultado_pcr}
+                    ano = int(values['ano'])
+                    mes = int(values['mes'])
+                    dia = int(values['dia'])
+                    hora = int(values['hora'])
+                    minuto = int(values['minuto'])
+                    pcr_positivo = values['pcr_positivo']
+                    pcr_negativo = values['pcr_negativo']
+                    if pcr_positivo:
+                        resultado_pcr = ResultadoPcr.positivo
+                    if pcr_negativo:
+                        resultado_pcr = ResultadoPcr.negativo
+
+            return {'primeira_dose': primeira_dose, 'segunda_dose': segunda_dose,
+                    'ano': ano, 'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto,
+                    'resultado_pcr': resultado_pcr}
+
+        self.__window.close()
+        return None
+
+    def inicializar_pegar_dados_comprovante(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        column = [
+            [sg.Text('REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE', font=('Arial', 14))],
+        ]
+
+        layout = [
+            [sg.Column(column, pad=0)],
+            [sg.Checkbox('Primeira Dose da Vacina', key='primeira_dose')],
+            [sg.Checkbox('Segunda Dose da Vacina', key='segunda_dose')],
+            [sg.Checkbox('Realizou Teste PCR', key='teste_pcr')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def inicializar_pegar_dados_pcr(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        column = [
+            [sg.Text('REGISTRAR TESTE PCR DO PARTICIPANTE', font=('Arial', 14))],
+        ]
+
+        layout = [
+            [sg.Column(column, pad=0)],
+            [sg.Text('Ano:'), sg.InputText(size=(4, 4), key='ano')],
+            [sg.Text('Mês:'), sg.InputText(size=(2, 1), key='mes')],
+            [sg.Text('Dia:'), sg.InputText(size=(2, 1), key='dia')],
+            [sg.Text('Hora:'), sg.InputText(size=(2, 1), key='hora')],
+            [sg.Text('Minuto:'), sg.InputText(size=(2, 1), key='minuto')],
+            [
+                sg.Text('Resultado:'),
+                sg.Radio('Positivo', 'resultados', key='pcr_positivo'),
+                sg.Radio('Negativo', 'resultados', key='pcr_negativo'),
+            ],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def mostrar_participante(self, dados_participante):
-        print("-" * 40)
-        print('CPF DO PARTICIPANTE: ', dados_participante['cpf'])
-        print('NOME DO PARTICIPANTE: ', dados_participante['nome'])
-        print('DATA DE NASCIMENTO DO PARTICIPANTE: ', dados_participante['data_nascimento'].strftime('%d/%m/%Y'))
-        print('ENDEREÇO DO PARTICIPANTE: ')
-        print('Logradouro: ', dados_participante['endereco'].logradouro)
-        print('Número de endereço: ', dados_participante['endereco'].num_endereco)
-        print('CEP: ', dados_participante['endereco'].cep)
-        print('STATUS DO PARTICIPANTE: ', dados_participante['status'].value)
-        print('COMPROVANTE DE SAÚDE DO PARTICIPANTE: ', end='')
+        self.inicializar_mostrar_participante(dados_participante)
+        button, values = self.__window.read()
+
+        if button in [None, 'OK']:
+            self.__window.close()
+
+    def inicializar_mostrar_participante(self, dados_participante):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [[sg.Text('Dados do Participante', font=('Arial', 14))],
+                  [sg.Text('CPF:'), sg.Text(dados_participante['cpf'])],
+                  [sg.Text('Nome:'), sg.Text(dados_participante['nome'])],
+                  [sg.Text('Data de nascimento:'), sg.Text(dados_participante['data_nascimento'].strftime('%d/%m/%Y'))],
+                  [sg.Text('Endereço do Participante', font=('Arial', 14))],
+                  [sg.Text('Logradouro:'), sg.Text(dados_participante['endereco'].logradouro)],
+                  [sg.Text('Número de endereço:'), sg.Text(dados_participante['endereco'].num_endereco)],
+                  [sg.Text('CEP:'), sg.Text(dados_participante['endereco'].cep)],
+                  [sg.Text('Status:'), sg.Text(dados_participante['status'].value)],
+                  [sg.Text('Comprovante de Saúde do Participante', font=('Arial', 14))]]
+
         if dados_participante['comprovante_saude'] is None:
-            print('Não cadastrado')
+            layout.append([sg.Text('Não Cadastrado')])
         else:
-            print('\nTomou primeira dose vacinal? ',
-                  'Sim' if dados_participante['comprovante_saude'].primeira_dose else 'Não')
-            print('Tomou segunda dose vacinal? ',
-                  'Sim' if dados_participante['comprovante_saude'].segunda_dose else 'Não')
-            print('Data e horário do teste PCR: ', 'Não realizado'
-            if dados_participante['comprovante_saude'].data_horario_teste == datetime(12, 12, 12, 12, 12)
-            else dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y, %H:%M'))
-            print('Teste PCR: ', dados_participante['comprovante_saude'].resultado_pcr.value)
-        print("-" * 40)
+            layout.append([sg.Text('Primeira Dose Vacinal:'),
+                           sg.Text('Sim' if dados_participante['comprovante_saude'].primeira_dose else 'Não')])
+            layout.append([sg.Text('Primeira Dose Vacinal:'),
+                           sg.Text('Sim' if dados_participante['comprovante_saude'].segunda_dose else 'Não')])
+            if dados_participante['comprovante_saude'].data_horario_teste == datetime(12, 12, 12, 12, 12):
+                layout.append([sg.Text('Data e horário do teste PCR: Não realizado')])
+            else:
+                layout.append([sg.Text('Data e horário do teste PCR:'),
+                               sg.Text(dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y, %H:%M'))])
+                layout.append([sg.Text('Resultado do teste PCR:'),
+                               sg.Text(dados_participante['comprovante_saude'].resultado_pcr.value)])
+
+        layout.append([sg.Cancel('OK')])
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def selecionar_participante(self):
-        cpf = input('\nCPF do participante que deseja selecionar: ')
-        return cpf
+        self.inicializar_selecionar_participante()
+        button, values = self.__window.read()
+
+        if button == 'Confirmar':
+            self.__window.close()
+
+            cpf_participante = values['cpf']
+            return cpf_participante
+
+        self.__window.close()
+        return None
+
+    def inicializar_selecionar_participante(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Selecionar Participante', font=('Arial', 14))],
+            [sg.Text('CPF do participante que deseja selecionar: '), sg.InputText(size=(11, 1), key='cpf')],
+
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def fechar_tela(self):
+        self.__window.close()
 
     def mostrar_mensagem(self, msg):
-        print(msg)
+        sg.Popup(msg)
