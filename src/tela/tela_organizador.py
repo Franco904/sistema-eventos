@@ -1,48 +1,140 @@
+import PySimpleGUI as sg
+
+
 class TelaOrganizador:
     def __init__(self):
-        pass
+        self.__window = None
 
     def tela_opcoes(self):
-        print('\n-------- ORGANIZADORES ----------')
-        print('1 - Adicionar organizador')
-        print('2 - Excluir organizador')
-        print('3 - Alterar organizador')
-        print('4 - Mostrar organizador')
-        print('5 - Listar organizador')
-        print('0 - Retornar')
-        print("-" * 40)
+        opcao = -1
+        while opcao == -1:
+            self.inicializar_opcoes()
+            button, values = self.__window.read()
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao not in [0, 1, 2, 3, 4, 5]:
-            opcao = int(input('Escolha uma opção: '))
+            if values['0'] or button is None:
+                opcao = 0
+                break
+
+            for i, key in enumerate(values, 1):
+                if values[key]:
+                    opcao = i
+
+            self.fechar_tela()
+
+        self.fechar_tela()
         return opcao
 
+    def inicializar_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Organizadores', size=(16, 1), font=('Arial', 16), justification='center')],
+            [sg.Text('Escolha uma opção abaixo:')],
+
+            [sg.Radio('Adicionar Organizador', 'RB', key='1')],
+            [sg.Radio('Excluir Organizador', 'RB', key='2')],
+            [sg.Radio('Alterar Organizador', 'RB', key='3')],
+            [sg.Radio('Mostrar Organizador', 'RB', key='4')],
+            [sg.Radio('Listar Organizadores', 'RB', key='5')],
+            [sg.Radio('Retornar', 'RB', key='0')],
+
+            [sg.Button('Confirmar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
     def pegar_dados_organizador(self, editando: bool):
+        self.inicializar_pegar_dados(editando)
+        button, values = self.__window.read()
+
+        if button == 'Confirmar':
+            self.__window.close()
+
+            if editando:
+                values['cpf'] = -1
+
+            cpf = values['cpf']
+            nome = values['nome']
+            dia_nascimento = int(values['dia_nascimento'])
+            mes_nascimento = int(values['mes_nascimento'])
+            ano_nascimento = int(values['ano_nascimento'])
+
+            return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
+                    'ano_nascimento': ano_nascimento}
+
+        self.__window.close()
+        return None
+
+    def inicializar_pegar_dados(self, editando: bool):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
         if not editando:
-            print('\n-------- CADASTRAR ORGANIZADOR ----------')
-            cpf = input('CPF: ')
+            column = [
+                [sg.Text('Cadastrar Organizador', size=(20, 1), font=('Arial', 14))],
+                [sg.Text('CPF:', size=(4, 1)), sg.InputText(size=(11, 1), key='cpf')]
+            ]
         else:
-            print('\n-------- ALTERAR ORGANIZADOR ----------')
-            cpf = None
+            column = [[sg.Text('Alterar Organizador', size=(16, 1), font=('Arial', 14))]]
 
-        nome = input('Nome: ')
-        dia_nascimento = int(input('Dia de nascimento: '))
-        mes_nascimento = int(input('Mês de nascimento: '))
-        ano_nascimento = int(input('Ano de nascimento: '))
-
-        return {'cpf': cpf, 'nome': nome, 'dia_nascimento': dia_nascimento, 'mes_nascimento': mes_nascimento,
-                'ano_nascimento': ano_nascimento}
+        layout = [
+            [sg.Column(column, pad=0)],
+            [sg.Text('Nome:', size=(5, 1)), sg.InputText(size=(24, 1), key='nome')],
+            [sg.Text('Dia de nascimento:', size=(15, 1)), sg.InputText(size=(2, 1), key='dia_nascimento')],
+            [sg.Text('Mês de nascimento:', size=(15, 1)), sg.InputText(size=(2, 1), key='mes_nascimento')],
+            [sg.Text('Ano de nascimento:', size=(15, 1)), sg.InputText(size=(4, 4), key='ano_nascimento')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def mostrar_organizador(self, dados_organizador):
-        print("-" * 40)
-        print('CPF DO ORGANIZADOR: ', dados_organizador['cpf'])
-        print('NOME DO ORGANIZADOR: ', dados_organizador['nome'])
-        print('DATA DE NASCIMENTO DO ORGANIZADOR: ', dados_organizador['data_nascimento'].strftime('%d/%m/%Y'))
-        print("-" * 40)
+        self.inicializar_mostrar_organizador(dados_organizador)
+        button, values = self.__window.read()
+
+        if button in [None, 'OK']:
+            self.__window.close()
+
+    def inicializar_mostrar_organizador(self, dados_local):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Dados do Organizador', size=(18, 1), font=('Arial', 14))],
+            [sg.Text('CPF: '), sg.Text(dados_local['cpf'])],
+            [sg.Text('Nome: '), sg.Text(dados_local['nome'])],
+            [sg.Text('Data de nascimento: '), sg.Text(dados_local['data_nascimento'])],
+
+            [sg.Cancel('OK')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def selecionar_organizador(self):
-        cpf_organizador = input('CPF do organizador que deseja selecionar: ')
-        return cpf_organizador
+        self.inicializar_selecionar_organizador()
+        button, values = self.__window.read()
+
+        if button == 'Confirmar':
+            self.__window.close()
+
+            cpf_organizador = values['cpf']
+            return cpf_organizador
+
+        self.__window.close()
+        return None
+
+    def inicializar_selecionar_organizador(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Selecionar Organizador', size=(21, 1), font=('Arial', 14))],
+            [sg.Text('CPF do organizador que deseja selecionar: '), sg.InputText(size=(11, 1), key='cpf')],
+
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def fechar_tela(self):
+        self.__window.close()
 
     def mostrar_mensagem(self, msg):
-        print(msg)
+        sg.Popup(msg)
+
+    def fechar_tela(self):
+        self.__window.close()
