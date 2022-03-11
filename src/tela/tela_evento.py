@@ -1,159 +1,268 @@
+import PySimpleGUI as sg
+
+from src.tela.strings.strings import *
+
+
 class TelaEvento:
     def __init__(self):
-        pass
+        self.__window = None
 
     def tela_opcoes(self):
-        print('\n-------- OPÇÕES ----------')
-        print('1 - Adicionar evento')
-        print('2 - Excluir evento')
-        print('3 - Alterar evento')
-        print('4 - Mostrar evento')
-        print('5 - Adicionar organizador ao evento')
-        print('6 - Excluir organizador do evento')
-        print('7 - Adicionar participante ao evento')
-        print('8 - Excluir participante do evento')
-        print('9 - Tela de Listagens')
-        print('0 - Retornar')
-        print("-" * 40)
+        opcao = -1
+        while opcao == -1:
+            self.inicializar_opcoes()
+            button, values = self.__window.read()
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao < 0 or opcao > 9:
-            opcao = int(input('Escolha uma opção: '))
+            if values['0'] or button is None:
+                opcao = 0
+                break
+
+            for i, key in enumerate(values, 1):
+                if values[key]:
+                    opcao = i
+
+            self.__window.close()
+
+        self.__window.close()
         return opcao
 
+    def inicializar_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Eventos', size=(16, 1), font=('Arial', 16), justification='center')],
+            [sg.Text('Escolha uma opção abaixo:')],
+
+            [sg.Radio('Adicionar evento', 'RB', key='1')],
+            [sg.Radio('Excluir evento', 'RB', key='2')],
+            [sg.Radio('Alterar evento', 'RB', key='3')],
+            [sg.Radio('Mostrar evento', 'RB', key='4')],
+            [sg.Radio('Adicionar organizador ao evento', 'RB', key='5')],
+            [sg.Radio('Excluir organizador do evento', 'RB', key='6')],
+            [sg.Radio('Adicionar participante ao evento', 'RB', key='7')],
+            [sg.Radio('Excluir participante do evento', 'RB', key='8')],
+            [sg.Radio('Opções de Listagem', 'RB', key='9')],
+            [sg.Radio('Retornar', 'RB', key='0')],
+
+            [sg.Button('Confirmar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def opcoes_listagem(self):
+        opcao = -1
+        while opcao == -1:
+            self.inicializar_opcoes_listagem()
+            button, values = self.__window.read()
+
+            if values['0'] or button is None:
+                opcao = 0
+                break
+
+            for i, key in enumerate(values, 1):
+                if values[key]:
+                    opcao = i
+
+            self.__window.close()
+
+        self.__window.close()
+        return opcao
+
+    def inicializar_opcoes_listagem(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Eventos', size=(16, 1), font=('Arial', 16), justification='center')],
+            [sg.Text('Escolha uma opção abaixo:')],
+
+            [sg.Radio('Listar eventos', 'RB', key='1')],
+            [sg.Radio('Listar eventos ocorridos', 'RB', key='2')],
+            [sg.Radio('Listar eventos futuros', 'RB', key='3')],
+            [sg.Radio('Ranking de eventos por público', 'RB', key='4')],
+            [sg.Radio('Listar organizadores do evento', 'RB', key='5')],
+            [sg.Radio('Listar participantes do evento', 'RB', key='6')],
+            [sg.Radio('Listar participantes com comprovante', 'RB', key='7')],
+            [sg.Radio('Listar participantes sem comprovante', 'RB', key='8')],
+            [sg.Radio('Listar participações do evento', 'RB', key='9')],
+            [sg.Radio('Retornar', 'RB', key='0')],
+
+            [sg.Button('Confirmar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
     def pegar_dados_evento(self, locais: list, organizadores: list, editando: bool):
-        if not editando:
-            print('\n-------- CADASTRAR EVENTO ----------')
-            id_evento = int(input('Id do evento: '))
-        else:
-            print('\n-------- ALTERAR EVENTO ----------')
-            id_evento = None
+        self.inicializar_pegar_dados(locais, organizadores, editando)
+        button, values = self.__window.read()
 
-        titulo = input('Título: ')
+        if button == 'Confirmar':
+            self.__window.close()
+
+            if editando:
+                values['id_evento'] = -1
+
+            local = list(filter(lambda l: l.nome == values['local'], locais))[0]
+            organizadoresIncluidos = []
+            for organizador in organizadores:
+                for o in values['organizadores']:
+                    if organizador.nome == o:
+                        organizadoresIncluidos.append(organizador)
+
+            return {'id_evento': int(values['id_evento']),
+                    'titulo': values['titulo'],
+                    'local': local,
+                    'ano': int(values['ano']),
+                    'mes': int(values['mes']),
+                    'dia': int(values['dia']),
+                    'hora': int(values['hora']),
+                    'minuto': int(values['minuto']),
+                    'capacidade': int(values['capacidade']),
+                    'organizadores': organizadoresIncluidos}
+
+        self.__window.close()
+        return None
+
+    def inicializar_pegar_dados(self, locais: list, organizadores: list, editando: bool):
         if len(locais) > 0:
-            print('Selecione um dos locais cadastrados:')
-
-            for i, l in enumerate(locais):
-                print(f'[ {i + 1} ] Id: {l.id}, Nome: {l.nome}')
-
-            opcao_local = int(input('Escolha uma opção: '))
-            while opcao_local > len(locais) or opcao_local < 1:
-                opcao_local = int(input('Escolha uma opção: '))
+            locaisTitulos = list(map(lambda l: l.nome, locais))
         else:
-            print('Não há locais cadastrados para listar.')
-            print('Acesse a tela de locais para cadastrar um local.')
+            self.mostrar_mensagem('Não há locais cadastrados para listar.\n\n'
+                                  'Acesse a tela de locais para cadastrar um local.\n')
             return
 
-        ano = int(input('Ano de realização do evento: '))
-        mes = int(input('Mês de realização do evento: '))
-        dia = int(input('Dia de realização do evento: '))
-        hora = int(input('Hora de realização do evento: '))
-        minuto = int(input('Minuto de realização do evento: '))
-        capacidade = int(input('Capacidade do evento: '))
-        opcoes_organizador = []
         if len(organizadores) > 0:
-            print('Selecione um dos organizadores cadastrados:')
-
-            for i, o in enumerate(organizadores):
-                print(f'[ {i + 1} ] CPF: {o.cpf}, Nome: {o.nome}')
-
-            continuar = True
-            while continuar:
-                opcao_organizador = int(input('Escolha uma opção: '))
-                while opcao_organizador > len(organizadores) or opcao_organizador < 1:
-                    opcao_organizador = int(input('Escolha uma opção: '))
-
-                if opcao_organizador in opcoes_organizador:
-                    print('O organizador já foi incluído na lista.')
-                else:
-                    opcoes_organizador.append(opcao_organizador)
-
-                    if len(organizadores) > 1 and len(opcoes_organizador) < len(organizadores):
-                        cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
-                        while cont not in 'SN':
-                            cont = input('Deseja incluir mais organizadores? [S/N]: ').upper().strip()[0]
-                        continuar = True if cont == 'S' else False
-                    else:
-                        continuar = False
+            organizadoresNomes = list(map(lambda o: o.nome, organizadores))
         else:
             print('Não há organizadores cadastrados para listar.')
             print('Acesse a tela de organizadores para cadastrar um organizador.')
             return
 
-        return {'id_evento': id_evento, 'titulo': titulo, 'opcao_local': opcao_local, 'ano': ano,
-                'mes': mes, 'dia': dia, 'hora': hora, 'minuto': minuto, 'capacidade': capacidade,
-                'opcoes_organizador': opcoes_organizador}
+        if not editando:
+            columnIdEvento = [
+                [sg.Text('Cadastrar evento', size=(16, 1), font=('Arial', 14))],
+                [
+                    sg.Text('Id do evento:', size=(12, 1)), sg.InputText(size=(18, 1), key='id_evento'),
+                    sg.Text('   Ano de realização do evento:', size=(24, 1)),
+                    sg.InputText(size=(18, 1), key='ano'),
+                ]
+            ]
+        else:
+            columnIdEvento = [
+                [sg.Text('Alterar evento', size=(16, 1), font=('Arial', 14))],
+                [
+                    sg.Text('', size=(30, 1)),
+                    sg.Text('  Ano de realização do evento:', size=(24, 1)),
+                    sg.InputText(size=(24, 1), key='ano'),
+                ]
+            ]
 
-    def mostrar_detalhes_evento(self, dados_evento):
-        print("-" * 40)
-        print('ID DO EVENTO: ', dados_evento['id_evento'])
-        print('TÍTULO DO EVENTO: ', dados_evento['titulo'])
-        print('LOCAL DO EVENTO: ', dados_evento['local'].nome)
-        print('DATA E HORÁRIO DO EVENTO: ', dados_evento['data_horario_evento'].strftime('%d/%m/%Y, %H:%M'))
-        print('CAPACIDADE: ', dados_evento['capacidade'])
-        print("-" * 40)
+        layout = [
+            [sg.Column(columnIdEvento, pad=0)],
+            [
+                sg.Text('Título:', size=(12, 1)), sg.InputText(size=(18, 1), key='titulo'),
+                sg.Text('   Mês de realização do evento:', size=(24, 1)), sg.InputText(size=(24, 1), key='mes')
+            ],
+            [
+                sg.Text('Local:', size=(12, 1)), sg.Combo(locaisTitulos, readonly=True, size=(16, 1), key='local'),
+                sg.Text('   Dia de realização do evento:', size=(24, 1)), sg.InputText(size=(24, 1), key='dia')
+            ],
+            [
+                sg.Text('Capacidade:', size=(12, 1)), sg.InputText(size=(18, 1), key='capacidade'),
+                sg.Text('   Hora de realização do evento:', size=(24, 1)), sg.InputText(size=(24, 1), key='hora')
+            ],
+            [
+                sg.Text('Organizador(es):', size=(12, 1)), sg.Listbox(organizadoresNomes, select_mode='multiple',
+                                                                      size=(16, 3), key='organizadores'),
+                sg.Text('   Minuto de realização do evento:', size=(24, 1)), sg.InputText(size=(24, 1), key='minuto')
+            ],
+
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def mostrar_detalhes_evento(self, dados_evento: dict):
+        self.inicializar_detalhes_evento(dados_evento)
+        button, values = self.__window.read()
+
+        if button in [None, 'OK']:
+            self.__window.close()
+
+    def inicializar_detalhes_evento(self, dados_evento: dict):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Dados do evento', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Id do evento: '), sg.Text(dados_evento['id_evento'])],
+            [sg.Text('Título do evento: '), sg.Text(dados_evento['titulo'])],
+            [sg.Text('Local do evento: '), sg.Text(dados_evento['local'].nome)],
+            [sg.Text('Data e horário do evento: '), sg.Text(dados_evento['data_horario_evento']
+                                                            .strftime('%d/%m/%Y, %H:%M'))],
+            [sg.Text('Capacidade do evento: '), sg.Text(dados_evento['capacidade'])],
+            [sg.Text('Organizadores: '), sg.Text(montar_organizador_string(dados_evento['organizadores']))],
+            [sg.Text('Participantes: '), sg.Text(montar_participante_string(dados_evento['participantes']))],
+            [sg.Text('Participações confirmadas: '),
+             sg.Text(montar_participacao_string(dados_evento['participacoes']))
+             ],
+
+            [sg.Cancel('OK')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def mostrar_eventos_rankeados(self, eventos):
-        print("-" * 40)
-        if len(eventos) > 0:
-            print('EVENTOS RANKEADOS POR PÚBLICO: ', end='')
-            print('\nTítulo do evento : Público')
-            for titulo, participacoes in eventos.items():
-                print(titulo, ' : ', participacoes)
-        else:
-            print('Os eventos para listar não possuem participações cadastradas.')
-        print("-" * 40)
+        self.inicializar_mostrar_eventos_rankeados(eventos)
+        button, values = self.__window.read()
 
-    def mostrar_organizadores(self, organizadores):
-        print('ORGANIZADORES:')
-        if len(organizadores) == 0:
-            print('Nenhum organizador inserido')
-        else:
-            for organizador in organizadores:
-                print(organizador.nome) if organizador.cpf == organizadores[-1].cpf \
-                    else print(organizador.nome, ', ', end='')
+        if button in [None, 'OK']:
+            self.__window.close()
 
-    def mostrar_participantes(self, participantes):
-        print('PARTICIPANTES:')
-        if len(participantes) == 0:
-            print('Nenhum participante inserido')
-        else:
-            for participante in participantes:
-                print(participante.nome) if participante.cpf == participantes[-1].cpf \
-                    else print(participante.nome, ', ', end='')
+    def inicializar_mostrar_eventos_rankeados(self, eventos):
+        sg.ChangeLookAndFeel('DarkTeal4')
 
-    def mostrar_participacoes(self, participacoes, controlador_participantes):
-        print('PARTICIPAÇÕES CONFIRMADAS:')
-        if len(participacoes) == 0:
-            print('Nenhuma participação inserida')
+        if len(eventos) == 0:
+            layout = [
+                [sg.Text('Os eventos da lista não possuem participações cadastradas.')],
+                [sg.Cancel('OK')]
+            ]
         else:
-            for participacao in participacoes:
-                participante = controlador_participantes.pegar_participante_por_cpf(participacao.cpf_participante)
-                print(participante.nome) if participacao.id == participacoes[-1].id \
-                    else print(participante.nome, ', ', end='')
+            layout = [
+                [sg.Text('Eventos rankeados por público', size=(24, 1), font=('Arial', 14))],
+                [sg.Frame('', [[sg.Text('Título do evento : Público')]])],
+                [sg.Frame('', [
+                    [sg.Text(f'{titulo} : {participacoes}')] for titulo, participacoes in eventos.items()
+                ]
+                          )],
+
+                [sg.Cancel('OK')]
+            ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
 
     def selecionar_evento(self):
-        id_evento = int(input('\nId do evento que deseja selecionar: '))
-        return id_evento
+        self.inicializar_selecionar_evento()
+        button, values = self.__window.read()
 
-    def mostrar_mensagem(self, msg):
-        print(msg)
+        if button == 'Confirmar':
+            self.__window.close()
 
-    def selecionar_listagem(self):
-        print('\n-------- OPÇÕES ----------')
-        print('1 - Listar eventos')
-        print('2 - Listar eventos ocorridos')
-        print('3 - Listar eventos futuros')
-        print('4 - Ranking de eventos por público')
-        print('5 - Listar organizadores do evento')
-        print('6 - Listar participantes do evento')
-        print('7 - Listar participantes com comprovante')
-        print('8 - Listar participantes sem comprovante')
-        print('9 - Listar participações do evento')
-        print('0 - Retornar')
-        print("-" * 40)
+            id_evento = int(values['id_evento'])
+            return id_evento
 
-        opcao = int(input('Escolha uma opção: '))
-        while opcao < 0 or opcao > 9:
-            opcao = int(input('Escolha uma opção: '))
-        return opcao
+        self.__window.close()
+        return None
+
+    def inicializar_selecionar_evento(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Selecionar evento', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Id do evento que deseja selecionar: '), sg.InputText(size=(16, 1), key='id_evento')],
+
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+
+        self.__window = sg.Window('Sistema de Eventos', layout)
+
+    def mostrar_mensagem(self, msg: str):
+        sg.Popup(msg)

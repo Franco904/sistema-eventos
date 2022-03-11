@@ -78,6 +78,7 @@ class TelaLocal:
 
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
+
         self.__window = sg.Window('Sistema de Eventos', layout)
 
     def mostrar_local(self, dados_local):
@@ -97,6 +98,7 @@ class TelaLocal:
 
             [sg.Cancel('OK')]
         ]
+
         self.__window = sg.Window('Sistema de Eventos', layout)
 
     def selecionar_local(self):
@@ -121,6 +123,7 @@ class TelaLocal:
 
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
+
         self.__window = sg.Window('Sistema de Eventos', layout)
 
     def fechar_tela(self):

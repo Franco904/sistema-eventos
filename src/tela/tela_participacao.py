@@ -81,7 +81,7 @@ class TelaParticipacao:
             print('Não cadastrado')
         else:
             print(dados_participacao['data_horario_saida'].strftime('%H:%M'))
-        print('CPF DO PARTICIPANTE: ', dados_participacao['cpf_participante'])
+        print('NOME DO PARTICIPANTE: ', dados_participacao['participante'].nome)
         print("-" * 40)
 
     def selecionar_participacao(self):

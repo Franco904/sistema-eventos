@@ -39,7 +39,7 @@ class ControladorParticipacao:
 
             # Verifica se existe uma participação duplicada mesmo com ids de participação diferentes
             if participacao.id_evento == evento.id_evento \
-                    and participacao.cpf_participante == participante.cpf:
+                    and participacao.participante.cpf == participante.cpf:
                 self.__tela_participacao.mostrar_mensagem(
                     'Uma participação desse participante no evento informado já foi cadastrada na lista.')
                 return
@@ -83,17 +83,21 @@ class ControladorParticipacao:
                         dados_participacao['hora_entrada'],
                         dados_participacao['minuto_entrada']
                     ],
-                    participante.cpf
+                    participante
                 )
                 participante.status_participante = StatusParticipante.autorizado
 
                 self.__participacoes.append(participacao)
 
                 evento.adicionar_participacao(participacao)
-                evento.adicionar_participante(participante)
-                self.__tela_participacao.mostrar_mensagem('Participação e participante adicionados no evento com '
-                                                          'sucesso.')
 
+                try:
+                    evento.adicionar_participante(participante)
+                except IndexError:
+                    self.__tela_participacao.mostrar_mensagem('O participante já existe na lista de participantes do '
+                                                              'evento.')
+
+                self.__tela_participacao.mostrar_mensagem('Participação adicionada no evento com sucesso.')
             except TypeError:
                 self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
@@ -206,7 +210,7 @@ class ControladorParticipacao:
                     'id_evento': participacao.id_evento,
                     'data_horario_entrada': participacao.data_horario_entrada,
                     'data_horario_saida': participacao.data_horario_saida,
-                    'cpf_participante': participacao.cpf_participante
+                    'participante': participacao.participante.nome
                 })
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada')
@@ -227,7 +231,7 @@ class ControladorParticipacao:
                     'id_evento': participacao.id_evento,
                     'data_horario_entrada': participacao.data_horario_entrada,
                     'data_horario_saida': participacao.data_horario_saida,
-                    'cpf_participante': participacao.cpf_participante
+                    'participante': participacao.participante
                 })
         else:
             self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
