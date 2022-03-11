@@ -196,7 +196,7 @@ class TelaParticipacao:
 
         if button == 'Confirmar':
             self.__window.close()
-            id_participacao = values['id']
+            id_participacao = int(values['id'])
             return id_participacao
 
         self.__window.close()
