@@ -184,8 +184,9 @@ class TelaParticipacao:
             layout.append([sg.Text('Horário de Saída:'), sg.Text('Não Cadastrado')])
         else:
             layout.append([sg.Text('Horário de Saída:'),
-                           sg.Text(dados_participacao['participante'].nome)])
-        layout.append([sg.Text('Nome do Participante:'), sg.Text(dados_participacao['participante'].nome)])
+                           sg.Text(dados_participacao['participante'])])
+        layout.append([sg.Text('Nome do Participante:'),
+                       sg.Text(dados_participacao['participante'])])
         layout.append([sg.Cancel('OK')])
 
         self.__window = sg.Window('Sistema de Eventos', layout)
