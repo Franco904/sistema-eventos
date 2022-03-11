@@ -28,7 +28,7 @@ class TelaOrganizador:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Organizadores', size=(16, 1), font=('Arial', 16), justification='center')],
+            [sg.Text('Organizadores', font=('Arial', 16), justification='center')],
             [sg.Text('Escolha uma opção abaixo:')],
 
             [sg.Radio('Adicionar Organizador', 'RB', key='1')],
@@ -70,18 +70,18 @@ class TelaOrganizador:
 
         if not editando:
             column = [
-                [sg.Text('Cadastrar Organizador', size=(20, 1), font=('Arial', 14))],
-                [sg.Text('CPF:', size=(4, 1)), sg.InputText(size=(11, 1), key='cpf')]
+                [sg.Text('Cadastrar Organizador', font=('Arial', 14))],
+                [sg.Text('CPF:'), sg.InputText(size=(11, 1), key='cpf')]
             ]
         else:
-            column = [[sg.Text('Alterar Organizador', size=(16, 1), font=('Arial', 14))]]
+            column = [[sg.Text('Alterar Organizador', font=('Arial', 14))]]
 
         layout = [
             [sg.Column(column, pad=0)],
-            [sg.Text('Nome:', size=(5, 1)), sg.InputText(size=(24, 1), key='nome')],
-            [sg.Text('Dia de nascimento:', size=(15, 1)), sg.InputText(size=(2, 1), key='dia_nascimento')],
-            [sg.Text('Mês de nascimento:', size=(15, 1)), sg.InputText(size=(2, 1), key='mes_nascimento')],
-            [sg.Text('Ano de nascimento:', size=(15, 1)), sg.InputText(size=(4, 4), key='ano_nascimento')],
+            [sg.Text('Nome:'), sg.InputText(size=(24, 1), key='nome')],
+            [sg.Text('Dia de nascimento:'), sg.InputText(size=(2, 1), key='dia_nascimento')],
+            [sg.Text('Mês de nascimento:'), sg.InputText(size=(2, 1), key='mes_nascimento')],
+            [sg.Text('Ano de nascimento:'), sg.InputText(size=(4, 4), key='ano_nascimento')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
@@ -97,7 +97,7 @@ class TelaOrganizador:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Dados do Organizador', size=(18, 1), font=('Arial', 14))],
+            [sg.Text('Dados do Organizador', font=('Arial', 14))],
             [sg.Text('CPF: '), sg.Text(dados_local['cpf'])],
             [sg.Text('Nome: '), sg.Text(dados_local['nome'])],
             [sg.Text('Data de nascimento: '), sg.Text(dados_local['data_nascimento'])],
@@ -123,7 +123,7 @@ class TelaOrganizador:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Selecionar Organizador', size=(21, 1), font=('Arial', 14))],
+            [sg.Text('Selecionar Organizador', font=('Arial', 14))],
             [sg.Text('CPF do organizador que deseja selecionar: '), sg.InputText(size=(11, 1), key='cpf')],
 
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
@@ -135,6 +135,3 @@ class TelaOrganizador:
 
     def mostrar_mensagem(self, msg):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()
