@@ -23,13 +23,13 @@ class ControladorParticipacao:
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
         participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
 
-        dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes)
+        dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes, False)
 
         if dados_participacao is None:
             return
 
-        evento = eventos[dados_participacao['opcao_evento'] - 1]
-        participante = participantes[dados_participacao['opcao_participante'] - 1]
+        evento = dados_participacao['evento']
+        participante = dados_participacao['participante']
 
         for participacao in self.__participacoes:
             # Faz a verificação da existência da participação na lista
