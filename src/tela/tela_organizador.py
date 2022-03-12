@@ -31,11 +31,11 @@ class TelaOrganizador:
             [sg.Text('Organizadores', font=('Arial', 16), justification='center')],
             [sg.Text('Escolha uma opção abaixo:')],
 
-            [sg.Radio('Adicionar Organizador', 'RB', key='1')],
-            [sg.Radio('Excluir Organizador', 'RB', key='2')],
-            [sg.Radio('Alterar Organizador', 'RB', key='3')],
-            [sg.Radio('Mostrar Organizador', 'RB', key='4')],
-            [sg.Radio('Listar Organizadores', 'RB', key='5')],
+            [sg.Radio('Adicionar organizador', 'RB', key='1')],
+            [sg.Radio('Excluir organizador', 'RB', key='2')],
+            [sg.Radio('Alterar organizador', 'RB', key='3')],
+            [sg.Radio('Mostrar organizador', 'RB', key='4')],
+            [sg.Radio('Listar organizadores', 'RB', key='5')],
             [sg.Radio('Retornar', 'RB', key='0')],
 
             [sg.Button('Confirmar')]

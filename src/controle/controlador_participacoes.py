@@ -23,7 +23,7 @@ class ControladorParticipacao:
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
         participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
 
-        dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes, False)
+        dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes)
 
         if dados_participacao is None:
             return
@@ -210,7 +210,7 @@ class ControladorParticipacao:
                     'id_evento': participacao.id_evento,
                     'data_horario_entrada': participacao.data_horario_entrada,
                     'data_horario_saida': participacao.data_horario_saida,
-                    'participante': participacao.participante.nome
+                    'participante': participacao.participante
                 })
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada')

@@ -35,11 +35,11 @@ class TelaParticipante:
             [sg.Text('Participantes', font=('Arial', 16), justification='center')],
             [sg.Text('Escolha uma opção abaixo:')],
 
-            [sg.Radio('Adicionar Participante', 'RB', key='1')],
-            [sg.Radio('Excluir Participante', 'RB', key='2')],
-            [sg.Radio('Alterar Participante', 'RB', key='3')],
-            [sg.Radio('Mostrar Participante', 'RB', key='4')],
-            [sg.Radio('Listar Participantes', 'RB', key='5')],
+            [sg.Radio('Adicionar participante', 'RB', key='1')],
+            [sg.Radio('Excluir participante', 'RB', key='2')],
+            [sg.Radio('Alterar participante', 'RB', key='3')],
+            [sg.Radio('Mostrar participante', 'RB', key='4')],
+            [sg.Radio('Listar participantes', 'RB', key='5')],
             [sg.Radio('Salvar comprovante de saúde do participante', 'RB', key='6')],
             [sg.Radio('Retornar', 'RB', key='0')],
 
@@ -99,6 +99,7 @@ class TelaParticipante:
 
     def pegar_dados_comprovante(self):
         ano = mes = dia = hora = minuto = 12
+
         self.inicializar_pegar_dados_comprovante()
         button, values = self.__window.read()
 
@@ -141,14 +142,14 @@ class TelaParticipante:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         column = [
-            [sg.Text('REGISTRAR COMPROVANTE DE SAÚDE DO PARTICIPANTE', font=('Arial', 14))],
+            [sg.Text('Registrar Comprovante de Saúde do Participante', font=('Arial', 14))],
         ]
 
         layout = [
             [sg.Column(column, pad=0)],
-            [sg.Checkbox('Primeira Dose da Vacina', key='primeira_dose')],
-            [sg.Checkbox('Segunda Dose da Vacina', key='segunda_dose')],
-            [sg.Checkbox('Realizou Teste PCR', key='teste_pcr')],
+            [sg.Checkbox('Primeira dose da vacina', key='primeira_dose')],
+            [sg.Checkbox('Segunda dose da vacina', key='segunda_dose')],
+            [sg.Checkbox('Realizou teste PCR', key='teste_pcr')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
@@ -157,16 +158,16 @@ class TelaParticipante:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         column = [
-            [sg.Text('REGISTRAR TESTE PCR DO PARTICIPANTE', font=('Arial', 14))],
+            [sg.Text('Registrar Teste PCR do Participante', font=('Arial', 14))]
         ]
 
         layout = [
             [sg.Column(column, pad=0)],
-            [sg.Text('Ano:'), sg.InputText(size=(4, 4), key='ano')],
-            [sg.Text('Mês:'), sg.InputText(size=(2, 1), key='mes')],
-            [sg.Text('Dia:'), sg.InputText(size=(2, 1), key='dia')],
-            [sg.Text('Hora:'), sg.InputText(size=(2, 1), key='hora')],
-            [sg.Text('Minuto:'), sg.InputText(size=(2, 1), key='minuto')],
+            [sg.Text('Ano de realização do teste:'), sg.InputText(size=(4, 4), key='ano')],
+            [sg.Text('Mês de realização do teste:'), sg.InputText(size=(2, 1), key='mes')],
+            [sg.Text('Dia de realização do teste:'), sg.InputText(size=(2, 1), key='dia')],
+            [sg.Text('Hora de realização do teste:'), sg.InputText(size=(2, 1), key='hora')],
+            [sg.Text('Minuto de realização do teste:'), sg.InputText(size=(2, 1), key='minuto')],
             [
                 sg.Text('Resultado:'),
                 sg.Radio('Positivo', 'resultados', key='pcr_positivo'),
@@ -190,19 +191,21 @@ class TelaParticipante:
                   [sg.Text('CPF:'), sg.Text(dados_participante['cpf'])],
                   [sg.Text('Nome:'), sg.Text(dados_participante['nome'])],
                   [sg.Text('Data de nascimento:'), sg.Text(dados_participante['data_nascimento'].strftime('%d/%m/%Y'))],
+                  [sg.Text('Status:'), sg.Text(dados_participante['status'].value)],
+
                   [sg.Text('Endereço do Participante', font=('Arial', 14))],
                   [sg.Text('Logradouro:'), sg.Text(dados_participante['endereco'].logradouro)],
                   [sg.Text('Número de endereço:'), sg.Text(dados_participante['endereco'].num_endereco)],
                   [sg.Text('CEP:'), sg.Text(dados_participante['endereco'].cep)],
-                  [sg.Text('Status:'), sg.Text(dados_participante['status'].value)],
+
                   [sg.Text('Comprovante de Saúde do Participante', font=('Arial', 14))]]
 
         if dados_participante['comprovante_saude'] is None:
-            layout.append([sg.Text('Não Cadastrado')])
+            layout.append([sg.Text('Não cadastrado')])
         else:
-            layout.append([sg.Text('Primeira Dose Vacinal:'),
+            layout.append([sg.Text('Primeira dose da vacina:'),
                            sg.Text('Sim' if dados_participante['comprovante_saude'].primeira_dose else 'Não')])
-            layout.append([sg.Text('Primeira Dose Vacinal:'),
+            layout.append([sg.Text('Segunda dose da vacina:'),
                            sg.Text('Sim' if dados_participante['comprovante_saude'].segunda_dose else 'Não')])
             if dados_participante['comprovante_saude'].data_horario_teste == datetime(12, 12, 12, 12, 12):
                 layout.append([sg.Text('Data e horário do teste PCR: Não realizado')])

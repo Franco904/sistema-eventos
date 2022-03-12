@@ -66,11 +66,11 @@ class TelaLocal:
 
         if not editando:
             column = [
-                [sg.Text('Cadastrar local', size=(16, 1), font=('Arial', 14))],
+                [sg.Text('Cadastrar Local', size=(16, 1), font=('Arial', 14))],
                 [sg.Text('Id:', size=(5, 1)), sg.InputText(size=(24, 1), key='id')]
             ]
         else:
-            column = [[sg.Text('Alterar local', size=(16, 1), font=('Arial', 14))]]
+            column = [[sg.Text('Alterar Local', size=(16, 1), font=('Arial', 14))]]
 
         layout = [
             [sg.Column(column, pad=0)],
@@ -92,7 +92,7 @@ class TelaLocal:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Dados do local', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Dados do Local', size=(16, 1), font=('Arial', 14))],
             [sg.Text('Id do local: '), sg.Text(dados_local['id'])],
             [sg.Text('Nome do local: '), sg.Text(dados_local['nome'])],
 
@@ -118,7 +118,7 @@ class TelaLocal:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Selecionar local', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Selecionar Local', size=(16, 1), font=('Arial', 14))],
             [sg.Text('Id do local que deseja selecionar: '), sg.InputText(size=(16, 1), key='id')],
 
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]

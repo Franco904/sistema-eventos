@@ -133,13 +133,13 @@ class TelaEvento:
         if len(organizadores) > 0:
             organizadoresNomes = list(map(lambda o: o.nome, organizadores))
         else:
-            print('Não há organizadores cadastrados para listar.')
-            print('Acesse a tela de organizadores para cadastrar um organizador.')
+            self.mostrar_mensagem('Não há organizadores cadastrados para listar.\n\n'
+                                  'Acesse a tela de organizadores para cadastrar um organizador.')
             return
 
         if not editando:
             columnIdEvento = [
-                [sg.Text('Cadastrar evento', size=(16, 1), font=('Arial', 14))],
+                [sg.Text('Cadastrar Evento', size=(16, 1), font=('Arial', 14))],
                 [
                     sg.Text('Id do evento:', size=(12, 1)), sg.InputText(size=(18, 1), key='id_evento'),
                     sg.Text('   Ano de realização do evento:', size=(24, 1)),
@@ -148,11 +148,11 @@ class TelaEvento:
             ]
         else:
             columnIdEvento = [
-                [sg.Text('Alterar evento', size=(16, 1), font=('Arial', 14))],
+                [sg.Text('Alterar Evento', size=(16, 1), font=('Arial', 14))],
                 [
                     sg.Text('', size=(30, 1)),
                     sg.Text('  Ano de realização do evento:', size=(24, 1)),
-                    sg.InputText(size=(24, 1), key='ano'),
+                    sg.InputText(size=(32, 1), key='ano'),
                 ]
             ]
 
@@ -192,7 +192,7 @@ class TelaEvento:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Dados do evento', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Dados do Evento', size=(16, 1), font=('Arial', 14))],
             [sg.Text('Id do evento: '), sg.Text(dados_evento['id_evento'])],
             [sg.Text('Título do evento: '), sg.Text(dados_evento['titulo'])],
             [sg.Text('Local do evento: '), sg.Text(dados_evento['local'].nome)],
@@ -220,14 +220,14 @@ class TelaEvento:
     def inicializar_mostrar_eventos_rankeados(self, eventos):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(eventos) == 0:
+        if len(eventos) > 0:
             layout = [
                 [sg.Text('Os eventos da lista não possuem participações cadastradas.')],
                 [sg.Cancel('OK')]
             ]
         else:
             layout = [
-                [sg.Text('Eventos rankeados por público', size=(24, 1), font=('Arial', 14))],
+                [sg.Text('Eventos Rankeados por Público', size=(26, 1), font=('Arial', 14))],
                 [sg.Frame('', [[sg.Text('Título do evento : Público')]])],
                 [sg.Frame('', [
                     [sg.Text(f'{titulo} : {participacoes}')] for titulo, participacoes in eventos.items()
@@ -256,7 +256,7 @@ class TelaEvento:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Selecionar evento', size=(16, 1), font=('Arial', 14))],
+            [sg.Text('Selecionar Evento', size=(16, 1), font=('Arial', 14))],
             [sg.Text('Id do evento que deseja selecionar: '), sg.InputText(size=(16, 1), key='id_evento')],
 
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
