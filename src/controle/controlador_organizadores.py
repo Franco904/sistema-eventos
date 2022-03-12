@@ -100,10 +100,10 @@ class ControladorOrganizador:
             self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar.')
 
     def pegar_organizador_por_cpf(self, cpf_organizador):
-        for organizador in self.organizadores:
-            if organizador.cpf == cpf_organizador:
-                return organizador
-        return None
+        try:
+            return self.__organizadores_dao.get_organizador(cpf_organizador)
+        except KeyError:
+            return None
 
     def listar_organizadores(self):
         if len(self.organizadores) > 0:

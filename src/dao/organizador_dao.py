@@ -8,7 +8,7 @@ class OrganizadorDao(Dao):
 
     def add_organizador(self, organizador: Organizador):
         if organizador is not None and isinstance(organizador, Organizador):
-            super().add(organizador.cpf, Organizador)
+            super().add(organizador.cpf, organizador)
 
     def remove_organizador(self, organizador: Organizador):
         if organizador is not None and isinstance(organizador, Organizador):

@@ -100,7 +100,7 @@ class TelaOrganizador:
             [sg.Text('Dados do Organizador', font=('Arial', 14))],
             [sg.Text('CPF:'), sg.Text(dados_organizador['cpf'])],
             [sg.Text('Nome:'), sg.Text(dados_organizador['nome'])],
-            [sg.Text('Data de nascimento:'), sg.Text(dados_organizador['data_nascimento'])],
+            [sg.Text('Data de nascimento:'), sg.Text(dados_organizador['data_nascimento'].strftime('%d/%m/%Y'))],
 
             [sg.Cancel('OK')]
         ]
