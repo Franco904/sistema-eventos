@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from src.dao.evento_dao import EventoDao
 from src.entidade.evento import Evento
 from src.tela.tela_evento import TelaEvento
 
@@ -7,12 +8,12 @@ from src.tela.tela_evento import TelaEvento
 class ControladorEvento:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__eventos = []
+        self.__evento_dao = EventoDao()
         self.__tela_evento = TelaEvento()
 
     @property
     def eventos(self):
-        return self.__eventos
+        return self.__evento_dao.get_all()
 
     @property
     def tela_evento(self):
@@ -28,7 +29,7 @@ class ControladorEvento:
             return
 
         # Faz a verificação da existência do evento na lista
-        for evento in self.__eventos:
+        for evento in self.eventos:
             if evento.id_evento == dados_evento['id_evento']:
                 self.__tela_evento.mostrar_mensagem('O id inserido já pertence a um evento na lista.')
                 return
@@ -47,7 +48,7 @@ class ControladorEvento:
                             dados_evento['capacidade'],
                             dados_evento['organizadores'])
 
-            self.__eventos.append(evento)
+            self.__evento_dao.add_evento(evento)
             self.__tela_evento.mostrar_mensagem('Evento adicionado na lista.')
 
         except TypeError:
@@ -56,12 +57,12 @@ class ControladorEvento:
     def excluir_evento(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
-                self.__eventos.remove(evento)
+                self.__evento_dao.remove_evento(evento)
                 self.__tela_evento.mostrar_mensagem('Evento removido da lista.')
 
                 # Exclui as participações que estão associadas ao evento recém excluído
@@ -79,7 +80,7 @@ class ControladorEvento:
     def alterar_evento(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -105,6 +106,7 @@ class ControladorEvento:
                     evento.capacidade = novos_dados_evento['capacidade']
                     evento.organizadores = novos_dados_evento['organizadores']
 
+                    self.__evento_dao.update_evento(evento)
                     self.__tela_evento.mostrar_mensagem('Dados do evento alterados com sucesso.')
 
                 except TypeError:
@@ -113,7 +115,7 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def mostrar_evento(self):
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             if id_evento is None:
                 return
@@ -137,14 +139,14 @@ class ControladorEvento:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
     def pegar_evento_por_id(self, id_evento):
-        for evento in self.__eventos:
-            if evento.id_evento == id_evento:
-                return evento
-        return None
+        try:
+            return self.__evento_dao.get_evento(id_evento)
+        except KeyError:
+            return None
 
     def listar_eventos(self):
-        if len(self.__eventos) > 0:
-            for evento in self.__eventos:
+        if len(self.eventos) > 0:
+            for evento in self.eventos:
                 self.__tela_evento.mostrar_detalhes_evento({
                     'id_evento': evento.id_evento,
                     'titulo': evento.titulo,
@@ -162,8 +164,8 @@ class ControladorEvento:
             return False
 
     def listar_eventos_ocorridos(self):
-        if len(self.__eventos) > 0:
-            eventos_ocorridos = list(filter(lambda e: e.data_horario_evento < datetime.now(), self.__eventos))
+        if len(self.eventos) > 0:
+            eventos_ocorridos = list(filter(lambda e: e.data_horario_evento < datetime.now(), self.eventos))
 
             if len(eventos_ocorridos) > 0:
                 for evento in eventos_ocorridos:
@@ -183,8 +185,8 @@ class ControladorEvento:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
     def listar_eventos_futuros(self):
-        if len(self.__eventos) > 0:
-            eventos_futuros = list(filter(lambda e: e.data_horario_evento > datetime.now(), self.__eventos))
+        if len(self.eventos) > 0:
+            eventos_futuros = list(filter(lambda e: e.data_horario_evento > datetime.now(), self.eventos))
 
             if len(eventos_futuros) > 0:
                 for evento in eventos_futuros:
@@ -206,8 +208,8 @@ class ControladorEvento:
     def ranking_eventos_por_publico(self):
         dados_evento = {}
 
-        if len(self.__eventos) > 0:
-            for evento in self.__eventos:
+        if len(self.eventos) > 0:
+            for evento in self.eventos:
                 if len(evento.participacoes) > 0:
                     dados_evento[f'{evento.titulo}'] = (len(evento.participacoes))
 
@@ -221,7 +223,7 @@ class ControladorEvento:
     def listar_organizadores_evento(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -246,7 +248,7 @@ class ControladorEvento:
     def listar_participantes_evento(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -274,7 +276,7 @@ class ControladorEvento:
     def listar_participantes_com_comprovante(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -310,7 +312,7 @@ class ControladorEvento:
     def listar_participantes_sem_comprovante(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -346,7 +348,7 @@ class ControladorEvento:
     def listar_participacoes_evento(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -373,7 +375,7 @@ class ControladorEvento:
     def adicionar_organizador(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -414,7 +416,7 @@ class ControladorEvento:
     def adicionar_participante(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -461,7 +463,7 @@ class ControladorEvento:
     def excluir_organizador(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
@@ -502,7 +504,7 @@ class ControladorEvento:
     def excluir_participante(self):
         self.listar_eventos()
 
-        if len(self.__eventos) > 0:
+        if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento()
             evento = self.pegar_evento_por_id(id_evento)
 
