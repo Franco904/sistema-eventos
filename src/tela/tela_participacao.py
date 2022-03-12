@@ -28,7 +28,7 @@ class TelaParticipacao:
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
-            [sg.Text('Participantes', font=('Arial', 16), justification='center')],
+            [sg.Text('Participações', font=('Arial', 16), justification='center')],
             [sg.Text('Escolha uma opção abaixo:')],
 
             [sg.Radio('Adicionar Participação', 'RB', key='1')],

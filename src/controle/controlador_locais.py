@@ -1,3 +1,4 @@
+from src.dao.local_dao import LocalDao
 from src.entidade.local import Local
 from src.tela.tela_local import TelaLocal
 
@@ -5,12 +6,12 @@ from src.tela.tela_local import TelaLocal
 class ControladorLocal:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__locais = []
+        self.__localDao = LocalDao()
         self.__tela_local = TelaLocal()
 
     @property
     def locais(self):
-        return self.__locais
+        return self.__localDao.get_all()
 
     def adicionar_local(self):
         dados_local = self.__tela_local.pegar_dados_local(False)
@@ -19,7 +20,7 @@ class ControladorLocal:
             return
 
         # Faz a verificação da existência do local na lista
-        for local in self.__locais:
+        for local in self.locais:
             if local.id == dados_local['id']:
                 self.__tela_local.mostrar_mensagem('O id inserido já pertence a um local na lista.')
                 return
@@ -27,7 +28,7 @@ class ControladorLocal:
         try:
             local = Local(dados_local['id'], dados_local['nome'])
 
-            self.__locais.append(local)
+            self.__localDao.add_local(local)
             self.__tela_local.mostrar_mensagem('Local adicionado na lista.')
 
         except TypeError:
@@ -36,12 +37,12 @@ class ControladorLocal:
     def excluir_local(self):
         self.listar_locais()
 
-        if len(self.__locais) > 0:
+        if len(self.locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
-                self.__locais.remove(local)
+                self.__localDao.remove_local(local)
                 self.__tela_local.mostrar_mensagem('Local removido da lista.')
 
             else:
@@ -50,7 +51,7 @@ class ControladorLocal:
     def alterar_local(self):
         self.listar_locais()
 
-        if len(self.__locais) > 0:
+        if len(self.locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             local = self.pegar_local_por_id(id_local)
 
@@ -62,6 +63,8 @@ class ControladorLocal:
 
                 try:
                     local.nome = novos_dados_local['nome']
+
+                    self.__localDao.update_local(local)
                     self.__tela_local.mostrar_mensagem('Local alterado com sucesso.')
 
                 except TypeError:
@@ -71,7 +74,7 @@ class ControladorLocal:
                 self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 
     def mostrar_local(self):
-        if len(self.__locais) > 0:
+        if len(self.locais) > 0:
             id_local = self.__tela_local.selecionar_local()
             if id_local is None:
                 return
@@ -86,14 +89,14 @@ class ControladorLocal:
             self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar.')
 
     def pegar_local_por_id(self, id_local):
-        for local in self.__locais:
-            if local.id == id_local:
-                return local
-        return None
+        try:
+            return self.__localDao.get_local(id_local)
+        except KeyError:
+            return None
 
     def listar_locais(self):
-        if len(self.__locais) > 0:
-            for local in self.__locais:
+        if len(self.locais) > 0:
+            for local in self.locais:
                 self.__tela_local.mostrar_local({'id': local.id, 'nome': local.nome})
         else:
             self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar.')

@@ -1,5 +1,6 @@
-import PySimpleGUI as sg
 from datetime import datetime
+
+import PySimpleGUI as sg
 
 from src.entidade.enums.resultado_pcr import ResultadoPcr
 
@@ -207,7 +208,8 @@ class TelaParticipante:
                 layout.append([sg.Text('Data e horário do teste PCR: Não realizado')])
             else:
                 layout.append([sg.Text('Data e horário do teste PCR:'),
-                               sg.Text(dados_participante['comprovante_saude'].data_horario_teste.strftime('%d/%m/%Y, %H:%M'))])
+                               sg.Text(dados_participante['comprovante_saude'].data_horario_teste.strftime(
+                                   '%d/%m/%Y, %H:%M'))])
                 layout.append([sg.Text('Resultado do teste PCR:'),
                                sg.Text(dados_participante['comprovante_saude'].resultado_pcr.value)])
 

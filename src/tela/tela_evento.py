@@ -41,7 +41,7 @@ class TelaEvento:
             [sg.Radio('Excluir organizador do evento', 'RB', key='6')],
             [sg.Radio('Adicionar participante ao evento', 'RB', key='7')],
             [sg.Radio('Excluir participante do evento', 'RB', key='8')],
-            [sg.Radio('Opções de Listagem', 'RB', key='9')],
+            [sg.Radio('Opções de listagem', 'RB', key='9')],
             [sg.Radio('Retornar', 'RB', key='0')],
 
             [sg.Button('Confirmar')]
