@@ -184,8 +184,9 @@ class TelaParticipacao:
             layout.append([sg.Text('Horário de Saída:'), sg.Text('Não Cadastrado')])
         else:
             layout.append([sg.Text('Horário de Saída:'),
-                           sg.Text(dados_participacao['participante'].nome)])
-        layout.append([sg.Text('Nome do Participante:'), sg.Text(dados_participacao['participante'].nome)])
+                           sg.Text(dados_participacao['participante'])])
+        layout.append([sg.Text('Nome do Participante:'),
+                       sg.Text(dados_participacao['participante'])])
         layout.append([sg.Cancel('OK')])
 
         self.__window = sg.Window('Sistema de Eventos', layout)
@@ -196,9 +197,8 @@ class TelaParticipacao:
 
         if button == 'Confirmar':
             self.__window.close()
-
-            id_participante = values['id']
-            return id_participante
+            id_participacao = int(values['id'])
+            return id_participacao
 
         self.__window.close()
         return None
