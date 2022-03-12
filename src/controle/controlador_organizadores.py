@@ -1,3 +1,4 @@
+from src.dao.organizador_dao import OrganizadorDao
 from src.entidade.organizador import Organizador
 from src.tela.tela_organizador import TelaOrganizador
 
@@ -5,12 +6,12 @@ from src.tela.tela_organizador import TelaOrganizador
 class ControladorOrganizador:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__organizadores = []
+        self.__organizadores_dao = OrganizadorDao()
         self.__tela_organizador = TelaOrganizador()
 
     @property
     def organizadores(self):
-        return self.__organizadores
+        return self.__organizadores_dao.get_all()
 
     @property
     def tela_organizador(self):
@@ -23,8 +24,8 @@ class ControladorOrganizador:
             return
 
         # Faz a verificação da existência do organizador na lista
-        for local in self.__organizadores:
-            if local.cpf == dados_organizador['cpf']:
+        for organizador in self.organizadores:
+            if organizador.cpf == dados_organizador['cpf']:
                 self.__tela_organizador.mostrar_mensagem('O cpf inserido já pertence a um organizador na lista.')
                 return
 
@@ -38,30 +39,26 @@ class ControladorOrganizador:
                     dados_organizador['dia_nascimento']
                 ])
 
-            self.__organizadores.append(organizador)
+            self.__organizadores_dao.add_organizador(organizador)
             self.__tela_organizador.mostrar_mensagem('Organizador adicionado na lista.')
 
         except TypeError:
             self.__tela_organizador.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
     def excluir_organizador(self):
-        self.listar_organizadores()
-
-        if len(self.__organizadores) > 0:
+        if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador()
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
-                self.__organizadores.remove(organizador)
+                self.__organizadores_dao.remove_organizador(organizador)
                 self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
 
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
 
     def alterar_organizador(self):
-        self.listar_organizadores()
-
-        if len(self.__organizadores) > 0:
+        if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador()
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
@@ -77,6 +74,7 @@ class ControladorOrganizador:
                                                    novos_dados_organizador['mes_nascimento'],
                                                    novos_dados_organizador['dia_nascimento']]
 
+                    self.__organizadores_dao.update_organizador(organizador)
                     self.__tela_organizador.mostrar_mensagem('Dados do organizador alterados com sucesso.')
 
                 except TypeError:
@@ -86,7 +84,7 @@ class ControladorOrganizador:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
 
     def mostrar_organizador(self):
-        if len(self.__organizadores) > 0:
+        if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador()
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
@@ -102,14 +100,14 @@ class ControladorOrganizador:
             self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar.')
 
     def pegar_organizador_por_cpf(self, cpf_organizador):
-        for organizador in self.__organizadores:
+        for organizador in self.organizadores:
             if organizador.cpf == cpf_organizador:
                 return organizador
         return None
 
     def listar_organizadores(self):
-        if len(self.__organizadores) > 0:
-            for organizador in self.__organizadores:
+        if len(self.organizadores) > 0:
+            for organizador in self.organizadores:
                 self.__tela_organizador.mostrar_organizador({
                     'cpf': organizador.cpf,
                     'nome': organizador.nome,

@@ -93,14 +93,14 @@ class TelaOrganizador:
         if button in [None, 'OK']:
             self.__window.close()
 
-    def inicializar_mostrar_organizador(self, dados_local):
+    def inicializar_mostrar_organizador(self, dados_organizador):
         sg.ChangeLookAndFeel('DarkTeal4')
 
         layout = [
             [sg.Text('Dados do Organizador', font=('Arial', 14))],
-            [sg.Text('CPF:'), sg.Text(dados_local['cpf'])],
-            [sg.Text('Nome:'), sg.Text(dados_local['nome'])],
-            [sg.Text('Data de nascimento:'), sg.Text(dados_local['data_nascimento'].strftime('%d/%m/%Y'))],
+            [sg.Text('CPF:'), sg.Text(dados_organizador['cpf'])],
+            [sg.Text('Nome:'), sg.Text(dados_organizador['nome'])],
+            [sg.Text('Data de nascimento:'), sg.Text(dados_organizador['data_nascimento'])],
 
             [sg.Cancel('OK')]
         ]
