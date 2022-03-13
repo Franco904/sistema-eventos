@@ -21,9 +21,13 @@ class ControladorParticipacao:
     def tela_participacao(self):
         return self.__tela_participacao
 
+    def remove(self, participacao):
+        return self.__participacao_dao.remove_participacao(participacao)
+
     def adicionar_participacao(self):
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
         participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
+        controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
 
         dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes)
 
@@ -102,6 +106,7 @@ class ControladorParticipacao:
 
                 try:
                     evento.adicionar_participante(participante)
+                    controlador_eventos.update(evento)
 
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
@@ -159,6 +164,7 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
     def excluir_participacao(self):
+        controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
         self.listar_participacoes()
 
         if len(self.participacoes) > 0:
@@ -183,7 +189,7 @@ class ControladorParticipacao:
 
                     try:
                         evento.excluir_participante(participacao.participante)
-
+                        controlador_eventos.update(evento)
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
                     except AddItemException:

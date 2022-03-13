@@ -66,8 +66,17 @@ class ControladorParticipante:
 
                 for participacao in participacoes:
                     if participacao.participante.cpf == cpf_participante:
-                        self.participacao_dao.remove_participante(participacao)
+                        controlador_participacoes.remove(participacao)
 
+                controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
+
+                eventos = controlador_eventos.eventos
+
+                for evento in eventos:
+                    for participante in evento.participantes:
+                        if participante.cpf == cpf_participante:
+                            evento.excluir_participante(participante)
+                    controlador_eventos.update(evento)
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 

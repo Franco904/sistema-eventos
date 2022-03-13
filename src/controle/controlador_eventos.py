@@ -20,6 +20,9 @@ class ControladorEvento:
     def tela_evento(self):
         return self.__tela_evento
 
+    def update(self, evento):
+        return self.__evento_dao.update_evento(evento)
+
     def adicionar_evento(self):
         locais = self.__controlador_sistema.controladores['controlador_locais'].locais
         organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
@@ -73,7 +76,7 @@ class ControladorEvento:
 
                 for participacao in participacoes:
                     if participacao.participante.cpf == cpf_participante:
-                        self.participacao_dao.remove_participante(participacao)
+                        controlador_participacoes.participacao_dao.remove_participante(participacao)
 
 
             else:
@@ -108,7 +111,7 @@ class ControladorEvento:
                     evento.capacidade = novos_dados_evento['capacidade']
                     evento.organizadores = novos_dados_evento['organizadores']
 
-                    self.__evento_dao.update_evento(evento)
+                    self.update(evento)
                     self.__tela_evento.mostrar_mensagem('Dados do evento alterados com sucesso.')
 
                 except TypeError:
@@ -403,7 +406,7 @@ class ControladorEvento:
                             evento.adicionar_organizador(organizador)
                             self.__tela_evento.mostrar_mensagem('Organizador adicionado na lista.')
 
-                            self.__evento_dao.update_evento(evento)
+                            self.update(evento)
 
                         except TypeError:
                             self.__tela_evento.mostrar_mensagem('O organizador é inválido.')
@@ -455,7 +458,7 @@ class ControladorEvento:
                             evento.adicionar_participante(participante)
                             self.__tela_evento.mostrar_mensagem('Participante adicionado na lista.')
 
-                            self.__evento_dao.update_evento(evento)
+                            self.update(evento)
 
                         except TypeError:
                             self.__tela_evento.mostrar_mensagem('O participante é inválido.')
@@ -502,8 +505,7 @@ class ControladorEvento:
                         evento.excluir_organizador(organizador)
                         self.__tela_evento.mostrar_mensagem('Organizador excluído da lista.')
 
-                        self.__evento_dao.update_evento(evento)
-
+                        self.update(evento)
                     except TypeError:
                         self.__tela_evento.mostrar_mensagem('O organizador é inválido.')
                     except RemoveItemException:
@@ -549,7 +551,7 @@ class ControladorEvento:
                             evento.excluir_participante(participante)
                             self.__tela_evento.mostrar_mensagem('Participante excluído da lista.')
 
-                            self.__evento_dao.update_evento(evento)
+                            self.update(evento)
 
                         except TypeError:
                             self.__tela_evento.mostrar_mensagem('O participante é inválido.')
