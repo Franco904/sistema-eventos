@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from src.dao.participacao_dao import ParticipacaoDao
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
 from src.exceptions.exceptions import RemoveItemException, AddItemException
@@ -9,12 +10,12 @@ from src.tela.tela_participacao import TelaParticipacao
 class ControladorParticipacao:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__participacoes = []
+        self.__participacao_dao = ParticipacaoDao()
         self.__tela_participacao = TelaParticipacao()
 
     @property
     def participacoes(self):
-        return self.__participacoes
+        return self.__participacao_dao.get_all()
 
     @property
     def tela_participacao(self):
@@ -32,7 +33,7 @@ class ControladorParticipacao:
         evento = dados_participacao['evento']
         participante = dados_participacao['participante']
 
-        for participacao in self.__participacoes:
+        for participacao in self.participacoes:
             # Faz a verificação da existência da participação na lista
             if participacao.id == dados_participacao['id']:
                 self.__tela_participacao.mostrar_mensagem('O id inserido já pertence a uma participação na lista.')
@@ -88,7 +89,7 @@ class ControladorParticipacao:
                 )
                 participante.status_participante = StatusParticipante.autorizado
 
-                self.__participacoes.append(participacao)
+                self.__participacao_dao.add_participacao(participacao)
 
                 try:
                     evento.adicionar_participacao(participacao)
@@ -120,7 +121,7 @@ class ControladorParticipacao:
     def adicionar_horario_saida(self):
         self.listar_participacoes()
 
-        if len(self.__participacoes) > 0:
+        if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao()
             participacao = self.pegar_participacao_por_id(id_participacao)
 
@@ -145,6 +146,7 @@ class ControladorParticipacao:
                             horario_saida_participacao['hora_saida'],
                             horario_saida_participacao['minuto_saida']
                         ]
+                        self.__participacao_dao.update_participacao(participacao)
                         self.__tela_participacao.mostrar_mensagem('Horário de saída da participação registrado com '
                                                                   'sucesso.')
                     else:
@@ -159,12 +161,12 @@ class ControladorParticipacao:
     def excluir_participacao(self):
         self.listar_participacoes()
 
-        if len(self.__participacoes) > 0:
+        if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao()
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
-                self.__participacoes.remove(participacao)
+                self.__participacao_dao.remove_participacao(participacao)
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
 
                 evento = self.__controlador_sistema.controladores['controlador_eventos'].pegar_evento_por_id(
@@ -187,7 +189,7 @@ class ControladorParticipacao:
     def alterar_horario_entrada(self):
         self.listar_participacoes()
 
-        if len(self.__participacoes) > 0:
+        if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao()
             participacao = self.pegar_participacao_por_id(id_participacao)
 
@@ -208,6 +210,7 @@ class ControladorParticipacao:
                         novos_dados_participacao['hora_entrada'],
                         novos_dados_participacao['minuto_entrada']
                     ]
+                    self.__participacao_dao.update_participacao(participacao)
                     self.__tela_participacao.mostrar_mensagem('Horário de entrada da participação alterado com '
                                                               'sucesso.')
 
@@ -218,7 +221,7 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
     def mostrar_participacao(self):
-        if len(self.__participacoes) > 0:
+        if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao()
             participacao = self.pegar_participacao_por_id(id_participacao)
 
@@ -236,14 +239,14 @@ class ControladorParticipacao:
             self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
 
     def pegar_participacao_por_id(self, id_participacao):
-        for participacao in self.__participacoes:
+        for participacao in self.participacoes:
             if participacao.id == id_participacao:
                 return participacao
         return None
 
     def listar_participacoes(self):
-        if len(self.__participacoes) > 0:
-            for participacao in self.__participacoes:
+        if len(self.participacoes) > 0:
+            for participacao in self.participacoes:
                 self.__tela_participacao.mostrar_participacao({
                     'id': participacao.id,
                     'id_evento': participacao.id_evento,

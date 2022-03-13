@@ -68,12 +68,13 @@ class ControladorEvento:
 
                 # Exclui as participações que estão associadas ao evento recém excluído
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
-                participacoes_excluir = list(
-                    filter(lambda p: p.id_evento == evento.id_evento, controlador_participacoes.participacoes)
-                )
 
-                for participacao in participacoes_excluir:
-                    controlador_participacoes.participacoes.remove(participacao)
+                participacoes = controlador_participacoes.participacoes
+
+                for participacao in participacoes:
+                    if participacao.participante.cpf == cpf_participante:
+                        self.participacao_dao.remove_participante(participacao)
+
 
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')

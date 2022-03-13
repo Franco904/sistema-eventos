@@ -57,19 +57,16 @@ class ControladorParticipante:
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
-                self.participante_dao.remove_participante(participante)
+                self.__participante_dao.remove_participante(participante)
                 self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
 
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
 
-                # Exclui as participações que estão associadas ao participante recém excluído
-                participacoes_excluir = list(
-                    filter(lambda pcao: pcao.cpf_participante == participante.cpf,
-                           controlador_participacoes.participacoes)
-                )
+                participacoes = controlador_participacoes.participacoes
 
-                for participacao in participacoes_excluir:
-                    controlador_participacoes.participacoes.remove(participacao)
+                for participacao in participacoes:
+                    if participacao.participante.cpf == cpf_participante:
+                        self.participacao_dao.remove_participante(participacao)
 
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
@@ -99,7 +96,7 @@ class ControladorParticipante:
                         novos_dados_participante['num_endereco'],
                         novos_dados_participante['cep']
                     ]
-                    self.__organizador_dao.update_participante(participante)
+                    self.__participante_dao.update_participante(participante)
                     self.__tela_participante.mostrar_mensagem('Dados do participante alterados com sucesso.')
 
                 except TypeError:
