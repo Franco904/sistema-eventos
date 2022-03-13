@@ -4,7 +4,7 @@ from src.entidade.organizador import Organizador
 
 class OrganizadorDao(Dao):
     def __init__(self):
-        super().__init__('organizadores.pkl')
+        super().__init__('pkl/organizadores.pkl')
 
     def add_organizador(self, organizador: Organizador):
         if organizador is not None and isinstance(organizador, Organizador):

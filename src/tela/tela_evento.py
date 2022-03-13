@@ -220,7 +220,7 @@ class TelaEvento:
     def inicializar_mostrar_eventos_rankeados(self, eventos):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(eventos) > 0:
+        if len(eventos) == 0:
             layout = [
                 [sg.Text('Os eventos da lista não possuem participações cadastradas.')],
                 [sg.Cancel('OK')]

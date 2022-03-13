@@ -15,7 +15,6 @@ class TelaSistema:
                 opcao = 0
                 break
 
-            # Podemos generalizar em uma classe mãe de tela se sobrar tempo
             for i, key in enumerate(values, 1):
                 if values[key]:
                     opcao = i

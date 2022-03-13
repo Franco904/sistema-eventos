@@ -4,7 +4,7 @@ from src.entidade.participante import Participante
 
 class ParticipanteDao(Dao):
     def __init__(self):
-        super().__init__('participantes.pkl')
+        super().__init__('pkl/participantes.pkl')
 
     def add_participante(self, participante: Participante):
         if participante is not None and isinstance(participante, Participante):

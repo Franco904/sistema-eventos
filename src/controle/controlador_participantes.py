@@ -61,22 +61,21 @@ class ControladorParticipante:
                 self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
 
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
-
                 participacoes = controlador_participacoes.participacoes
 
+                # Exclui as participações que estão associadas ao participante recém excluído
                 for participacao in participacoes:
                     if participacao.participante.cpf == cpf_participante:
-                        controlador_participacoes.remove(participacao)
+                        controlador_participacoes.participacao_dao.remove_participacao(participacao)
 
                 controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
-
                 eventos = controlador_eventos.eventos
 
                 for evento in eventos:
                     for participante in evento.participantes:
                         if participante.cpf == cpf_participante:
                             evento.excluir_participante(participante)
-                    controlador_eventos.update(evento)
+                    controlador_eventos.evento_dao.update_evento(evento)
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
@@ -138,6 +137,7 @@ class ControladorParticipante:
                         novos_dados_comprovante['resultado_pcr']
                     ]
 
+                    self.__participante_dao.update_participante(participante)
                     self.__tela_participante.mostrar_mensagem('Comprovante de saúde do participante salvo com sucesso.')
 
                 except TypeError:

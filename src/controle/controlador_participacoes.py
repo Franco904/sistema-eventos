@@ -14,15 +14,16 @@ class ControladorParticipacao:
         self.__tela_participacao = TelaParticipacao()
 
     @property
+    def participacao_dao(self):
+        return self.__participacao_dao
+
+    @property
     def participacoes(self):
         return self.__participacao_dao.get_all()
 
     @property
     def tela_participacao(self):
         return self.__tela_participacao
-
-    def remove(self, participacao):
-        return self.__participacao_dao.remove_participacao(participacao)
 
     def adicionar_participacao(self):
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
@@ -106,13 +107,15 @@ class ControladorParticipacao:
 
                 try:
                     evento.adicionar_participante(participante)
-                    controlador_eventos.update(evento)
 
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
                 except AddItemException:
                     self.__tela_participacao.mostrar_mensagem('O participante já existe na lista de participantes do '
                                                               'evento.')
+
+                # Atualiza evento com participação/participante inserido
+                self.__controlador_sistema.controladores['controlador_eventos'].evento_dao.update_evento(evento)
 
                 self.__tela_participacao.mostrar_mensagem('Participação adicionada no evento com sucesso.')
             except TypeError:
@@ -164,7 +167,6 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
     def excluir_participacao(self):
-        controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
         self.listar_participacoes()
 
         if len(self.participacoes) > 0:
@@ -172,9 +174,6 @@ class ControladorParticipacao:
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
-                self.__participacao_dao.remove_participacao(participacao)
-                self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
-
                 evento = self.__controlador_sistema.controladores['controlador_eventos'].pegar_evento_por_id(
                     participacao.id_evento)
 
@@ -185,20 +184,25 @@ class ControladorParticipacao:
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
                     except RemoveItemException:
-                        self.__tela_participacao.mostrar_mensagem('A participação não existe na lista de participações do evento.')
+                        self.__tela_participacao.mostrar_mensagem('A participação não existe na lista de participações '
+                                                                  'do evento.')
 
                     try:
                         evento.excluir_participante(participacao.participante)
-                        controlador_eventos.update(evento)
+
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
-                    except AddItemException:
-                        self.__tela_participacao.mostrar_mensagem(
-                            'O participante não existe na lista de participantes do '
-                            'evento.')
+                    except RemoveItemException:
+                        self.__tela_participacao.mostrar_mensagem('O participante não existe na lista de participantes '
+                                                                  'do evento.')
 
                 else:
                     self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
+
+                self.__controlador_sistema.controladores['controlador_eventos'].evento_dao.update_evento(evento)
+
+                self.__participacao_dao.remove_participacao(participacao)
+                self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
@@ -255,10 +259,10 @@ class ControladorParticipacao:
             self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
 
     def pegar_participacao_por_id(self, id_participacao):
-        for participacao in self.participacoes:
-            if participacao.id == id_participacao:
-                return participacao
-        return None
+        try:
+            return self.__participacao_dao.get_participacao(id_participacao)
+        except KeyError:
+            return None
 
     def listar_participacoes(self):
         if len(self.participacoes) > 0:

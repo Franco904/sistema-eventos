@@ -4,7 +4,7 @@ from src.entidade.evento import Evento
 
 class EventoDao(Dao):
     def __init__(self):
-        super().__init__('eventos.pkl')
+        super().__init__('pkl/eventos.pkl')
 
     def add_evento(self, evento: Evento):
         if evento is not None and isinstance(evento, Evento):

@@ -4,7 +4,7 @@ from src.entidade.local import Local
 
 class LocalDao(Dao):
     def __init__(self):
-        super().__init__('locais.pkl')
+        super().__init__('pkl/locais.pkl')
 
     def add_local(self, local: Local):
         if local is not None and isinstance(local, Local):

@@ -56,6 +56,15 @@ class ControladorOrganizador:
                 self.__organizador_dao.remove_organizador(organizador)
                 self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
 
+                controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
+                eventos = controlador_eventos.eventos
+
+                for evento in eventos:
+                    for organizador in evento.organizadores:
+                        if organizador.cpf == cpf_organizador:
+                            evento.excluir_organizador(organizador)
+                    controlador_eventos.evento_dao.update_evento(evento)
+
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
 
