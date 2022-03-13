@@ -179,7 +179,17 @@ class ControladorParticipacao:
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
                     except RemoveItemException:
-                        self.__tela_participacao.mostrar_mensagem('A participação não existe na lista.')
+                        self.__tela_participacao.mostrar_mensagem('A participação não existe na lista de participações do evento.')
+
+                    try:
+                        evento.excluir_participante(participacao.participante)
+
+                    except TypeError:
+                        self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
+                    except AddItemException:
+                        self.__tela_participacao.mostrar_mensagem(
+                            'O participante não existe na lista de participantes do '
+                            'evento.')
 
                 else:
                     self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
