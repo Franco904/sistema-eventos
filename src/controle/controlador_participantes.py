@@ -1,3 +1,4 @@
+from src.dao.participante_dao import ParticipanteDao
 from src.entidade.participante import Participante
 from src.tela.tela_participante import TelaParticipante
 
@@ -5,12 +6,12 @@ from src.tela.tela_participante import TelaParticipante
 class ControladorParticipante:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__participantes = []
+        self.__participante_dao = ParticipanteDao()
         self.__tela_participante = TelaParticipante()
 
     @property
     def participantes(self):
-        return self.__participantes
+        return self.__participante_dao.get_all()
 
     @property
     def tela_participante(self):
@@ -23,7 +24,7 @@ class ControladorParticipante:
             return
 
         # Faz a verificação da existência do participante na lista
-        for participante in self.__participantes:
+        for participante in self.participantes:
             if participante.cpf == dados_participante['cpf']:
                 self.__tela_participante.mostrar_mensagem('O cpf inserido já pertence a um participante na lista.')
                 return
@@ -42,7 +43,7 @@ class ControladorParticipante:
                                             dados_participante['cep']
                                         ])
 
-            self.__participantes.append(participante)
+            self.__participante_dao.add_participante(participante)
             self.__tela_participante.mostrar_mensagem('Participante adicionado na lista.')
 
         except TypeError:
@@ -51,12 +52,12 @@ class ControladorParticipante:
     def excluir_participante(self):
         self.listar_participantes()
 
-        if len(self.__participantes) > 0:
+        if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
-                self.__participantes.remove(participante)
+                self.participante_dao.remove_participante(participante)
                 self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
 
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
@@ -76,7 +77,7 @@ class ControladorParticipante:
     def alterar_participante(self):
         self.listar_participantes()
 
-        if len(self.__participantes) > 0:
+        if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
@@ -98,6 +99,7 @@ class ControladorParticipante:
                         novos_dados_participante['num_endereco'],
                         novos_dados_participante['cep']
                     ]
+                    self.__organizador_dao.update_participante(participante)
                     self.__tela_participante.mostrar_mensagem('Dados do participante alterados com sucesso.')
 
                 except TypeError:
@@ -109,7 +111,7 @@ class ControladorParticipante:
     def salvar_comprovante_saude(self):
         self.listar_participantes()
 
-        if len(self.__participantes) > 0:
+        if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
@@ -139,7 +141,7 @@ class ControladorParticipante:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def mostrar_participante(self):
-        if len(self.__participantes) > 0:
+        if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
@@ -158,14 +160,14 @@ class ControladorParticipante:
             self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar.')
 
     def pegar_participante_por_cpf(self, cpf_participante):
-        for participante in self.__participantes:
-            if participante.cpf == cpf_participante:
-                return participante
-        return None
+        try:
+            return self.__participante_dao.get_participante(cpf_participante)
+        except KeyError:
+            return None
 
     def listar_participantes(self):
-        if len(self.__participantes) > 0:
-            for participante in self.__participantes:
+        if len(self.participantes) > 0:
+            for participante in self.participantes:
                 self.__tela_participante.mostrar_participante({
                     'cpf': participante.cpf,
                     'nome': participante.nome,
