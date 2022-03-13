@@ -4,6 +4,7 @@ from src.entidade.local import Local
 from src.entidade.organizador import Organizador
 from src.entidade.participacao import Participacao
 from src.entidade.participante import Participante
+from src.exceptions.exceptions import RemoveItemException, AddItemException
 
 
 class Evento:
@@ -149,7 +150,7 @@ class Evento:
         if isinstance(organizador, Organizador) and organizador is not None:
             for o in self.__organizadores:
                 if o.cpf == organizador.cpf:
-                    raise IndexError
+                    raise AddItemException
             self.__organizadores.append(organizador)
         else:
             raise TypeError
@@ -158,7 +159,7 @@ class Evento:
         if isinstance(participante, Participante) and participante is not None:
             for p in self.__participantes:
                 if p.cpf == participante.cpf:
-                    raise IndexError
+                    raise AddItemException
             self.__participantes.append(participante)
         else:
             raise TypeError
@@ -167,25 +168,34 @@ class Evento:
         if isinstance(participacao, Participacao) and participacao is not None:
             for p in self.__participacoes:
                 if p.id == participacao.id:
-                    raise IndexError
+                    raise AddItemException
             self.__participacoes.append(participacao)
         else:
             raise TypeError
 
     def excluir_organizador(self, organizador: Organizador):
         if isinstance(organizador, Organizador) and organizador is not None:
-            self.__organizadores.remove(organizador)
+            try:
+                self.__organizadores.remove(organizador)
+            except ValueError:
+                raise RemoveItemException
         else:
             raise TypeError
 
     def excluir_participante(self, participante: Participante):
         if isinstance(participante, Participante) and participante is not None:
-            self.__participantes.remove(participante)
+            try:
+                self.__participantes.remove(participante)
+            except ValueError:
+                raise RemoveItemException
         else:
             raise TypeError
 
     def excluir_participacao(self, participacao: Participacao):
         if isinstance(participacao, Participacao) and participacao is not None:
-            self.__participacoes.remove(participacao)
+            try:
+                self.__participacoes.remove(participacao)
+            except ValueError:
+                raise RemoveItemException
         else:
             raise TypeError

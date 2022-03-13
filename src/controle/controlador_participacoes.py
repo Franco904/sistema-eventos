@@ -2,6 +2,7 @@ from datetime import datetime
 
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
+from src.exceptions.exceptions import RemoveItemException, AddItemException
 from src.tela.tela_participacao import TelaParticipacao
 
 
@@ -89,11 +90,21 @@ class ControladorParticipacao:
 
                 self.__participacoes.append(participacao)
 
-                evento.adicionar_participacao(participacao)
+                try:
+                    evento.adicionar_participacao(participacao)
+
+                except TypeError:
+                    self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
+                except AddItemException:
+                    self.__tela_participacao.mostrar_mensagem('A participação já existe na lista de participações do '
+                                                              'evento.')
 
                 try:
                     evento.adicionar_participante(participante)
-                except IndexError:
+
+                except TypeError:
+                    self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
+                except AddItemException:
                     self.__tela_participacao.mostrar_mensagem('O participante já existe na lista de participantes do '
                                                               'evento.')
 
@@ -160,7 +171,14 @@ class ControladorParticipacao:
                     participacao.id_evento)
 
                 if evento is not None:
-                    evento.excluir_participacao(participacao)
+                    try:
+                        evento.excluir_participacao(participacao)
+
+                    except TypeError:
+                        self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
+                    except RemoveItemException:
+                        self.__tela_participacao.mostrar_mensagem('A participação não existe na lista.')
+
                 else:
                     self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
             else:

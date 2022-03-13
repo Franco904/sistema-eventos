@@ -6,12 +6,12 @@ from src.tela.tela_local import TelaLocal
 class ControladorLocal:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
-        self.__localDao = LocalDao()
+        self.__local_dao = LocalDao()
         self.__tela_local = TelaLocal()
 
     @property
     def locais(self):
-        return self.__localDao.get_all()
+        return self.__local_dao.get_all()
 
     def adicionar_local(self):
         dados_local = self.__tela_local.pegar_dados_local(False)
@@ -28,7 +28,7 @@ class ControladorLocal:
         try:
             local = Local(dados_local['id'], dados_local['nome'])
 
-            self.__localDao.add_local(local)
+            self.__local_dao.add_local(local)
             self.__tela_local.mostrar_mensagem('Local adicionado na lista.')
 
         except TypeError:
@@ -42,7 +42,7 @@ class ControladorLocal:
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
-                self.__localDao.remove_local(local)
+                self.__local_dao.remove_local(local)
                 self.__tela_local.mostrar_mensagem('Local removido da lista.')
 
             else:
@@ -64,7 +64,7 @@ class ControladorLocal:
                 try:
                     local.nome = novos_dados_local['nome']
 
-                    self.__localDao.update_local(local)
+                    self.__local_dao.update_local(local)
                     self.__tela_local.mostrar_mensagem('Local alterado com sucesso.')
 
                 except TypeError:
@@ -90,7 +90,7 @@ class ControladorLocal:
 
     def pegar_local_por_id(self, id_local):
         try:
-            return self.__localDao.get_local(id_local)
+            return self.__local_dao.get_local(id_local)
         except KeyError:
             return None
 

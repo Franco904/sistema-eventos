@@ -50,6 +50,7 @@ class ControladorParticipante:
 
     def excluir_participante(self):
         self.listar_participantes()
+
         if len(self.__participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante()
             participante = self.pegar_participante_por_cpf(cpf_participante)

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from src.dao.evento_dao import EventoDao
 from src.entidade.evento import Evento
+from src.exceptions.exceptions import RemoveItemException, AddItemException
 from src.tela.tela_evento import TelaEvento
 
 
@@ -401,8 +402,13 @@ class ControladorEvento:
                             evento.adicionar_organizador(organizador)
                             self.__tela_evento.mostrar_mensagem('Organizador adicionado na lista.')
 
-                        except (TypeError, IndexError):
-                            self.__tela_evento.mostrar_mensagem('O organizador é inválido ou já existe na lista.')
+                            self.__evento_dao.update_evento(evento)
+
+                        except TypeError:
+                            self.__tela_evento.mostrar_mensagem('O organizador é inválido.')
+                        except AddItemException:
+                            self.__tela_evento.mostrar_mensagem('O organizador já existe na lista de organizadores do '
+                                                                'evento.')
 
                     else:
                         self.__tela_evento.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
@@ -448,8 +454,13 @@ class ControladorEvento:
                             evento.adicionar_participante(participante)
                             self.__tela_evento.mostrar_mensagem('Participante adicionado na lista.')
 
-                        except (TypeError, IndexError):
-                            self.__tela_evento.mostrar_mensagem('O participante é inválido ou já existe na lista.')
+                            self.__evento_dao.update_evento(evento)
+
+                        except TypeError:
+                            self.__tela_evento.mostrar_mensagem('O participante é inválido.')
+                        except AddItemException:
+                            self.__tela_evento.mostrar_mensagem('O participante já existe na lista de participantes do '
+                                                                'evento.')
 
                     else:
                         self.__tela_evento.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
@@ -483,19 +494,21 @@ class ControladorEvento:
 
                     cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
                         .tela_organizador.selecionar_organizador()
-                    organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
-                        .pegar_organizador_por_cpf(cpf_organizador)
 
-                    if organizador is not None:
-                        try:
-                            evento.excluir_organizador(organizador)
-                            self.__tela_evento.mostrar_mensagem('Organizador excluído da lista.')
+                    organizador = list(filter(lambda o: o.cpf == cpf_organizador, evento.organizadores))[0]
 
-                        except TypeError:
-                            self.__tela_evento.mostrar_mensagem('O organizador é inválido ou não existe na lista.')
+                    try:
+                        evento.excluir_organizador(organizador)
+                        self.__tela_evento.mostrar_mensagem('Organizador excluído da lista.')
 
-                    else:
-                        self.__tela_evento.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
+                        self.__evento_dao.update_evento(evento)
+
+                    except TypeError:
+                        self.__tela_evento.mostrar_mensagem('O organizador é inválido.')
+                    except RemoveItemException:
+                        self.__tela_evento.mostrar_mensagem('O organizador não existe na lista de organizadores do '
+                                                            'evento.')
+
                 else:
                     self.__tela_evento.mostrar_mensagem('Não há organizadores do evento para listar.')
             else:
@@ -527,16 +540,21 @@ class ControladorEvento:
 
                     cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
                         .tela_participante.selecionar_participante()
-                    participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                        .pegar_participante_por_cpf(cpf_participante)
+
+                    participante = list(filter(lambda p: p.cpf == cpf_participante, evento.participantes))[0]
 
                     if participante is not None:
                         try:
                             evento.excluir_participante(participante)
                             self.__tela_evento.mostrar_mensagem('Participante excluído da lista.')
 
+                            self.__evento_dao.update_evento(evento)
+
                         except TypeError:
-                            self.__tela_evento.mostrar_mensagem('O participante é inválido ou não existe na lista.')
+                            self.__tela_evento.mostrar_mensagem('O participante é inválido.')
+                        except RemoveItemException:
+                            self.__tela_evento.mostrar_mensagem('O participante não existe na lista de participantes '
+                                                                'do evento.')
 
                     else:
                         self.__tela_evento.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
