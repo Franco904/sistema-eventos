@@ -5,7 +5,7 @@ from abc import ABC
 
 class Dao(ABC):
     def __init__(self, datasource=''):
-        self.__datasource = datasource
+        self.__datasource = 'pkl/' + datasource
         self.__cache = {}
         try:
             self.__load()
