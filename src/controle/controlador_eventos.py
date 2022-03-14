@@ -62,6 +62,9 @@ class ControladorEvento:
     def excluir_evento(self):
         if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            if id_evento is None:
+                return
+
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -78,10 +81,15 @@ class ControladorEvento:
 
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
+        else:
+            self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
     def alterar_evento(self):
         if len(self.eventos) > 0:
             id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            if id_evento is None:
+                return
+
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -113,6 +121,8 @@ class ControladorEvento:
                     self.__tela_evento.mostrar_mensagem('Algum dado foi inserido incorretamente.')
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
+        else:
+            self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
     def mostrar_evento(self):
         if len(self.eventos) > 0:

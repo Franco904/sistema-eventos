@@ -129,6 +129,9 @@ class ControladorParticipacao:
     def adicionar_horario_saida(self):
         if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            if id_participacao is None:
+                return
+
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -163,10 +166,15 @@ class ControladorParticipacao:
 
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
+        else:
+            self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
 
     def excluir_participacao(self):
         if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            if id_participacao is None:
+                return
+
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -201,10 +209,15 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
+        else:
+            self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
 
     def alterar_horario_entrada(self):
         if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            if id_participacao is None:
+                return
+
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -233,10 +246,15 @@ class ControladorParticipacao:
 
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
+        else:
+            self.__tela_participacao.mostrar_mensagem('Não há participações cadastradas para listar.')
 
     def mostrar_participacao(self):
         if len(self.participacoes) > 0:
             id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            if id_participacao is None:
+                return
+
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:

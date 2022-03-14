@@ -19,9 +19,9 @@ class TelaOrganizador:
                 if values[key]:
                     opcao = i
 
-            self.fechar_tela()
+            self.__window.close()
 
-        self.fechar_tela()
+        self.__window.close()
         return opcao
 
     def inicializar_opcoes(self):
@@ -113,6 +113,10 @@ class TelaOrganizador:
         if button == 'Confirmar':
             self.__window.close()
 
+            if values['cpf'] == '':
+                self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                return None
+
             cpf_organizador = values['cpf'].split()[-1]
             return cpf_organizador
 
@@ -122,11 +126,12 @@ class TelaOrganizador:
     def inicializar_selecionar_organizador(self, organizadores: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        organizadoresCPFs = list(map(lambda o: o.cpf, organizadores))
-        organizadoresNomes = list(map(lambda o: o.nome, organizadores))
+        organizadores_cpfs = list(map(lambda o: o.cpf, organizadores))
+        organizadores_nomes = list(map(lambda o: o.nome, organizadores))
         organizadores_labels = []
+
         for contador in range(len(organizadores)):
-            organizadores_labels.append(f"{organizadoresNomes[contador]} - CPF: {organizadoresCPFs[contador]}")
+            organizadores_labels.append(f'{organizadores_nomes[contador]} - CPF: {organizadores_cpfs[contador]}')
         organizadores_labels.sort()
 
         layout = [
@@ -139,6 +144,3 @@ class TelaOrganizador:
 
     def mostrar_mensagem(self, msg):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()

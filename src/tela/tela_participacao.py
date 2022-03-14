@@ -19,9 +19,9 @@ class TelaParticipacao:
                 if values[key]:
                     opcao = i
 
-            self.fechar_tela()
+            self.__window.close()
 
-        self.fechar_tela()
+        self.__window.close()
         return opcao
 
     def inicializar_opcoes(self):
@@ -188,6 +188,11 @@ class TelaParticipacao:
 
         if button == 'Confirmar':
             self.__window.close()
+
+            if values['id'] == '':
+                self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                return None
+
             id_participacao = int(values['id'].split()[-1])
             return id_participacao
 
@@ -197,13 +202,15 @@ class TelaParticipacao:
     def inicializar_selecionar_participacao(self, participacoes):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        participacoesIds = list(map(lambda p: p.id, participacoes))
-        participacoesEventos = list(map(lambda p: p.id_evento, participacoes))
-        participacoesParticipantesNomes = list(map(lambda p: p.participante.nome, participacoes))
+        participacoes_ids = list(map(lambda p: p.id, participacoes))
+        participacoes_eventos = list(map(lambda p: p.id_evento, participacoes))
+        participacoes_participantes_nomes = list(map(lambda p: p.participante.nome, participacoes))
         participacoes_labels = []
+
         for contador in range(len(participacoes)):
-            participacoes_labels.append(f"Id Evento: {participacoesEventos[contador]} - {participacoesParticipantesNomes[contador]}"
-                                        f" - Id Participação: {participacoesIds[contador]}")
+            participacoes_labels.append(f'Id Evento: {participacoes_eventos[contador]} - '
+                                        f'{participacoes_participantes_nomes[contador]} - '
+                                        f'Id Participação: {participacoes_ids[contador]}')
         participacoes_labels.sort()
 
         layout = [
@@ -216,7 +223,3 @@ class TelaParticipacao:
 
     def mostrar_mensagem(self, msg):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()
-

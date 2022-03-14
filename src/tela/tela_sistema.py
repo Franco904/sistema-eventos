@@ -19,9 +19,9 @@ class TelaSistema:
                 if values[key]:
                     opcao = i
 
-            self.fechar_tela()
+            self.__window.close()
 
-        self.fechar_tela()
+        self.__window.close()
         return opcao
 
     def inicializar_opcoes(self):
@@ -45,6 +45,3 @@ class TelaSistema:
 
     def mostrar_mensagem(self, msg: str):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()

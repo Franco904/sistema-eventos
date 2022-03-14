@@ -246,6 +246,10 @@ class TelaEvento:
         if button == 'Confirmar':
             self.__window.close()
 
+            if values['id'] == '':
+                # self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                return None
+
             id_evento = int(values['id'].split()[-1])
             return id_evento
 
@@ -255,11 +259,12 @@ class TelaEvento:
     def inicializar_selecionar_evento(self, eventos: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        eventosIDs = list(map(lambda l: l.id_evento, eventos))
-        eventosNomes = list(map(lambda l: l.titulo, eventos))
+        eventos_ids = list(map(lambda e: e.id_evento, eventos))
+        eventos_nomes = list(map(lambda e: e.titulo, eventos))
         eventos_labels = []
+
         for contador in range(len(eventos)):
-            eventos_labels.append(f"{eventosNomes[contador]} - ID: {eventosIDs[contador]}")
+            eventos_labels.append(f'{eventos_nomes[contador]} - ID: {eventos_ids[contador]}')
         eventos_labels.sort()
 
         layout = [

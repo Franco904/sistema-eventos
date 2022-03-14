@@ -19,9 +19,9 @@ class TelaLocal:
                 if values[key]:
                     opcao = i
 
-            self.fechar_tela()
+            self.__window.close()
 
-        self.fechar_tela()
+        self.__window.close()
         return opcao
 
     def inicializar_opcoes(self):
@@ -108,6 +108,10 @@ class TelaLocal:
         if button == 'Confirmar':
             self.__window.close()
 
+            if values['id'] == '':
+                self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                return None
+
             id_local = int(values['id'].split()[-1])
             return id_local
 
@@ -117,11 +121,12 @@ class TelaLocal:
     def inicializar_selecionar_local(self, locais: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        locaisIDs = list(map(lambda l: l.id, locais))
-        locaisNomes = list(map(lambda l: l.nome, locais))
+        locais_ids = list(map(lambda l: l.id, locais))
+        locais_nomes = list(map(lambda l: l.nome, locais))
         locais_labels = []
+
         for contador in range(len(locais)):
-            locais_labels.append(f"{locaisNomes[contador]} - ID: {locaisIDs[contador]}")
+            locais_labels.append(f'{locais_nomes[contador]} - ID: {locais_ids[contador]}')
         locais_labels.sort()
 
         layout = [
@@ -135,6 +140,3 @@ class TelaLocal:
 
     def mostrar_mensagem(self, msg: str):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()

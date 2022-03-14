@@ -37,6 +37,9 @@ class ControladorLocal:
     def excluir_local(self):
         if len(self.locais) > 0:
             id_local = self.__tela_local.selecionar_local(self.locais)
+            if id_local is None:
+                return
+
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
@@ -45,10 +48,15 @@ class ControladorLocal:
 
             else:
                 self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
+        else:
+            self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar.')
 
     def alterar_local(self):
         if len(self.locais) > 0:
             id_local = self.__tela_local.selecionar_local(self.locais)
+            if id_local is None:
+                return
+
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
@@ -68,6 +76,8 @@ class ControladorLocal:
 
             else:
                 self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
+        else:
+            self.__tela_local.mostrar_mensagem('Não há locais cadastrados para listar.')
 
     def mostrar_local(self):
         if len(self.locais) > 0:

@@ -23,9 +23,9 @@ class TelaParticipante:
                 if values[key]:
                     opcao = i
 
-            self.fechar_tela()
+            self.__window.close()
 
-        self.fechar_tela()
+        self.__window.close()
         return opcao
 
     def inicializar_opcoes(self):
@@ -227,6 +227,10 @@ class TelaParticipante:
         if button == 'Confirmar':
             self.__window.close()
 
+            if values['cpf'] == '':
+                self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                return None
+
             cpf_participante = values['cpf'].split()[-1]
             return cpf_participante
 
@@ -236,11 +240,12 @@ class TelaParticipante:
     def inicializar_selecionar_participante(self, participantes: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        participantesCPFs = list(map(lambda p: p.cpf, participantes))
-        participantesNomes = list(map(lambda p: p.nome, participantes))
+        participantes_cpfs = list(map(lambda p: p.cpf, participantes))
+        participantes_nomes = list(map(lambda p: p.nome, participantes))
         participantes_labels = []
+
         for contador in range(len(participantes)):
-            participantes_labels.append(f"{participantesNomes[contador]} - CPF: {participantesCPFs[contador]}")
+            participantes_labels.append(f'{participantes_nomes[contador]} - CPF: {participantes_cpfs[contador]}')
         participantes_labels.sort()
 
         layout = [
@@ -253,6 +258,3 @@ class TelaParticipante:
 
     def mostrar_mensagem(self, msg):
         sg.Popup(msg)
-
-    def fechar_tela(self):
-        self.__window.close()

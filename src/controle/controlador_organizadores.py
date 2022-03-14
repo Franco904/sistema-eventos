@@ -48,6 +48,9 @@ class ControladorOrganizador:
     def excluir_organizador(self):
         if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            if cpf_organizador is None:
+                return
+
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
@@ -65,10 +68,15 @@ class ControladorOrganizador:
 
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
+        else:
+            self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar.')
 
     def alterar_organizador(self):
         if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            if cpf_organizador is None:
+                return
+
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
@@ -91,10 +99,15 @@ class ControladorOrganizador:
 
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
+        else:
+            self.__tela_organizador.mostrar_mensagem('Não há organizadores cadastrados para listar.')
 
     def mostrar_organizador(self):
         if len(self.organizadores) > 0:
             cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            if cpf_organizador is None:
+                return
+
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:

@@ -52,6 +52,9 @@ class ControladorParticipante:
     def excluir_participante(self):
         if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            if cpf_participante is None:
+                return
+
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -76,10 +79,15 @@ class ControladorParticipante:
                     controlador_eventos.evento_dao.update_evento(evento)
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
+        else:
+            self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar.')
 
     def alterar_participante(self):
         if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            if cpf_participante is None:
+                return
+
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -108,10 +116,15 @@ class ControladorParticipante:
 
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
+        else:
+            self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar.')
 
     def salvar_comprovante_saude(self):
         if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            if cpf_participante is None:
+                return
+
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -139,10 +152,15 @@ class ControladorParticipante:
 
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
+        else:
+            self.__tela_participante.mostrar_mensagem('Não há participantes cadastrados para listar.')
 
     def mostrar_participante(self):
         if len(self.participantes) > 0:
             cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            if cpf_participante is None:
+                return
+
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
