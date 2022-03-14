@@ -60,10 +60,8 @@ class ControladorEvento:
             self.__tela_evento.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
     def excluir_evento(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -82,10 +80,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def alterar_evento(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -120,7 +116,7 @@ class ControladorEvento:
 
     def mostrar_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             if id_evento is None:
                 return
 
@@ -225,10 +221,8 @@ class ControladorEvento:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
     def listar_organizadores_evento(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -250,10 +244,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def listar_participantes_evento(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -278,10 +270,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def listar_participantes_com_comprovante(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -314,10 +304,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def listar_participantes_sem_comprovante(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -350,10 +338,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def listar_participacoes_evento(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -377,10 +363,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def adicionar_organizador(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -423,10 +407,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def adicionar_participante(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -475,10 +457,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def excluir_organizador(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:
@@ -517,10 +497,8 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
     def excluir_participante(self):
-        self.listar_eventos()
-
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento()
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
             evento = self.pegar_evento_por_id(id_evento)
 
             if evento is not None:

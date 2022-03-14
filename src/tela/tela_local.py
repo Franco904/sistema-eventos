@@ -101,26 +101,37 @@ class TelaLocal:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_local(self):
-        self.inicializar_selecionar_local()
+    def selecionar_local(self, locais: list):
+        self.inicializar_selecionar_local(locais)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
             self.__window.close()
 
-            id_local = int(values['id'])
+            id_local = int(values['id'].split()[-1])
             return id_local
 
         self.__window.close()
         return None
 
-    def inicializar_selecionar_local(self):
+    def inicializar_selecionar_local(self, locais: list):
         sg.ChangeLookAndFeel('DarkTeal4')
+
+        if len(locais) > 0:
+            locaisIDs = list(map(lambda l: l.id, locais))
+            locaisNomes = list(map(lambda l: l.nome, locais))
+            locais_labels = []
+            for contador in range(len(locais)):
+                locais_labels.append(f"{locaisNomes[contador]} - ID: {locaisIDs[contador]}")
+            locais_labels.sort()
+        else:
+            self.mostrar_mensagem('Não há locais cadastrados.')
+            return
 
         layout = [
             [sg.Text('Selecionar Local', size=(16, 1), font=('Arial', 14))],
-            [sg.Text('Id do local que deseja selecionar: '), sg.InputText(size=(16, 1), key='id')],
-
+            [sg.Text('Local:', size=(12, 1)),
+             sg.Combo(locais_labels, readonly=True, size=(40, 1), key='id')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
 

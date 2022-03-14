@@ -239,26 +239,37 @@ class TelaEvento:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_evento(self):
-        self.inicializar_selecionar_evento()
+    def selecionar_evento(self, eventos: list):
+        self.inicializar_selecionar_evento(eventos)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
             self.__window.close()
 
-            id_evento = int(values['id_evento'])
+            id_evento = int(values['id'].split()[-1])
             return id_evento
 
         self.__window.close()
         return None
 
-    def inicializar_selecionar_evento(self):
+    def inicializar_selecionar_evento(self, eventos: list):
         sg.ChangeLookAndFeel('DarkTeal4')
+
+        if len(eventos) > 0:
+            eventosIDs = list(map(lambda l: l.id_evento, eventos))
+            eventosNomes = list(map(lambda l: l.titulo, eventos))
+            eventos_labels = []
+            for contador in range(len(eventos)):
+                eventos_labels.append(f"{eventosNomes[contador]} - ID: {eventosIDs[contador]}")
+            eventos_labels.sort()
+        else:
+            self.mostrar_mensagem('Não há eventos cadastrados.')
+            return
 
         layout = [
             [sg.Text('Selecionar Evento', size=(16, 1), font=('Arial', 14))],
-            [sg.Text('Id do evento que deseja selecionar: '), sg.InputText(size=(16, 1), key='id_evento')],
-
+            [sg.Text('Evento:', size=(12, 1)),
+             sg.Combo(eventos_labels, readonly=True, size=(40, 1), key='id')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
 

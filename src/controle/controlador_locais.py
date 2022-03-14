@@ -35,10 +35,8 @@ class ControladorLocal:
             self.__tela_local.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
     def excluir_local(self):
-        self.listar_locais()
-
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local()
+            id_local = self.__tela_local.selecionar_local(self.locais)
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
@@ -49,10 +47,8 @@ class ControladorLocal:
                 self.__tela_local.mostrar_mensagem('ATENÇÃO: Local não cadastrado.')
 
     def alterar_local(self):
-        self.listar_locais()
-
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local()
+            id_local = self.__tela_local.selecionar_local(self.locais)
             local = self.pegar_local_por_id(id_local)
 
             if local is not None:
@@ -75,7 +71,7 @@ class ControladorLocal:
 
     def mostrar_local(self):
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local()
+            id_local = self.__tela_local.selecionar_local(self.locais)
             if id_local is None:
                 return
 

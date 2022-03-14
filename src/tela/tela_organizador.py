@@ -106,26 +106,37 @@ class TelaOrganizador:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_organizador(self):
-        self.inicializar_selecionar_organizador()
+    def selecionar_organizador(self, organizadores: list):
+        self.inicializar_selecionar_organizador(organizadores)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
             self.__window.close()
 
-            cpf_organizador = values['cpf']
+            cpf_organizador = values['cpf'].split()[-1]
             return cpf_organizador
 
         self.__window.close()
         return None
 
-    def inicializar_selecionar_organizador(self):
+    def inicializar_selecionar_organizador(self, organizadores: list):
         sg.ChangeLookAndFeel('DarkTeal4')
+
+        if len(organizadores) > 0:
+            organizadoresCPFs = list(map(lambda o: o.cpf, organizadores))
+            organizadoresNomes = list(map(lambda o: o.nome, organizadores))
+            organizadores_labels = []
+            for contador in range(len(organizadores)):
+                organizadores_labels.append(f"{organizadoresNomes[contador]} - CPF: {organizadoresCPFs[contador]}")
+            organizadores_labels.sort()
+        else:
+            self.mostrar_mensagem('Não há organizadores cadastrados.')
+            return
 
         layout = [
             [sg.Text('Selecionar Organizador', font=('Arial', 14))],
-            [sg.Text('CPF do organizador que deseja selecionar: '), sg.InputText(size=(11, 1), key='cpf')],
-
+            [sg.Text('Organizador:', size=(12, 1)),
+             sg.Combo(organizadores_labels, readonly=True, size=(40, 1), key='cpf')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)

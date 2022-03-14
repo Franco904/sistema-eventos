@@ -127,10 +127,8 @@ class ControladorParticipacao:
             participante.status_participante = StatusParticipante.nao_autorizado
 
     def adicionar_horario_saida(self):
-        self.listar_participacoes()
-
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao()
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -167,10 +165,8 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
     def excluir_participacao(self):
-        self.listar_participacoes()
-
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao()
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -207,10 +203,8 @@ class ControladorParticipacao:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
 
     def alterar_horario_entrada(self):
-        self.listar_participacoes()
-
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao()
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:
@@ -242,7 +236,7 @@ class ControladorParticipacao:
 
     def mostrar_participacao(self):
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao()
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
             participacao = self.pegar_participacao_por_id(id_participacao)
 
             if participacao is not None:

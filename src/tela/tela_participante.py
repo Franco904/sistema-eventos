@@ -220,26 +220,37 @@ class TelaParticipante:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_participante(self):
-        self.inicializar_selecionar_participante()
+    def selecionar_participante(self, participantes: list):
+        self.inicializar_selecionar_participante(participantes)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
             self.__window.close()
 
-            cpf_participante = values['cpf']
+            cpf_participante = values['cpf'].split()[-1]
             return cpf_participante
 
         self.__window.close()
         return None
 
-    def inicializar_selecionar_participante(self):
+    def inicializar_selecionar_participante(self, participantes: list):
         sg.ChangeLookAndFeel('DarkTeal4')
+
+        if len(participantes) > 0:
+            participantesCPFs = list(map(lambda p: p.cpf, participantes))
+            participantesNomes = list(map(lambda p: p.nome, participantes))
+            participantes_labels = []
+            for contador in range(len(participantes)):
+                participantes_labels.append(f"{participantesNomes[contador]} - CPF: {participantesCPFs[contador]}")
+            participantes_labels.sort()
+        else:
+            self.mostrar_mensagem('Não há participantes cadastrados.')
+            return
 
         layout = [
             [sg.Text('Selecionar Participante', font=('Arial', 14))],
-            [sg.Text('CPF do participante que deseja selecionar: '), sg.InputText(size=(11, 1), key='cpf')],
-
+            [sg.Text('Participante:', size=(12, 1)),
+             sg.Combo(participantes_labels, readonly=True, size=(40, 1), key='cpf')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)

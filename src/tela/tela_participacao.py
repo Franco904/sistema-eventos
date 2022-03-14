@@ -182,25 +182,38 @@ class TelaParticipacao:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_participacao(self):
-        self.inicializar_selecionar_participacao()
+    def selecionar_participacao(self, participacoes):
+        self.inicializar_selecionar_participacao(participacoes)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
             self.__window.close()
-            id_participacao = int(values['id'])
+            id_participacao = int(values['id'].split()[-1])
             return id_participacao
 
         self.__window.close()
         return None
 
-    def inicializar_selecionar_participacao(self):
+    def inicializar_selecionar_participacao(self, participacoes):
         sg.ChangeLookAndFeel('DarkTeal4')
+
+        if len(participacoes) > 0:
+            participacoesIds = list(map(lambda p: p.id, participacoes))
+            participacoesEventos = list(map(lambda p: p.id_evento, participacoes))
+            participacoesParticipantesNomes = list(map(lambda p: p.participante.nome, participacoes))
+            participacoes_labels = []
+            for contador in range(len(participacoes)):
+                participacoes_labels.append(f"Id Evento: {participacoesEventos[contador]} - {participacoesParticipantesNomes[contador]}"
+                                            f" - Id Participação: {participacoesIds[contador]}")
+            participacoes_labels.sort()
+        else:
+            self.mostrar_mensagem('Não há participações cadastrados.')
+            return
 
         layout = [
             [sg.Text('Selecionar Participação', font=('Arial', 14))],
-            [sg.Text('Id da participação que deseja selecionar: '), sg.InputText(size=(4, 1), key='id')],
-
+            [sg.Text('Participação:', size=(12, 1)),
+             sg.Combo(participacoes_labels, readonly=True, size=(50, 1), key='id')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)

@@ -50,10 +50,8 @@ class ControladorParticipante:
             self.__tela_participante.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
     def excluir_participante(self):
-        self.listar_participantes()
-
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante()
+            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -80,10 +78,8 @@ class ControladorParticipante:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def alterar_participante(self):
-        self.listar_participantes()
-
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante()
+            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -114,10 +110,8 @@ class ControladorParticipante:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
 
     def salvar_comprovante_saude(self):
-        self.listar_participantes()
-
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante()
+            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
@@ -148,7 +142,7 @@ class ControladorParticipante:
 
     def mostrar_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante()
+            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
