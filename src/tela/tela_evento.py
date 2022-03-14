@@ -247,7 +247,7 @@ class TelaEvento:
             self.__window.close()
 
             if values['id'] == '':
-                # self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
+                self.mostrar_mensagem('Nenhuma opção selecionada para mostrar.')
                 return None
 
             id_evento = int(values['id'].split()[-1])
