@@ -255,16 +255,12 @@ class TelaEvento:
     def inicializar_selecionar_evento(self, eventos: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(eventos) > 0:
-            eventosIDs = list(map(lambda l: l.id_evento, eventos))
-            eventosNomes = list(map(lambda l: l.titulo, eventos))
-            eventos_labels = []
-            for contador in range(len(eventos)):
-                eventos_labels.append(f"{eventosNomes[contador]} - ID: {eventosIDs[contador]}")
-            eventos_labels.sort()
-        else:
-            self.mostrar_mensagem('Não há eventos cadastrados.')
-            return
+        eventosIDs = list(map(lambda l: l.id_evento, eventos))
+        eventosNomes = list(map(lambda l: l.titulo, eventos))
+        eventos_labels = []
+        for contador in range(len(eventos)):
+            eventos_labels.append(f"{eventosNomes[contador]} - ID: {eventosIDs[contador]}")
+        eventos_labels.sort()
 
         layout = [
             [sg.Text('Selecionar Evento', size=(16, 1), font=('Arial', 14))],

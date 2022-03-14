@@ -122,16 +122,12 @@ class TelaOrganizador:
     def inicializar_selecionar_organizador(self, organizadores: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(organizadores) > 0:
-            organizadoresCPFs = list(map(lambda o: o.cpf, organizadores))
-            organizadoresNomes = list(map(lambda o: o.nome, organizadores))
-            organizadores_labels = []
-            for contador in range(len(organizadores)):
-                organizadores_labels.append(f"{organizadoresNomes[contador]} - CPF: {organizadoresCPFs[contador]}")
-            organizadores_labels.sort()
-        else:
-            self.mostrar_mensagem('Não há organizadores cadastrados.')
-            return
+        organizadoresCPFs = list(map(lambda o: o.cpf, organizadores))
+        organizadoresNomes = list(map(lambda o: o.nome, organizadores))
+        organizadores_labels = []
+        for contador in range(len(organizadores)):
+            organizadores_labels.append(f"{organizadoresNomes[contador]} - CPF: {organizadoresCPFs[contador]}")
+        organizadores_labels.sort()
 
         layout = [
             [sg.Text('Selecionar Organizador', font=('Arial', 14))],

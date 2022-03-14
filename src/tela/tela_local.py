@@ -117,16 +117,12 @@ class TelaLocal:
     def inicializar_selecionar_local(self, locais: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(locais) > 0:
-            locaisIDs = list(map(lambda l: l.id, locais))
-            locaisNomes = list(map(lambda l: l.nome, locais))
-            locais_labels = []
-            for contador in range(len(locais)):
-                locais_labels.append(f"{locaisNomes[contador]} - ID: {locaisIDs[contador]}")
-            locais_labels.sort()
-        else:
-            self.mostrar_mensagem('Não há locais cadastrados.')
-            return
+        locaisIDs = list(map(lambda l: l.id, locais))
+        locaisNomes = list(map(lambda l: l.nome, locais))
+        locais_labels = []
+        for contador in range(len(locais)):
+            locais_labels.append(f"{locaisNomes[contador]} - ID: {locaisIDs[contador]}")
+        locais_labels.sort()
 
         layout = [
             [sg.Text('Selecionar Local', size=(16, 1), font=('Arial', 14))],

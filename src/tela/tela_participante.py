@@ -236,16 +236,12 @@ class TelaParticipante:
     def inicializar_selecionar_participante(self, participantes: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(participantes) > 0:
-            participantesCPFs = list(map(lambda p: p.cpf, participantes))
-            participantesNomes = list(map(lambda p: p.nome, participantes))
-            participantes_labels = []
-            for contador in range(len(participantes)):
-                participantes_labels.append(f"{participantesNomes[contador]} - CPF: {participantesCPFs[contador]}")
-            participantes_labels.sort()
-        else:
-            self.mostrar_mensagem('Não há participantes cadastrados.')
-            return
+        participantesCPFs = list(map(lambda p: p.cpf, participantes))
+        participantesNomes = list(map(lambda p: p.nome, participantes))
+        participantes_labels = []
+        for contador in range(len(participantes)):
+            participantes_labels.append(f"{participantesNomes[contador]} - CPF: {participantesCPFs[contador]}")
+        participantes_labels.sort()
 
         layout = [
             [sg.Text('Selecionar Participante', font=('Arial', 14))],

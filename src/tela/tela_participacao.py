@@ -197,18 +197,14 @@ class TelaParticipacao:
     def inicializar_selecionar_participacao(self, participacoes):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        if len(participacoes) > 0:
-            participacoesIds = list(map(lambda p: p.id, participacoes))
-            participacoesEventos = list(map(lambda p: p.id_evento, participacoes))
-            participacoesParticipantesNomes = list(map(lambda p: p.participante.nome, participacoes))
-            participacoes_labels = []
-            for contador in range(len(participacoes)):
-                participacoes_labels.append(f"Id Evento: {participacoesEventos[contador]} - {participacoesParticipantesNomes[contador]}"
-                                            f" - Id Participação: {participacoesIds[contador]}")
-            participacoes_labels.sort()
-        else:
-            self.mostrar_mensagem('Não há participações cadastrados.')
-            return
+        participacoesIds = list(map(lambda p: p.id, participacoes))
+        participacoesEventos = list(map(lambda p: p.id_evento, participacoes))
+        participacoesParticipantesNomes = list(map(lambda p: p.participante.nome, participacoes))
+        participacoes_labels = []
+        for contador in range(len(participacoes)):
+            participacoes_labels.append(f"Id Evento: {participacoesEventos[contador]} - {participacoesParticipantesNomes[contador]}"
+                                        f" - Id Participação: {participacoesIds[contador]}")
+        participacoes_labels.sort()
 
         layout = [
             [sg.Text('Selecionar Participação', font=('Arial', 14))],
