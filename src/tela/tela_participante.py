@@ -251,8 +251,8 @@ class TelaParticipante:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def fechar_tela(self):
-        self.__window.close()
-
     def mostrar_mensagem(self, msg):
         sg.Popup(msg)
+
+    def fechar_tela(self):
+        self.__window.close()
