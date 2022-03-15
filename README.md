@@ -4,5 +4,4 @@ Sistema de cadastro de eventos desenvolvido para o trabalho da disciplina de Des
 
 #### Diagrama de classes do projeto:
 
-![Modelagem](https://user-images.githubusercontent.com/55916636/151056785-0ae7e912-af63-4b3e-9661-d24ea549a756.jpg)
-https://excalidraw.com/
+![Modelagem](https://user-images.githubusercontent.com/55916636/158406697-a704b6a8-d533-4348-bd25-f93dcb60d832.png)
