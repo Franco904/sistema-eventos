@@ -54,17 +54,19 @@ class ControladorOrganizador:
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
-                self.__organizador_dao.remove_organizador(organizador)
-                self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
-
                 controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
                 eventos = controlador_eventos.eventos
 
                 for evento in eventos:
-                    for organizador in evento.organizadores:
-                        if organizador.cpf == cpf_organizador:
-                            evento.excluir_organizador(organizador)
+                    organizadores_excluir = list(filter(lambda o: o.cpf == cpf_organizador, evento.organizadores))
+
+                    for organizador in organizadores_excluir:
+                        evento.excluir_organizador(organizador)
+
                     controlador_eventos.evento_dao.update_evento(evento)
+
+                self.__organizador_dao.remove_organizador(organizador)
+                self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
 
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')

@@ -58,25 +58,32 @@ class ControladorParticipante:
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
-                self.__participante_dao.remove_participante(participante)
-                self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
-
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
                 participacoes = controlador_participacoes.participacoes
 
+                participacoes_excluir = list(filter(lambda p: p.participante.cpf == cpf_participante, participacoes))
+
                 # Exclui as participações que estão associadas ao participante recém excluído
-                for participacao in participacoes:
-                    if participacao.participante.cpf == cpf_participante:
-                        controlador_participacoes.participacao_dao.remove_participacao(participacao)
+                for participacao in participacoes_excluir:
+                    controlador_participacoes.participacao_dao.remove_participacao(participacao)
 
                 controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
                 eventos = controlador_eventos.eventos
 
+                # Exclui o participante recém excluído (e participação) nos eventos em que ele está inserido
                 for evento in eventos:
-                    for participante in evento.participantes:
-                        if participante.cpf == cpf_participante:
-                            evento.excluir_participante(participante)
+                    participantes_excluir = list(filter(lambda p: p.cpf == cpf_participante, evento.participantes))
+
+                    for participante in participantes_excluir:
+                        evento.excluir_participante(participante)
+
+                    for participacao in participacoes_excluir:
+                        evento.excluir_participacao(participacao)
+
                     controlador_eventos.evento_dao.update_evento(evento)
+
+                self.__participante_dao.remove_participante(participante)
+                self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
         else:
