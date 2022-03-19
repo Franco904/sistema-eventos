@@ -17,6 +17,13 @@ class ControladorOrganizador:
     def tela_organizador(self):
         return self.__tela_organizador
 
+    @staticmethod
+    def organizadores_dados(organizadores: list):
+        organizadores_cpfs = list(map(lambda o: o.cpf, organizadores))
+        organizadores_nomes = list(map(lambda o: o.nome, organizadores))
+
+        return {'cpfs': organizadores_cpfs, 'nomes': organizadores_nomes}
+
     def adicionar_organizador(self):
         dados_organizador = self.__tela_organizador.pegar_dados_organizador(False)
 
@@ -47,24 +54,27 @@ class ControladorOrganizador:
 
     def excluir_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 
             organizador = self.pegar_organizador_por_cpf(cpf_organizador)
 
             if organizador is not None:
-                self.__organizador_dao.remove_organizador(organizador)
-                self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
-
                 controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
                 eventos = controlador_eventos.eventos
 
                 for evento in eventos:
-                    for organizador in evento.organizadores:
-                        if organizador.cpf == cpf_organizador:
-                            evento.excluir_organizador(organizador)
+                    organizadores_excluir = list(filter(lambda o: o.cpf == cpf_organizador, evento.organizadores))
+
+                    for organizador in organizadores_excluir:
+                        evento.excluir_organizador(organizador)
+
                     controlador_eventos.evento_dao.update_evento(evento)
+
+                self.__organizador_dao.remove_organizador(organizador)
+                self.__tela_organizador.mostrar_mensagem('Organizador removido na lista.')
 
             else:
                 self.__tela_organizador.mostrar_mensagem('ATENÇÃO: Organizador não cadastrado.')
@@ -73,7 +83,8 @@ class ControladorOrganizador:
 
     def alterar_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 
@@ -104,7 +115,8 @@ class ControladorOrganizador:
 
     def mostrar_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 

@@ -182,8 +182,8 @@ class TelaParticipacao:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_participacao(self, participacoes):
-        self.inicializar_selecionar_participacao(participacoes)
+    def selecionar_participacao(self, dados_participacoes: dict):
+        self.inicializar_selecionar_participacao(dados_participacoes)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
@@ -199,18 +199,15 @@ class TelaParticipacao:
         self.__window.close()
         return None
 
-    def inicializar_selecionar_participacao(self, participacoes):
+    def inicializar_selecionar_participacao(self, dados_participacoes: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        participacoes_ids = list(map(lambda p: p.id, participacoes))
-        participacoes_eventos = list(map(lambda p: p.id_evento, participacoes))
-        participacoes_participantes_nomes = list(map(lambda p: p.participante.nome, participacoes))
         participacoes_labels = []
 
-        for contador in range(len(participacoes)):
-            participacoes_labels.append(f'Id Evento: {participacoes_eventos[contador]} - '
-                                        f'{participacoes_participantes_nomes[contador]} - '
-                                        f'Id Participação: {participacoes_ids[contador]}')
+        for contador in range(len(dados_participacoes["ids"])):
+            participacoes_labels.append(f'Id Evento: {dados_participacoes["eventos"][contador]} - '
+                                        f'{dados_participacoes["participantes"][contador]} - '
+                                        f'Id Participação: {dados_participacoes["ids"][contador]}')
         participacoes_labels.sort()
 
         layout = [
@@ -221,5 +218,6 @@ class TelaParticipacao:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_mensagem(self, msg):
+    @staticmethod
+    def mostrar_mensagem(msg):
         sg.Popup(msg)

@@ -220,8 +220,8 @@ class TelaParticipante:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_participante(self, participantes: list):
-        self.inicializar_selecionar_participante(participantes)
+    def selecionar_participante(self, dados_participantes: dict):
+        self.inicializar_selecionar_participante(dados_participantes)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
@@ -237,15 +237,14 @@ class TelaParticipante:
         self.__window.close()
         return None
 
-    def inicializar_selecionar_participante(self, participantes: list):
+    def inicializar_selecionar_participante(self, dados_participantes: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        participantes_cpfs = list(map(lambda p: p.cpf, participantes))
-        participantes_nomes = list(map(lambda p: p.nome, participantes))
         participantes_labels = []
 
-        for contador in range(len(participantes)):
-            participantes_labels.append(f'{participantes_nomes[contador]} - CPF: {participantes_cpfs[contador]}')
+        for contador in range(len(dados_participantes["cpfs"])):
+            participantes_labels.append(
+                f'{dados_participantes["nomes"][contador]} - CPF: {dados_participantes["cpfs"][contador]}')
         participantes_labels.sort()
 
         layout = [
@@ -256,5 +255,6 @@ class TelaParticipante:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_mensagem(self, msg):
+    @staticmethod
+    def mostrar_mensagem(msg):
         sg.Popup(msg)

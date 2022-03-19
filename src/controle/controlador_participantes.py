@@ -17,6 +17,13 @@ class ControladorParticipante:
     def tela_participante(self):
         return self.__tela_participante
 
+    @staticmethod
+    def participantes_dados(participantes: list):
+        participantes_cpfs = list(map(lambda p: p.cpf, participantes))
+        participantes_nomes = list(map(lambda p: p.nome, participantes))
+
+        return {'cpfs': participantes_cpfs, 'nomes': participantes_nomes}
+
     def adicionar_participante(self):
         dados_participante = self.__tela_participante.pegar_dados_participante(False)
 
@@ -51,32 +58,40 @@ class ControladorParticipante:
 
     def excluir_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
             participante = self.pegar_participante_por_cpf(cpf_participante)
 
             if participante is not None:
-                self.__participante_dao.remove_participante(participante)
-                self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
-
                 controlador_participacoes = self.__controlador_sistema.controladores['controlador_participacoes']
                 participacoes = controlador_participacoes.participacoes
 
+                participacoes_excluir = list(filter(lambda p: p.participante.cpf == cpf_participante, participacoes))
+
                 # Exclui as participações que estão associadas ao participante recém excluído
-                for participacao in participacoes:
-                    if participacao.participante.cpf == cpf_participante:
-                        controlador_participacoes.participacao_dao.remove_participacao(participacao)
+                for participacao in participacoes_excluir:
+                    controlador_participacoes.participacao_dao.remove_participacao(participacao)
 
                 controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
                 eventos = controlador_eventos.eventos
 
+                # Exclui o participante recém excluído (e participação) nos eventos em que ele está inserido
                 for evento in eventos:
-                    for participante in evento.participantes:
-                        if participante.cpf == cpf_participante:
-                            evento.excluir_participante(participante)
+                    participantes_excluir = list(filter(lambda p: p.cpf == cpf_participante, evento.participantes))
+
+                    for participante in participantes_excluir:
+                        evento.excluir_participante(participante)
+
+                    for participacao in participacoes_excluir:
+                        evento.excluir_participacao(participacao)
+
                     controlador_eventos.evento_dao.update_evento(evento)
+
+                self.__participante_dao.remove_participante(participante)
+                self.__tela_participante.mostrar_mensagem('Participante removido da lista.')
             else:
                 self.__tela_participante.mostrar_mensagem('ATENÇÃO: Participante não cadastrado.')
         else:
@@ -84,7 +99,8 @@ class ControladorParticipante:
 
     def alterar_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
@@ -121,7 +137,8 @@ class ControladorParticipante:
 
     def salvar_comprovante_saude(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
@@ -157,7 +174,8 @@ class ControladorParticipante:
 
     def mostrar_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 

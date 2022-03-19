@@ -4,7 +4,7 @@ from src.entidade.local import Local
 from src.entidade.organizador import Organizador
 from src.entidade.participacao import Participacao
 from src.entidade.participante import Participante
-from src.exceptions.exceptions import RemoveItemException, AddItemException
+from src.exceptions.exceptions import RemoveItemException, AddItemException, EventoFullCapacityException
 
 
 class Evento:
@@ -160,6 +160,11 @@ class Evento:
             for p in self.__participantes:
                 if p.cpf == participante.cpf:
                     raise AddItemException
+
+            # Verifica se vai extrapolar o limite de participantes do evento
+            if len(self.__participantes) == self.__capacidade:
+                raise EventoFullCapacityException
+
             self.__participantes.append(participante)
         else:
             raise TypeError
@@ -169,6 +174,7 @@ class Evento:
             for p in self.__participacoes:
                 if p.id == participacao.id:
                     raise AddItemException
+
             self.__participacoes.append(participacao)
         else:
             raise TypeError

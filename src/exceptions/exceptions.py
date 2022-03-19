@@ -4,3 +4,7 @@ class AddItemException(Exception):
 
 class RemoveItemException(Exception):
     pass
+
+
+class EventoFullCapacityException(Exception):
+    pass

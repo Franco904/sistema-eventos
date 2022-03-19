@@ -106,8 +106,8 @@ class TelaOrganizador:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_organizador(self, organizadores: list):
-        self.inicializar_selecionar_organizador(organizadores)
+    def selecionar_organizador(self, dados_organizadores: dict):
+        self.inicializar_selecionar_organizador(dados_organizadores)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
@@ -123,15 +123,14 @@ class TelaOrganizador:
         self.__window.close()
         return None
 
-    def inicializar_selecionar_organizador(self, organizadores: list):
+    def inicializar_selecionar_organizador(self, dados_organizadores: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        organizadores_cpfs = list(map(lambda o: o.cpf, organizadores))
-        organizadores_nomes = list(map(lambda o: o.nome, organizadores))
         organizadores_labels = []
 
-        for contador in range(len(organizadores)):
-            organizadores_labels.append(f'{organizadores_nomes[contador]} - CPF: {organizadores_cpfs[contador]}')
+        for contador in range(len(dados_organizadores["cpfs"])):
+            organizadores_labels.append(
+                f'{dados_organizadores["nomes"][contador]} - CPF: {dados_organizadores["cpfs"][contador]}')
         organizadores_labels.sort()
 
         layout = [
@@ -142,5 +141,6 @@ class TelaOrganizador:
         ]
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_mensagem(self, msg):
+    @staticmethod
+    def mostrar_mensagem(msg):
         sg.Popup(msg)
