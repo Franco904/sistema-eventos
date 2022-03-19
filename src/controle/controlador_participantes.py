@@ -17,6 +17,13 @@ class ControladorParticipante:
     def tela_participante(self):
         return self.__tela_participante
 
+    @staticmethod
+    def participantes_dados(participantes: list):
+        participantes_cpfs = list(map(lambda p: p.cpf, participantes))
+        participantes_nomes = list(map(lambda p: p.nome, participantes))
+
+        return {'cpfs': participantes_cpfs, 'nomes': participantes_nomes}
+
     def adicionar_participante(self):
         dados_participante = self.__tela_participante.pegar_dados_participante(False)
 
@@ -51,7 +58,8 @@ class ControladorParticipante:
 
     def excluir_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
@@ -91,7 +99,8 @@ class ControladorParticipante:
 
     def alterar_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
@@ -128,7 +137,8 @@ class ControladorParticipante:
 
     def salvar_comprovante_saude(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 
@@ -164,7 +174,8 @@ class ControladorParticipante:
 
     def mostrar_participante(self):
         if len(self.participantes) > 0:
-            cpf_participante = self.__tela_participante.selecionar_participante(self.participantes)
+            cpf_participante = self.__tela_participante.selecionar_participante(
+                self.participantes_dados(self.participantes))
             if cpf_participante is None:
                 return
 

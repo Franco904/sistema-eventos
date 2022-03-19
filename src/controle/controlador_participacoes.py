@@ -25,6 +25,17 @@ class ControladorParticipacao:
     def tela_participacao(self):
         return self.__tela_participacao
 
+    def participacoes_dados(self):
+        participacoes_ids = list(map(lambda p: p.id, self.participacoes))
+        participacoes_eventos = list(map(lambda p: p.id_evento, self.participacoes))
+        participacoes_participantes_nomes = list(map(lambda p: p.participante.nome, self.participacoes))
+
+        return {
+            'ids': participacoes_ids,
+            'eventos': participacoes_eventos,
+            'participantes': participacoes_participantes_nomes
+        }
+
     def adicionar_participacao(self):
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
         participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
@@ -132,7 +143,7 @@ class ControladorParticipacao:
 
     def adicionar_horario_saida(self):
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes_dados())
             if id_participacao is None:
                 return
 
@@ -175,7 +186,7 @@ class ControladorParticipacao:
 
     def excluir_participacao(self):
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes_dados())
             if id_participacao is None:
                 return
 
@@ -225,7 +236,7 @@ class ControladorParticipacao:
 
     def alterar_horario_entrada(self):
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes_dados())
             if id_participacao is None:
                 return
 
@@ -262,7 +273,7 @@ class ControladorParticipacao:
 
     def mostrar_participacao(self):
         if len(self.participacoes) > 0:
-            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes)
+            id_participacao = self.__tela_participacao.selecionar_participacao(self.participacoes_dados())
             if id_participacao is None:
                 return
 

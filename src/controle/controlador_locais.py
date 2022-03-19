@@ -13,6 +13,12 @@ class ControladorLocal:
     def locais(self):
         return self.__local_dao.get_all()
 
+    def locais_dados(self):
+        locais_ids = list(map(lambda l: l.id, self.locais))
+        locais_nomes = list(map(lambda l: l.nome, self.locais))
+
+        return {'ids': locais_ids, 'nomes': locais_nomes}
+
     def adicionar_local(self):
         dados_local = self.__tela_local.pegar_dados_local(False)
 
@@ -36,7 +42,7 @@ class ControladorLocal:
 
     def excluir_local(self):
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local(self.locais)
+            id_local = self.__tela_local.selecionar_local(self.locais_dados())
             if id_local is None:
                 return
 
@@ -53,7 +59,7 @@ class ControladorLocal:
 
     def alterar_local(self):
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local(self.locais)
+            id_local = self.__tela_local.selecionar_local(self.locais_dados())
             if id_local is None:
                 return
 
@@ -81,7 +87,7 @@ class ControladorLocal:
 
     def mostrar_local(self):
         if len(self.locais) > 0:
-            id_local = self.__tela_local.selecionar_local(self.locais)
+            id_local = self.__tela_local.selecionar_local(self.locais_dados())
             if id_local is None:
                 return
 

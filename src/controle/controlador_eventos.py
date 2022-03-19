@@ -24,6 +24,12 @@ class ControladorEvento:
     def tela_evento(self):
         return self.__tela_evento
 
+    def eventos_dados(self):
+        eventos_ids = list(map(lambda e: e.id_evento, self.eventos))
+        eventos_titulos = list(map(lambda e: e.titulo, self.eventos))
+
+        return {'ids': eventos_ids, 'titulos': eventos_titulos}
+
     def adicionar_evento(self):
         locais = self.__controlador_sistema.controladores['controlador_locais'].locais
         organizadores = self.__controlador_sistema.controladores['controlador_organizadores'].organizadores
@@ -61,7 +67,7 @@ class ControladorEvento:
 
     def excluir_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -86,7 +92,7 @@ class ControladorEvento:
 
     def alterar_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -126,7 +132,7 @@ class ControladorEvento:
 
     def mostrar_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -232,7 +238,7 @@ class ControladorEvento:
 
     def listar_organizadores_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -260,7 +266,7 @@ class ControladorEvento:
 
     def listar_participantes_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -291,7 +297,7 @@ class ControladorEvento:
 
     def listar_participantes_com_comprovante(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -330,7 +336,7 @@ class ControladorEvento:
 
     def listar_participantes_sem_comprovante(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -369,7 +375,7 @@ class ControladorEvento:
 
     def listar_participacoes_evento(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -399,7 +405,7 @@ class ControladorEvento:
 
     def adicionar_organizador(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -415,8 +421,11 @@ class ControladorEvento:
                                                             'lista.')
                         return
 
+                    organizadores_dados = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                        .organizadores_dados(organizadores)
+
                     cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
-                        .tela_organizador.selecionar_organizador(organizadores)
+                        .tela_organizador.selecionar_organizador(organizadores_dados)
                     if cpf_organizador is None:
                         return
 
@@ -449,7 +458,7 @@ class ControladorEvento:
 
     def adicionar_participante(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -465,8 +474,11 @@ class ControladorEvento:
                                                             'lista.')
                         return
 
+                    participantes_dados = self.__controlador_sistema.controladores['controlador_participantes'] \
+                        .participantes_dados(participantes)
+
                     cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                        .tela_participante.selecionar_participante(participantes)
+                        .tela_participante.selecionar_participante(participantes_dados)
                     if cpf_participante is None:
                         return
 
@@ -502,7 +514,7 @@ class ControladorEvento:
 
     def excluir_organizador(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -512,8 +524,11 @@ class ControladorEvento:
                 organizadores = evento.organizadores
 
                 if len(organizadores) > 0:
+                    organizadores_dados = self.__controlador_sistema.controladores['controlador_organizadores'] \
+                        .organizadores_dados(organizadores)
+
                     cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
-                        .tela_organizador.selecionar_organizador(organizadores)
+                        .tela_organizador.selecionar_organizador(organizadores_dados)
                     if cpf_organizador is None:
                         return
 
@@ -539,7 +554,7 @@ class ControladorEvento:
 
     def excluir_participante(self):
         if len(self.eventos) > 0:
-            id_evento = self.__tela_evento.selecionar_evento(self.eventos)
+            id_evento = self.__tela_evento.selecionar_evento(self.eventos_dados())
             if id_evento is None:
                 return
 
@@ -549,8 +564,11 @@ class ControladorEvento:
                 participantes = evento.participantes
 
                 if len(participantes) > 0:
+                    participantes_dados = self.__controlador_sistema.controladores['controlador_participantes'] \
+                        .participantes_dados(participantes)
+
                     cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                        .tela_participante.selecionar_participante(participantes)
+                        .tela_participante.selecionar_participante(participantes_dados)
                     if cpf_participante is None:
                         return
 
@@ -578,7 +596,8 @@ class ControladorEvento:
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
 
-    def montar_organizador_string(self, organizadores: list):
+    @staticmethod
+    def montar_organizador_string(organizadores: list):
         orgString = ''
         if len(organizadores) == 0:
             orgString = 'Nenhum organizador inserido'
@@ -591,7 +610,8 @@ class ControladorEvento:
 
         return orgString
 
-    def montar_participante_string(self, participantes: list):
+    @staticmethod
+    def montar_participante_string(participantes: list):
         partString = ''
         if len(participantes) == 0:
             partString = 'Nenhum participante inserido'
@@ -604,7 +624,8 @@ class ControladorEvento:
 
         return partString
 
-    def montar_participacao_string(self, participacoes: list):
+    @staticmethod
+    def montar_participacao_string(participacoes: list):
         pcaoString = ''
         if len(participacoes) == 0:
             pcaoString = 'Nenhuma participação inserida'

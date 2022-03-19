@@ -101,8 +101,8 @@ class TelaLocal:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_local(self, locais: list):
-        self.inicializar_selecionar_local(locais)
+    def selecionar_local(self, dados_locais: dict):
+        self.inicializar_selecionar_local(dados_locais)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
@@ -118,15 +118,13 @@ class TelaLocal:
         self.__window.close()
         return None
 
-    def inicializar_selecionar_local(self, locais: list):
+    def inicializar_selecionar_local(self, dados_locais: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        locais_ids = list(map(lambda l: l.id, locais))
-        locais_nomes = list(map(lambda l: l.nome, locais))
         locais_labels = []
 
-        for contador in range(len(locais)):
-            locais_labels.append(f'{locais_nomes[contador]} - ID: {locais_ids[contador]}')
+        for contador in range(len(dados_locais["ids"])):
+            locais_labels.append(f'{dados_locais["nomes"][contador]} - ID: {dados_locais["ids"][contador]}')
         locais_labels.sort()
 
         layout = [
@@ -138,5 +136,6 @@ class TelaLocal:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_mensagem(self, msg: str):
+    @staticmethod
+    def mostrar_mensagem(msg: str):
         sg.Popup(msg)

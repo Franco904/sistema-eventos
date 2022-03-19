@@ -17,6 +17,13 @@ class ControladorOrganizador:
     def tela_organizador(self):
         return self.__tela_organizador
 
+    @staticmethod
+    def organizadores_dados(organizadores: list):
+        organizadores_cpfs = list(map(lambda o: o.cpf, organizadores))
+        organizadores_nomes = list(map(lambda o: o.nome, organizadores))
+
+        return {'cpfs': organizadores_cpfs, 'nomes': organizadores_nomes}
+
     def adicionar_organizador(self):
         dados_organizador = self.__tela_organizador.pegar_dados_organizador(False)
 
@@ -47,7 +54,8 @@ class ControladorOrganizador:
 
     def excluir_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 
@@ -75,7 +83,8 @@ class ControladorOrganizador:
 
     def alterar_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 
@@ -106,7 +115,8 @@ class ControladorOrganizador:
 
     def mostrar_organizador(self):
         if len(self.organizadores) > 0:
-            cpf_organizador = self.__tela_organizador.selecionar_organizador(self.organizadores)
+            cpf_organizador = self.__tela_organizador.selecionar_organizador(
+                self.organizadores_dados(self.organizadores))
             if cpf_organizador is None:
                 return
 

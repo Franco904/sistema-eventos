@@ -1,7 +1,5 @@
 import PySimpleGUI as sg
 
-from src.tela.strings.strings import *
-
 
 class TelaEvento:
     def __init__(self):
@@ -210,14 +208,14 @@ class TelaEvento:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_eventos_rankeados(self, eventos):
+    def mostrar_eventos_rankeados(self, eventos: dict):
         self.inicializar_mostrar_eventos_rankeados(eventos)
         button, values = self.__window.read()
 
         if button in [None, 'OK']:
             self.__window.close()
 
-    def inicializar_mostrar_eventos_rankeados(self, eventos):
+    def inicializar_mostrar_eventos_rankeados(self, eventos: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
         if len(eventos) == 0:
@@ -239,8 +237,8 @@ class TelaEvento:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def selecionar_evento(self, eventos: list):
-        self.inicializar_selecionar_evento(eventos)
+    def selecionar_evento(self, dados_eventos: dict):
+        self.inicializar_selecionar_evento(dados_eventos)
         button, values = self.__window.read()
 
         if button == 'Confirmar':
@@ -256,15 +254,13 @@ class TelaEvento:
         self.__window.close()
         return None
 
-    def inicializar_selecionar_evento(self, eventos: list):
+    def inicializar_selecionar_evento(self, dados_eventos: dict):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        eventos_ids = list(map(lambda e: e.id_evento, eventos))
-        eventos_nomes = list(map(lambda e: e.titulo, eventos))
         eventos_labels = []
 
-        for contador in range(len(eventos)):
-            eventos_labels.append(f'{eventos_nomes[contador]} - ID: {eventos_ids[contador]}')
+        for contador in range(len(dados_eventos["ids"])):
+            eventos_labels.append(f'{dados_eventos["titulos"][contador]} - ID: {dados_eventos["ids"][contador]}')
         eventos_labels.sort()
 
         layout = [
@@ -276,5 +272,6 @@ class TelaEvento:
 
         self.__window = sg.Window('Sistema de Eventos', layout)
 
-    def mostrar_mensagem(self, msg: str):
+    @staticmethod
+    def mostrar_mensagem(msg: str):
         sg.Popup(msg)
