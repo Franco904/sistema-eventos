@@ -3,7 +3,7 @@ from datetime import datetime
 from src.dao.participacao_dao import ParticipacaoDao
 from src.entidade.enums.status_participante import StatusParticipante
 from src.entidade.participacao import Participacao
-from src.exceptions.exceptions import RemoveItemException, AddItemException
+from src.exceptions.exceptions import RemoveItemException, AddItemException, EventoFullCapacityException
 from src.tela.tela_participacao import TelaParticipacao
 
 
@@ -28,7 +28,6 @@ class ControladorParticipacao:
     def adicionar_participacao(self):
         eventos = self.__controlador_sistema.controladores['controlador_eventos'].eventos
         participantes = self.__controlador_sistema.controladores['controlador_participantes'].participantes
-        controlador_eventos = self.__controlador_sistema.controladores['controlador_eventos']
 
         dados_participacao = self.__tela_participacao.pegar_dados_participacao(eventos, participantes)
 
@@ -94,7 +93,18 @@ class ControladorParticipacao:
                 )
                 participante.status_participante = StatusParticipante.autorizado
 
-                self.__participacao_dao.add_participacao(participacao)
+                # Já adiciona ao evento o participante atrelado
+                try:
+                    evento.adicionar_participante(participante)
+
+                except TypeError:
+                    self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
+                except AddItemException:
+                    pass
+                except EventoFullCapacityException:
+                    self.__tela_participacao.mostrar_mensagem('O evento já alcançou a sua capacidade máxima de '
+                                                              'participantes.')
+                    return
 
                 try:
                     evento.adicionar_participacao(participacao)
@@ -102,22 +112,16 @@ class ControladorParticipacao:
                 except TypeError:
                     self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
                 except AddItemException:
-                    self.__tela_participacao.mostrar_mensagem('A participação já existe na lista de participações do '
-                                                              'evento.')
+                    self.__tela_participacao.mostrar_mensagem(
+                        'A participação já existe na lista de participações do '
+                        'evento.')
 
-                try:
-                    evento.adicionar_participante(participante)
-
-                except TypeError:
-                    self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
-                except AddItemException:
-                    self.__tela_participacao.mostrar_mensagem('O participante já existe na lista de participantes do '
-                                                              'evento.')
+                self.__participacao_dao.add_participacao(participacao)
+                self.__tela_participacao.mostrar_mensagem('Participação adicionada no evento com sucesso.')
 
                 # Atualiza evento com participação/participante inserido
                 self.__controlador_sistema.controladores['controlador_eventos'].evento_dao.update_evento(evento)
 
-                self.__tela_participacao.mostrar_mensagem('Participação adicionada no evento com sucesso.')
             except TypeError:
                 self.__tela_participacao.mostrar_mensagem('Algum dado foi inserido incorretamente.')
 
@@ -182,8 +186,20 @@ class ControladorParticipacao:
                     participacao.id_evento)
 
                 if evento is not None:
+                    participacao_evento = list(filter(lambda pcao: pcao.id == id_participacao, evento.participacoes))[0]
+                    participante_evento = list(filter(
+                        lambda p: p.cpf == participacao_evento.participante.cpf, evento.participantes))[0]
+
                     try:
-                        evento.excluir_participacao(participacao)
+                        evento.excluir_participante(participante_evento)
+
+                    except TypeError:
+                        self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
+                    except RemoveItemException:
+                        pass
+
+                    try:
+                        evento.excluir_participacao(participacao_evento)
 
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('A participação é inválida.')
@@ -191,22 +207,14 @@ class ControladorParticipacao:
                         self.__tela_participacao.mostrar_mensagem('A participação não existe na lista de participações '
                                                                   'do evento.')
 
-                    try:
-                        evento.excluir_participante(participacao.participante)
-
-                    except TypeError:
-                        self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
-                    except RemoveItemException:
-                        self.__tela_participacao.mostrar_mensagem('O participante não existe na lista de participantes '
-                                                                  'do evento.')
-
                 else:
                     self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
 
-                self.__controlador_sistema.controladores['controlador_eventos'].evento_dao.update_evento(evento)
-
                 self.__participacao_dao.remove_participacao(participacao)
                 self.__tela_participacao.mostrar_mensagem('Participação removida da lista.')
+
+                # Atualiza evento com participação/participante removido
+                self.__controlador_sistema.controladores['controlador_eventos'].evento_dao.update_evento(evento)
             else:
                 self.__tela_participacao.mostrar_mensagem('ATENÇÃO: Participação não cadastrada.')
         else:
