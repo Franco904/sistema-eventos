@@ -187,12 +187,15 @@ class ControladorParticipacao:
 
                 if evento is not None:
                     participacao_evento = list(filter(lambda pcao: pcao.id == id_participacao, evento.participacoes))[0]
-                    participante_evento = list(filter(
-                        lambda p: p.cpf == participacao_evento.participante.cpf, evento.participantes))[0]
 
                     try:
+                        participante_evento = list(filter(
+                            lambda p: p.cpf == participacao_evento.participante.cpf, evento.participantes))[0]
+
                         evento.excluir_participante(participante_evento)
 
+                    except IndexError:
+                        pass
                     except TypeError:
                         self.__tela_participacao.mostrar_mensagem('O participante é inválido.')
                     except RemoveItemException:

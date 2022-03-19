@@ -139,9 +139,9 @@ class ControladorEvento:
                     'local': evento.local,
                     'data_horario_evento': evento.data_horario_evento,
                     'capacidade': evento.capacidade,
-                    'organizadores': evento.organizadores,
-                    'participantes': evento.participantes,
-                    'participacoes': evento.participacoes
+                    'organizadores': self.montar_organizador_string(evento.organizadores),
+                    'participantes': self.montar_participante_string(evento.participantes),
+                    'participacoes': self.montar_participacao_string(evento.participacoes)
                 })
             else:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
@@ -577,6 +577,45 @@ class ControladorEvento:
                 self.__tela_evento.mostrar_mensagem('ATENÇÃO: Evento não cadastrado.')
         else:
             self.__tela_evento.mostrar_mensagem('Não há eventos cadastrados para listar.')
+
+    def montar_organizador_string(self, organizadores: list):
+        orgString = ''
+        if len(organizadores) == 0:
+            orgString = 'Nenhum organizador inserido'
+        else:
+            for organizador in organizadores:
+                if organizador.cpf == organizadores[-1].cpf:
+                    orgString += organizador.nome
+                else:
+                    orgString += organizador.nome + ', '
+
+        return orgString
+
+    def montar_participante_string(self, participantes: list):
+        partString = ''
+        if len(participantes) == 0:
+            partString = 'Nenhum participante inserido'
+        else:
+            for participante in participantes:
+                if participante.cpf == participantes[-1].cpf:
+                    partString += participante.nome
+                else:
+                    partString += participante.nome + ', '
+
+        return partString
+
+    def montar_participacao_string(self, participacoes: list):
+        pcaoString = ''
+        if len(participacoes) == 0:
+            pcaoString = 'Nenhuma participação inserida'
+        else:
+            for participacao in participacoes:
+                if participacao.id == participacoes[-1].id:
+                    pcaoString += participacao.participante.nome
+                else:
+                    pcaoString += participacao.participante.nome + ', '
+
+        return pcaoString
 
     def retornar(self):
         self.__controlador_sistema.abrir_tela()

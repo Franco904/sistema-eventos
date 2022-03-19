@@ -199,10 +199,10 @@ class TelaEvento:
             [sg.Text('Data e horário do evento: '), sg.Text(dados_evento['data_horario_evento']
                                                             .strftime('%d/%m/%Y, %H:%M'))],
             [sg.Text('Capacidade do evento: '), sg.Text(dados_evento['capacidade'])],
-            [sg.Text('Organizadores: '), sg.Text(montar_organizador_string(dados_evento['organizadores']))],
-            [sg.Text('Participantes: '), sg.Text(montar_participante_string(dados_evento['participantes']))],
+            [sg.Text('Organizadores: '), sg.Text(dados_evento['organizadores'])],
+            [sg.Text('Participantes: '), sg.Text(dados_evento['participantes'])],
             [sg.Text('Participações confirmadas: '),
-             sg.Text(montar_participacao_string(dados_evento['participacoes']))
+             sg.Text(dados_evento['participacoes'])
              ],
 
             [sg.Cancel('OK')]
