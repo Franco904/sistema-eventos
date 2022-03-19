@@ -390,7 +390,7 @@ class ControladorEvento:
                     self.__controlador_sistema.controladores['controlador_organizadores'].listar_organizadores()
 
                     cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
-                        .tela_organizador.selecionar_organizador()
+                        .tela_organizador.selecionar_organizador(organizadores)
                     organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
                         .pegar_organizador_por_cpf(cpf_organizador)
 
@@ -440,7 +440,7 @@ class ControladorEvento:
                     self.__controlador_sistema.controladores['controlador_participantes'].listar_participantes()
 
                     cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                        .tela_participante.selecionar_participante()
+                        .tela_participante.selecionar_participante(participantes)
                     participante = self.__controlador_sistema.controladores['controlador_participantes'] \
                         .pegar_participante_por_cpf(cpf_participante)
 
@@ -486,7 +486,7 @@ class ControladorEvento:
                         })
 
                     cpf_organizador = self.__controlador_sistema.controladores['controlador_organizadores'] \
-                        .tela_organizador.selecionar_organizador()
+                        .tela_organizador.selecionar_organizador(organizadores)
 
                     organizador = list(filter(lambda o: o.cpf == cpf_organizador, evento.organizadores))[0]
 
@@ -529,7 +529,7 @@ class ControladorEvento:
                         })
 
                     cpf_participante = self.__controlador_sistema.controladores['controlador_participantes'] \
-                        .tela_participante.selecionar_participante()
+                        .tela_participante.selecionar_participante(participantes)
 
                     participante = list(filter(lambda p: p.cpf == cpf_participante, evento.participantes))[0]
 
